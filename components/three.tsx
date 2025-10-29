@@ -1,3 +1,7 @@
+"use client";
+
+import { motion } from "framer-motion";
+
 export default function Three() {
   const clients = [
     "Häagen-Dazs",
@@ -40,7 +44,13 @@ export default function Three() {
       
       <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-8">
         {/* Section header */}
-        <div className="mx-auto max-w-2xl text-center">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.6 }}
+          className="mx-auto max-w-2xl text-center"
+        >
           <h2 className="text-base font-semibold leading-7 text-purple-400">Client Showcase</h2>
           <p className="mt-2 text-4xl font-bold tracking-tight text-white sm:text-5xl">
             Trusted by Leading Brands. Proven Results Across the Country.
@@ -48,39 +58,59 @@ export default function Three() {
           <p className="mt-6 text-lg leading-8 text-zinc-400">
             We've worked with national franchises and emerging startups to deliver impactful retail designs. Our clients rely on us for quality, speed, and creative excellence.
           </p>
-        </div>
+        </motion.div>
 
         {/* Client logos/names */}
         <div className="mx-auto mt-16 max-w-5xl">
           <div className="grid grid-cols-2 gap-8 sm:grid-cols-3 lg:grid-cols-4">
             {clients.map((client, index) => (
-              <div
+              <motion.div
                 key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-100px" }}
+                transition={{ duration: 0.4, delay: index * 0.05 }}
                 className="flex items-center justify-center rounded-xl border border-zinc-800 bg-zinc-900/30 px-6 py-8 backdrop-blur-sm transition-all hover:border-zinc-700 hover:bg-zinc-900/50"
               >
                 <span className="text-center text-lg font-semibold text-white">
                   {client}
                 </span>
-              </div>
+              </motion.div>
             ))}
-            <div className="flex items-center justify-center rounded-xl border border-zinc-800 bg-zinc-900/30 px-6 py-8 backdrop-blur-sm">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.4, delay: clients.length * 0.05 }}
+              className="flex items-center justify-center rounded-xl border border-zinc-800 bg-zinc-900/30 px-6 py-8 backdrop-blur-sm"
+            >
               <span className="text-center text-lg font-semibold text-zinc-500">
                 + Many More
               </span>
-            </div>
+            </motion.div>
           </div>
         </div>
 
         {/* Featured Projects */}
         <div className="mx-auto mt-20 max-w-6xl">
-          <h3 className="text-center text-2xl font-bold text-white sm:text-3xl">
+          <motion.h3
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.6 }}
+            className="text-center text-2xl font-bold text-white sm:text-3xl"
+          >
             Featured Projects
-          </h3>
+          </motion.h3>
           
           <div className="mt-12 grid gap-8 lg:grid-cols-3">
             {featuredProjects.map((project, index) => (
-              <div
+              <motion.div
                 key={index}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-100px" }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
                 className="group relative flex flex-col overflow-hidden rounded-2xl border border-zinc-800 bg-zinc-900/50 backdrop-blur-sm transition-all hover:border-purple-500/50"
               >
                 {/* Project header */}
@@ -115,17 +145,23 @@ export default function Three() {
 
                 {/* Hover gradient */}
                 <div className="absolute inset-0 -z-10 bg-gradient-to-br from-purple-500/0 to-blue-500/0 opacity-0 transition-opacity group-hover:opacity-5" />
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
 
         {/* CTA Button */}
-        <div className="mt-16 flex justify-center">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+          className="mt-16 flex justify-center"
+        >
           <button className="rounded-full bg-gradient-to-r from-purple-500 to-blue-500 px-8 py-3 text-base font-semibold text-white shadow-lg transition-all hover:scale-105 hover:shadow-xl">
             View Full Portfolio
           </button>
-        </div>
+        </motion.div>
       </div>
     </section>
   );

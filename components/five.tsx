@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import { motion } from "framer-motion";
+import { Calendar, Mail, Phone, MapPin, Zap, Paperclip } from "lucide-react";
 
 export default function Five() {
   const [formData, setFormData] = useState({
@@ -30,21 +32,33 @@ export default function Five() {
       
       <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-8">
         {/* Section header */}
-        <div className="mx-auto max-w-2xl text-center">
-          <h2 className="text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.6 }}
+          className="mx-auto max-w-2xl text-center"
+        >
+          <h2 className="font-display text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl">
             Let's Create Something Remarkable Together
           </h2>
           <p className="mt-6 text-lg leading-8 text-zinc-400 sm:text-xl">
             Have a retail vision or project in mind? Whether you need a kiosk, inline store, full brand package, or just expert advice, we're here to help. Reach out today for a free consultation or custom proposal.
           </p>
-        </div>
+        </motion.div>
 
         {/* Contact form and options */}
         <div className="mx-auto mt-16 max-w-4xl sm:mt-20">
           <div className="grid gap-8 lg:grid-cols-2">
             {/* Contact Form */}
-            <div className="rounded-2xl border border-zinc-800 bg-zinc-900/50 p-8 backdrop-blur-sm">
-              <h3 className="text-xl font-semibold text-white">Send Us a Message</h3>
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.6 }}
+              className="rounded-2xl border border-zinc-800 bg-zinc-900/50 p-8 backdrop-blur-sm"
+            >
+              <h3 className="font-display text-xl font-semibold text-white">Send Us a Message</h3>
               <p className="mt-2 text-sm text-zinc-400">Fill out the form and we'll get back to you within 24 hours.</p>
               
               <form onSubmit={handleSubmit} className="mt-6 space-y-5">
@@ -119,7 +133,7 @@ export default function Five() {
                   <div className="mt-2">
                     <label className="flex cursor-pointer items-center justify-center rounded-lg border border-dashed border-zinc-700 bg-zinc-800/30 px-4 py-6 transition-colors hover:border-cyan-500 hover:bg-zinc-800/50">
                       <div className="text-center">
-                        <div className="text-2xl">📎</div>
+                        <Paperclip className="mx-auto h-8 w-8 text-zinc-500" />
                         <div className="mt-2 text-sm text-zinc-400">
                           {formData.file ? formData.file.name : "Click to upload or drag and drop"}
                         </div>
@@ -144,18 +158,24 @@ export default function Five() {
                   Contact Us
                 </button>
               </form>
-            </div>
+            </motion.div>
 
             {/* Alternative Options */}
             <div className="space-y-6">
               {/* Schedule a Call */}
-              <div className="rounded-2xl border border-zinc-800 bg-zinc-900/50 p-8 backdrop-blur-sm transition-all hover:border-cyan-500/50">
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-100px" }}
+                transition={{ duration: 0.6, delay: 0.1 }}
+                className="rounded-2xl border border-zinc-800 bg-zinc-900/50 p-8 backdrop-blur-sm transition-all hover:border-cyan-500/50"
+              >
                 <div className="flex items-start gap-4">
-                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-cyan-500/20 to-blue-500/20 text-2xl ring-1 ring-inset ring-cyan-500/30">
-                    📅
+                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-cyan-500/20 to-blue-500/20 ring-1 ring-inset ring-cyan-500/30">
+                    <Calendar className="h-6 w-6 text-cyan-400" />
                   </div>
                   <div className="flex-1">
-                    <h3 className="text-lg font-semibold text-white">Schedule a Discovery Call</h3>
+                    <h3 className="font-display text-lg font-semibold text-white">Schedule a Discovery Call</h3>
                     <p className="mt-2 text-sm text-zinc-400">
                       Book a 30-minute consultation to discuss your project in detail.
                     </p>
@@ -164,43 +184,55 @@ export default function Five() {
                     </button>
                   </div>
                 </div>
-              </div>
+              </motion.div>
 
               {/* Direct Contact */}
-              <div className="rounded-2xl border border-zinc-800 bg-zinc-900/50 p-8 backdrop-blur-sm">
-                <h3 className="text-lg font-semibold text-white">Other Ways to Reach Us</h3>
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-100px" }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+                className="rounded-2xl border border-zinc-800 bg-zinc-900/50 p-8 backdrop-blur-sm"
+              >
+                <h3 className="font-display text-lg font-semibold text-white">Other Ways to Reach Us</h3>
                 <div className="mt-4 space-y-3">
                   <div className="flex items-center gap-3 text-sm">
-                    <span className="text-lg">📧</span>
+                    <Mail className="h-5 w-5 text-cyan-400" />
                     <a href="mailto:info@graficastudios.com" className="text-zinc-400 hover:text-cyan-400">
                       info@graficastudios.com
                     </a>
                   </div>
                   <div className="flex items-center gap-3 text-sm">
-                    <span className="text-lg">📞</span>
+                    <Phone className="h-5 w-5 text-cyan-400" />
                     <a href="tel:+15551234567" className="text-zinc-400 hover:text-cyan-400">
                       (555) 123-4567
                     </a>
                   </div>
                   <div className="flex items-center gap-3 text-sm">
-                    <span className="text-lg">📍</span>
+                    <MapPin className="h-5 w-5 text-cyan-400" />
                     <span className="text-zinc-400">
                       Available Nationwide
                     </span>
                   </div>
                 </div>
-              </div>
+              </motion.div>
 
               {/* Response Time */}
-              <div className="rounded-2xl border border-zinc-800 bg-gradient-to-br from-cyan-500/10 to-blue-500/10 p-6 ring-1 ring-inset ring-cyan-500/20">
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-100px" }}
+                transition={{ duration: 0.6, delay: 0.3 }}
+                className="rounded-2xl border border-zinc-800 bg-gradient-to-br from-cyan-500/10 to-blue-500/10 p-6 ring-1 ring-inset ring-cyan-500/20"
+              >
                 <div className="flex items-center gap-3">
-                  <span className="text-2xl">⚡</span>
+                  <Zap className="h-6 w-6 text-yellow-400" />
                   <div>
-                    <div className="font-semibold text-white">Fast Response Time</div>
+                    <div className="font-display font-semibold text-white">Fast Response Time</div>
                     <div className="text-sm text-zinc-400">We typically respond within 24 hours</div>
                   </div>
                 </div>
-              </div>
+              </motion.div>
             </div>
           </div>
         </div>
