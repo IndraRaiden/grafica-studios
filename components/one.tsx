@@ -1,19 +1,51 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { Sparkles } from "lucide-react";
 import GlassmorphismCard from "./glassmorphism-card";
+import { useRef } from "react";
 
 export default function One() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end start"]
+  });
+
+  // Parallax effect for background image
+  const imageY = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
+  const imageOpacity = useTransform(scrollYProgress, [0, 0.5, 1], [1, 0.6, 0.3]);
+  
+  // Content fade in effect - starts visible
+  const contentOpacity = useTransform(scrollYProgress, [0, 0.05, 0.1], [0.3, 0.8, 1]);
+  const contentY = useTransform(scrollYProgress, [0, 0.05, 0.1], [50, 20, 0]);
+
   return (
-    <section className="relative flex min-h-screen items-center justify-center overflow-hidden">
-      <div className="relative z-10 mx-auto max-w-7xl px-6 py-32 text-center sm:px-8 lg:px-12">
+    <section ref={sectionRef} className="relative flex min-h-screen items-center justify-center overflow-hidden">
+      {/* Background Image with Parallax */}
+      <motion.div
+        style={{ y: imageY, opacity: imageOpacity }}
+        className="absolute inset-0 z-0"
+      >
+        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black z-10" />
+        <img
+          src="/dreamstimefree_146511517.jpg"
+          alt="Grafica Studios Background"
+          className="h-full w-full object-cover"
+        />
+      </motion.div>
+
+      <motion.div
+        style={{ opacity: contentOpacity, y: contentY }}
+        className="relative z-10 mx-auto max-w-7xl px-6 py-32 text-center sm:px-8 lg:px-12"
+      >
         <GlassmorphismCard>
           <div className="flex flex-col items-center gap-8">
           {/* Badge with custom design */}
           <motion.div
             initial={{ opacity: 0, y: 50, scale: 0.8 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
+            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+            viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.8, type: "spring", bounce: 0.4 }}
             className="relative"
           >
@@ -30,7 +62,8 @@ export default function One() {
           {/* Main heading with custom styling */}
           <motion.div
             initial={{ opacity: 0, y: 60, scale: 0.9 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
+            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+            viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.9, delay: 0.2, type: "spring", bounce: 0.3 }}
             className="relative max-w-4xl"
           >
@@ -65,7 +98,8 @@ export default function One() {
           {/* Subheading */}
           <motion.p
             initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.8, delay: 0.4 }}
             className="max-w-2xl text-lg leading-8 text-zinc-400 sm:text-xl"
           >
@@ -75,7 +109,8 @@ export default function One() {
           {/* CTA buttons with custom design */}
           <motion.div
             initial={{ opacity: 0, y: 40, scale: 0.9 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
+            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+            viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.8, delay: 0.6, type: "spring", bounce: 0.3 }}
             className="mt-4 flex flex-col gap-4 sm:flex-row"
           >
@@ -90,7 +125,7 @@ export default function One() {
           </motion.div>
         </div>
         </GlassmorphismCard>
-      </div>
+      </motion.div>
     </section>
   );
 }

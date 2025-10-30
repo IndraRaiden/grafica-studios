@@ -1,8 +1,12 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { useState } from "react";
+import ProjectCard from "./project-card";
 
 export default function Three() {
+  const [selectedClient, setSelectedClient] = useState<string | null>(null);
+
   const clients = [
     "Häagen-Dazs",
     "Wetzel's Pretzels",
@@ -13,8 +17,9 @@ export default function Three() {
     "Cilantro Taco Grill"
   ];
 
-  const featuredProjects = [
+  const allProjects = [
     {
+      client: "Häagen-Dazs",
       title: "Häagen-Dazs Flagship Store",
       category: "Premium Ice Cream Retail",
       problem: "Needed a modern, inviting space that reflected the premium brand while maximizing customer flow in a compact mall location.",
@@ -22,6 +27,7 @@ export default function Three() {
       result: "30% increase in foot traffic within the first quarter"
     },
     {
+      client: "Gong Cha",
       title: "Gong Cha Expansion",
       category: "Beverage Kiosk",
       problem: "Rapid expansion required consistent branding across multiple mall locations with varying space constraints.",
@@ -29,13 +35,34 @@ export default function Three() {
       result: "Successfully launched 5 locations in 6 months"
     },
     {
+      client: "Cilantro Taco Grill",
       title: "Cilantro Taco Grill Rebrand",
       category: "Restaurant Refurbishment",
       problem: "Existing location felt dated and didn't reflect the fresh, modern direction of the brand.",
       solution: "Complete interior refresh with new signage, updated materials, vibrant graphics, and improved customer flow without closing for business.",
       result: "Completed in 3 weeks with zero downtime"
+    },
+    {
+      client: "Wetzel's Pretzels",
+      title: "Wetzel's Pretzels Mall Kiosk",
+      category: "Quick Service Kiosk",
+      problem: "Limited space required creative solutions to maximize efficiency while maintaining brand warmth and approachability.",
+      solution: "Designed a compact yet welcoming kiosk with optimized workflow, eye-catching signage, and strategic product display.",
+      result: "25% improvement in service speed and customer satisfaction"
+    },
+    {
+      client: "Jamba Juice",
+      title: "Jamba Juice Refresh",
+      category: "Health & Wellness Retail",
+      problem: "Store needed modernization to appeal to health-conscious millennials while maintaining family-friendly atmosphere.",
+      solution: "Vibrant color scheme, natural materials, digital menu boards, and Instagram-worthy design elements throughout.",
+      result: "40% increase in social media engagement and foot traffic"
     }
   ];
+
+  const filteredProjects = selectedClient
+    ? allProjects.filter(project => project.client === selectedClient)
+    : allProjects;
 
   return (
     <section className="relative bg-gradient-to-b from-black via-zinc-900 to-black py-24 sm:py-32">
@@ -51,101 +78,99 @@ export default function Three() {
           transition={{ duration: 0.6 }}
           className="mx-auto max-w-2xl text-center"
         >
-          <h2 className="text-base font-semibold leading-7 text-purple-400">Client Showcase</h2>
-          <p className="mt-2 text-4xl font-bold tracking-tight text-white sm:text-5xl">
-            Trusted by Leading Brands. Proven Results Across the Country.
+          <div className="inline-flex items-center gap-2 rounded-full border border-purple-500/30 bg-purple-500/10 px-4 py-1.5 backdrop-blur-sm">
+            <div className="h-2 w-2 rounded-full bg-purple-400" />
+            <h2 className="text-sm font-bold uppercase tracking-wider text-purple-400">Client Showcase</h2>
+          </div>
+          <p className="font-display mt-6 text-4xl font-black tracking-tight text-white sm:text-5xl lg:text-6xl">
+            Trusted by{" "}
+            <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+              Leading Brands
+            </span>
+            .<br />
+            Proven Results Across the Country.
           </p>
           <p className="mt-6 text-lg leading-8 text-zinc-400">
             We've worked with national franchises and emerging startups to deliver impactful retail designs. Our clients rely on us for quality, speed, and creative excellence.
           </p>
         </motion.div>
 
-        {/* Client logos/names */}
-        <div className="mx-auto mt-16 max-w-5xl">
-          <div className="grid grid-cols-2 gap-8 sm:grid-cols-3 lg:grid-cols-4">
-            {clients.map((client, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-100px" }}
-                transition={{ duration: 0.4, delay: index * 0.05 }}
-                className="flex items-center justify-center rounded-xl border border-zinc-800 bg-zinc-900/30 px-6 py-8 backdrop-blur-sm transition-all hover:border-zinc-700 hover:bg-zinc-900/50"
-              >
-                <span className="text-center text-lg font-semibold text-white">
-                  {client}
-                </span>
-              </motion.div>
-            ))}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 0.4, delay: clients.length * 0.05 }}
-              className="flex items-center justify-center rounded-xl border border-zinc-800 bg-zinc-900/30 px-6 py-8 backdrop-blur-sm"
+        {/* Client selector buttons */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="mx-auto mt-16 max-w-6xl"
+        >
+          <div className="flex flex-wrap items-center justify-center gap-4">
+            <button
+              onClick={() => setSelectedClient(null)}
+              className={`rounded-2xl border px-6 py-4 text-base font-semibold transition-all ${
+                selectedClient === null
+                  ? "border-blue-500/50 bg-gradient-to-r from-blue-500/20 to-purple-500/20 text-white shadow-lg shadow-blue-500/20"
+                  : "border-zinc-800 bg-zinc-900/30 text-zinc-400 hover:border-zinc-700 hover:bg-zinc-900/50 hover:text-white"
+              }`}
             >
-              <span className="text-center text-lg font-semibold text-zinc-500">
-                + Many More
-              </span>
-            </motion.div>
+              All Projects
+            </button>
+            {clients.map((client, index) => (
+              <motion.button
+                key={client}
+                initial={{ opacity: 0, scale: 0.8 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true, margin: "-100px" }}
+                transition={{ duration: 0.4, delay: 0.3 + index * 0.05 }}
+                onClick={() => setSelectedClient(client)}
+                className={`rounded-2xl border px-6 py-4 text-base font-semibold transition-all ${
+                  selectedClient === client
+                    ? "border-blue-500/50 bg-gradient-to-r from-blue-500/20 to-purple-500/20 text-white shadow-lg shadow-blue-500/20"
+                    : "border-zinc-800 bg-zinc-900/30 text-zinc-400 hover:border-zinc-700 hover:bg-zinc-900/50 hover:text-white"
+                }`}
+              >
+                {client}
+              </motion.button>
+            ))}
+            <motion.button
+              initial={{ opacity: 0, scale: 0.8 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.4, delay: 0.3 + clients.length * 0.05 }}
+              className="rounded-2xl border border-zinc-800 bg-zinc-900/30 px-6 py-4 text-base font-semibold text-zinc-500"
+            >
+              + Many More
+            </motion.button>
           </div>
-        </div>
+        </motion.div>
 
-        {/* Featured Projects */}
+        {/* Projects Section */}
         <div className="mx-auto mt-20 max-w-6xl">
-          <motion.h3
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.6 }}
-            className="text-center text-2xl font-bold text-white sm:text-3xl"
+            className="mb-12 text-center"
           >
-            Featured Projects
-          </motion.h3>
+            <h3 className="font-display text-3xl font-bold text-white sm:text-4xl">
+              {selectedClient ? `${selectedClient} Projects` : "Featured Projects"}
+            </h3>
+            <p className="mt-3 text-zinc-400">
+              {filteredProjects.length} {filteredProjects.length === 1 ? "project" : "projects"} found
+            </p>
+          </motion.div>
           
-          <div className="mt-12 grid gap-8 lg:grid-cols-3">
-            {featuredProjects.map((project, index) => (
-              <motion.div
+          <div className="space-y-8">
+            {filteredProjects.map((project, index) => (
+              <ProjectCard
                 key={index}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-100px" }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="group relative flex flex-col overflow-hidden rounded-2xl border border-zinc-800 bg-zinc-900/50 backdrop-blur-sm transition-all hover:border-purple-500/50"
-              >
-                {/* Project header */}
-                <div className="border-b border-zinc-800 bg-gradient-to-br from-purple-500/10 to-blue-500/10 p-6">
-                  <div className="text-sm font-medium text-purple-400">
-                    {project.category}
-                  </div>
-                  <h4 className="mt-2 text-xl font-bold text-white">
-                    {project.title}
-                  </h4>
-                </div>
-
-                {/* Project details */}
-                <div className="flex flex-1 flex-col gap-4 p-6">
-                  <div>
-                    <div className="text-sm font-semibold text-zinc-300">Challenge</div>
-                    <p className="mt-1 text-sm text-zinc-400">{project.problem}</p>
-                  </div>
-                  
-                  <div>
-                    <div className="text-sm font-semibold text-zinc-300">Solution</div>
-                    <p className="mt-1 text-sm text-zinc-400">{project.solution}</p>
-                  </div>
-                  
-                  <div className="mt-auto">
-                    <div className="rounded-lg bg-gradient-to-r from-purple-500/20 to-blue-500/20 p-3 ring-1 ring-inset ring-white/10">
-                      <div className="text-xs font-semibold text-purple-300">Result</div>
-                      <p className="mt-1 text-sm font-medium text-white">{project.result}</p>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Hover gradient */}
-                <div className="absolute inset-0 -z-10 bg-gradient-to-br from-purple-500/0 to-blue-500/0 opacity-0 transition-opacity group-hover:opacity-5" />
-              </motion.div>
+                title={project.title}
+                category={project.category}
+                problem={project.problem}
+                solution={project.solution}
+                result={project.result}
+                index={index}
+              />
             ))}
           </div>
         </div>
@@ -158,8 +183,9 @@ export default function Three() {
           transition={{ duration: 0.6, delay: 0.3 }}
           className="mt-16 flex justify-center"
         >
-          <button className="rounded-full bg-gradient-to-r from-purple-500 to-blue-500 px-8 py-3 text-base font-semibold text-white shadow-lg transition-all hover:scale-105 hover:shadow-xl">
-            View Full Portfolio
+          <button className="group relative overflow-hidden rounded-full bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 px-8 py-4 text-base font-bold text-white shadow-2xl shadow-purple-500/50 transition-all hover:scale-105 hover:shadow-purple-500/70">
+            <span className="relative z-10">View Full Portfolio</span>
+            <div className="absolute inset-0 -z-0 bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 opacity-0 transition-opacity group-hover:opacity-100" />
           </button>
         </motion.div>
       </div>
