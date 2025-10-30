@@ -2,46 +2,14 @@
 
 import { motion } from "framer-motion";
 import { Sparkles } from "lucide-react";
+import GlassmorphismCard from "./glassmorphism-card";
 
 export default function One() {
   return (
-    <section className="relative flex min-h-screen items-center justify-center overflow-hidden bg-black">
-      {/* Animated gradient background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-blue-950/20 via-purple-950/20 to-pink-950/20" />
-      
-      {/* Floating orbs */}
-      <motion.div
-        animate={{
-          scale: [1, 1.2, 1],
-          opacity: [0.3, 0.5, 0.3],
-        }}
-        transition={{
-          duration: 8,
-          repeat: Infinity,
-          ease: "easeInOut"
-        }}
-        className="absolute -top-40 -left-40 h-96 w-96 rounded-full bg-gradient-to-br from-blue-500/30 to-purple-500/30 blur-3xl"
-      />
-      <motion.div
-        animate={{
-          scale: [1, 1.3, 1],
-          opacity: [0.2, 0.4, 0.2],
-        }}
-        transition={{
-          duration: 10,
-          repeat: Infinity,
-          ease: "easeInOut",
-          delay: 1
-        }}
-        className="absolute -bottom-40 -right-40 h-96 w-96 rounded-full bg-gradient-to-br from-purple-500/30 to-pink-500/30 blur-3xl"
-      />
-      
-      {/* Grid pattern overlay */}
-      <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:64px_64px]" />
-      
+    <section className="relative flex min-h-screen items-center justify-center overflow-hidden">
       <div className="relative z-10 mx-auto max-w-7xl px-6 py-32 text-center sm:px-8 lg:px-12">
-        {/* Hero content */}
-        <div className="flex flex-col items-center gap-8">
+        <GlassmorphismCard>
+          <div className="flex flex-col items-center gap-8">
           {/* Badge with custom design */}
           <motion.div
             initial={{ opacity: 0, y: 50, scale: 0.8 }}
@@ -121,10 +89,8 @@ export default function One() {
             </button>
           </motion.div>
         </div>
+        </GlassmorphismCard>
       </div>
-      
-      {/* Bottom gradient fade */}
-      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-black to-transparent" />
     </section>
   );
 }

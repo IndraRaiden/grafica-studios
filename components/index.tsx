@@ -1,4 +1,4 @@
-import One from "./one";
+import HeroScroll from "./hero-scroll";
 import Two from "./two";
 import Three from "./three";
 import Four from "./four";
@@ -8,7 +8,7 @@ import Footer from "./footer";
 export default function Index() {
   return (
     <>
-      <One />
+      <HeroScroll />
       <Two />
       <Three />
       <Four />

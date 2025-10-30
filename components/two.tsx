@@ -33,10 +33,7 @@ export default function Two() {
   ];
 
   return (
-    <section className="relative bg-gradient-to-b from-black via-zinc-950 to-black py-24 sm:py-32">
-      {/* Background decoration */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(120,119,198,0.15),transparent_50%)]" />
-      
+    <section className="relative py-24 sm:py-32">
       {/* Decorative lines */}
       <div className="absolute left-0 top-1/4 h-px w-1/3 bg-gradient-to-r from-transparent via-blue-500/30 to-transparent" />
       <div className="absolute right-0 top-3/4 h-px w-1/2 bg-gradient-to-r from-transparent via-purple-500/30 to-transparent" />
