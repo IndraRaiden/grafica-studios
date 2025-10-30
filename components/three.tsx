@@ -1,11 +1,24 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { useState } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { useState, useRef } from "react";
 import ProjectCard from "./project-card";
 
 export default function Three() {
   const [selectedClient, setSelectedClient] = useState<string | null>(null);
+  const sectionRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end start"]
+  });
+
+  // Parallax effect for background image
+  const imageY = useTransform(scrollYProgress, [0, 1], ["0%", "40%"]);
+  const imageOpacity = useTransform(scrollYProgress, [0, 0.5, 1], [1, 0.6, 0.3]);
+  
+  // Content fade in effect - starts hidden, fades in quickly as you scroll
+  const contentOpacity = useTransform(scrollYProgress, [0, 0.03, 0.065], [0, 0.7, 1]);
+  const contentY = useTransform(scrollYProgress, [0, 0.03, 0.065], [50, 10, 0]);
 
   const clients = [
     "Häagen-Dazs",
@@ -65,11 +78,24 @@ export default function Three() {
     : allProjects;
 
   return (
-    <section className="relative bg-gradient-to-b from-black via-zinc-900 to-black py-24 sm:py-32">
-      {/* Background decoration */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_30%,rgba(168,85,247,0.1),transparent_50%)]" />
+    <section ref={sectionRef} className="relative py-24 sm:py-32 overflow-hidden">
+      {/* Background Image with Parallax */}
+      <motion.div
+        style={{ y: imageY, opacity: imageOpacity }}
+        className="absolute inset-0 z-0"
+      >
+        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black z-10" />
+        <img
+          src="/33.jpg"
+          alt="Grafica Studios Background"
+          className="h-full w-full object-cover"
+        />
+      </motion.div>
       
-      <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-8">
+      <motion.div
+        style={{ opacity: contentOpacity, y: contentY }}
+        className="relative z-10 mx-auto max-w-7xl px-6 lg:px-8"
+      >
         {/* Section header */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -160,19 +186,37 @@ export default function Three() {
             </p>
           </motion.div>
           
-          <div className="space-y-8">
+          <motion.div 
+            key={selectedClient || "all"}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="space-y-8"
+          >
             {filteredProjects.map((project, index) => (
-              <ProjectCard
-                key={index}
-                title={project.title}
-                category={project.category}
-                problem={project.problem}
-                solution={project.solution}
-                result={project.result}
-                index={index}
-              />
+              <motion.div
+                key={`${selectedClient}-${index}`}
+                initial={{ opacity: 0, y: 30, scale: 0.95 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                transition={{ 
+                  duration: 0.5, 
+                  delay: index * 0.1,
+                  type: "spring",
+                  bounce: 0.3
+                }}
+              >
+                <ProjectCard
+                  title={project.title}
+                  category={project.category}
+                  problem={project.problem}
+                  solution={project.solution}
+                  result={project.result}
+                  index={index}
+                />
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
 
         {/* CTA Button */}
@@ -188,7 +232,7 @@ export default function Three() {
             <div className="absolute inset-0 -z-0 bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 opacity-0 transition-opacity group-hover:opacity-100" />
           </button>
         </motion.div>
-      </div>
+      </motion.div>
     </section>
   );
 }
