@@ -24,10 +24,10 @@ export default function ThreeWrapper({ projects }: ThreeWrapperProps) {
     offset: ["start start", "end end"],
   });
 
-  const x = useTransform(scrollYProgress, [0, 1], ["1%", `-${(projects.length - 1) * 100}%`]);
+  const x = useTransform(scrollYProgress, [0, 1], ["0vw", `-${(projects.length - 1) * 100}vw`]);
 
   return (
-    <section ref={targetRef} className="relative bg-black" style={{ height: "250vh" }}>
+    <section ref={targetRef} className="relative bg-black" style={{ height: `${projects.length * 100}vh` }}>
       <div className="sticky top-0 flex h-screen items-center overflow-hidden bg-black">
         <motion.div style={{ x }} className="flex gap-8 px-[5vw]">
           {projects.map((project, index) => (
