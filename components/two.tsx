@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { MapPin, Store, RefreshCw, Sparkles, Hammer } from "lucide-react";
 import GlassmorphismCard from "./glassmorphism-card";
@@ -35,9 +35,38 @@ export default function Two() {
   ];
 
   const [selectedService, setSelectedService] = useState(services[0]);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const handleWheel = (e: WheelEvent) => {
+      if (!sectionRef.current) return;
+      
+      const rect = sectionRef.current.getBoundingClientRect();
+      const isInView = rect.top <= window.innerHeight / 2 && rect.bottom >= window.innerHeight / 2;
+      
+      if (isInView) {
+        // Check if we haven't gone through all services yet
+        if (e.deltaY > 0 && currentIndex < services.length - 1) {
+          e.preventDefault();
+          setCurrentIndex(prev => prev + 1);
+          setSelectedService(services[currentIndex + 1]);
+        } else if (e.deltaY < 0 && currentIndex > 0) {
+          e.preventDefault();
+          setCurrentIndex(prev => prev - 1);
+          setSelectedService(services[currentIndex - 1]);
+        }
+        // If at the last service and scrolling down, allow normal scroll
+        // If at the first service and scrolling up, allow normal scroll
+      }
+    };
+
+    window.addEventListener('wheel', handleWheel, { passive: false });
+    return () => window.removeEventListener('wheel', handleWheel);
+  }, [currentIndex, services]);
 
   return (
-    <section id="services" className="relative flex min-h-screen items-center justify-center overflow-hidden py-24 sm:py-32">
+    <section ref={sectionRef} id="services" className="relative flex min-h-screen items-center justify-center overflow-hidden py-24 sm:py-32">
       <div className="relative z-10 mx-auto max-w-7xl px-6 sm:px-8 lg:px-12">
         <GlassmorphismCard className="w-full">
           <div className="flex flex-col items-center gap-8">
@@ -81,9 +110,17 @@ export default function Two() {
             >
               {/* Left Column: Service List */}
               <div className="flex flex-col gap-2">
-                {services.map((service) => (
-                  <button
+                {services.map((service, index) => (
+                  <motion.button
                     key={service.title}
+                    initial={{ opacity: 0, x: -50 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true, margin: "-50px" }}
+                    transition={{ 
+                      duration: 0.5, 
+                      delay: index * 0.1,
+                      ease: "easeOut"
+                    }}
                     onClick={() => setSelectedService(service)}
                     className={`relative rounded-lg px-4 py-3 text-left text-base font-semibold transition-all duration-300 ${selectedService.title === service.title ? 'bg-white/10 text-white' : 'text-zinc-400 hover:bg-white/5'}`}
                   >
@@ -94,7 +131,7 @@ export default function Two() {
                         className="absolute bottom-0 left-0 right-0 h-0.5 bg-white"
                       />
                     )}
-                  </button>
+                  </motion.button>
                 ))}
               </div>
 
