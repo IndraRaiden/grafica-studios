@@ -26,17 +26,17 @@ export default function Five() {
   };
 
   return (
-    <section className="relative bg-gradient-to-b from-black via-zinc-900 to-black py-24 sm:py-32">
+    <section id="contact" className="relative bg-gradient-to-b from-black via-zinc-900 to-black py-24 sm:py-32">
       {/* Background decoration */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_80%,rgba(34,211,238,0.1),transparent_50%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_80%,rgba(255,255,255,0.05),transparent_50%)]" />
       
       <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-8">
         {/* Section header */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.4 }}
           className="mx-auto max-w-2xl text-center"
         >
           <h2 className="font-display text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl">
@@ -52,11 +52,11 @@ export default function Five() {
           <div className="grid gap-8 lg:grid-cols-2">
             {/* Contact Form */}
             <motion.div
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 0.6 }}
-              className="rounded-2xl border border-zinc-800 bg-zinc-900/50 p-8 backdrop-blur-sm"
+              transition={{ duration: 0.4 }}
+              className="rounded-2xl border border-zinc-800 bg-zinc-900/50 p-8"
             >
               <h3 className="font-display text-xl font-semibold text-white">Send Us a Message</h3>
               <p className="mt-2 text-sm text-zinc-400">Fill out the form and we'll get back to you within 24 hours.</p>
@@ -73,7 +73,7 @@ export default function Five() {
                     required
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    className="mt-2 block w-full rounded-lg border border-zinc-700 bg-zinc-800/50 px-4 py-2.5 text-white placeholder-zinc-500 focus:border-cyan-500 focus:outline-none focus:ring-1 focus:ring-cyan-500"
+                    className="mt-2 block w-full rounded-lg border border-zinc-700 bg-zinc-800/50 px-4 py-2.5 text-white placeholder-zinc-500 focus:border-white focus:outline-none focus:ring-1 focus:ring-white"
                     placeholder="Your name"
                   />
                 </div>
@@ -89,7 +89,7 @@ export default function Five() {
                     required
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    className="mt-2 block w-full rounded-lg border border-zinc-700 bg-zinc-800/50 px-4 py-2.5 text-white placeholder-zinc-500 focus:border-cyan-500 focus:outline-none focus:ring-1 focus:ring-cyan-500"
+                    className="mt-2 block w-full rounded-lg border border-zinc-700 bg-zinc-800/50 px-4 py-2.5 text-white placeholder-zinc-500 focus:border-white focus:outline-none focus:ring-1 focus:ring-white"
                     placeholder="your@email.com"
                   />
                 </div>
@@ -104,7 +104,7 @@ export default function Five() {
                     id="phone"
                     value={formData.phone}
                     onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                    className="mt-2 block w-full rounded-lg border border-zinc-700 bg-zinc-800/50 px-4 py-2.5 text-white placeholder-zinc-500 focus:border-cyan-500 focus:outline-none focus:ring-1 focus:ring-cyan-500"
+                    className="mt-2 block w-full rounded-lg border border-zinc-700 bg-zinc-800/50 px-4 py-2.5 text-white placeholder-zinc-500 focus:border-white focus:outline-none focus:ring-1 focus:ring-white"
                     placeholder="(555) 123-4567"
                   />
                 </div>
@@ -120,7 +120,7 @@ export default function Five() {
                     rows={4}
                     value={formData.projectDetails}
                     onChange={(e) => setFormData({ ...formData, projectDetails: e.target.value })}
-                    className="mt-2 block w-full rounded-lg border border-zinc-700 bg-zinc-800/50 px-4 py-2.5 text-white placeholder-zinc-500 focus:border-cyan-500 focus:outline-none focus:ring-1 focus:ring-cyan-500"
+                    className="mt-2 block w-full rounded-lg border border-zinc-700 bg-zinc-800/50 px-4 py-2.5 text-white placeholder-zinc-500 focus:border-white focus:outline-none focus:ring-1 focus:ring-white"
                     placeholder="Tell us about your project..."
                   />
                 </div>
@@ -153,7 +153,7 @@ export default function Five() {
                 {/* Submit Button */}
                 <button
                   type="submit"
-                  className="w-full rounded-full bg-gradient-to-r from-cyan-500 to-blue-500 px-6 py-3 text-base font-semibold text-white shadow-lg transition-all hover:scale-105 hover:shadow-xl"
+                  className="w-full rounded-full bg-white px-6 py-3 text-base font-semibold text-black shadow-lg transition-all hover:scale-105 hover:shadow-xl"
                 >
                   Contact Us
                 </button>
@@ -164,22 +164,22 @@ export default function Five() {
             <div className="space-y-6">
               {/* Schedule a Call */}
               <motion.div
-                initial={{ opacity: 0, y: 30 }}
+                initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-100px" }}
-                transition={{ duration: 0.6, delay: 0.1 }}
-                className="rounded-2xl border border-zinc-800 bg-zinc-900/50 p-8 backdrop-blur-sm transition-all hover:border-cyan-500/50"
+                transition={{ duration: 0.4, delay: 0.1 }}
+                className="rounded-2xl border border-zinc-800 bg-zinc-900/50 p-8 transition-all hover:border-white/50"
               >
                 <div className="flex items-start gap-4">
-                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-cyan-500/20 to-blue-500/20 ring-1 ring-inset ring-cyan-500/30">
-                    <Calendar className="h-6 w-6 text-cyan-400" />
+                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-white/20 ring-1 ring-inset ring-white/30">
+                    <Calendar className="h-6 w-6 text-white" />
                   </div>
                   <div className="flex-1">
                     <h3 className="font-display text-lg font-semibold text-white">Schedule a Discovery Call</h3>
                     <p className="mt-2 text-sm text-zinc-400">
                       Book a 30-minute consultation to discuss your project in detail.
                     </p>
-                    <button className="mt-4 rounded-full border border-cyan-500/50 bg-cyan-500/10 px-5 py-2 text-sm font-semibold text-cyan-400 transition-all hover:border-cyan-500 hover:bg-cyan-500/20">
+                    <button className="mt-4 rounded-full border border-white/50 bg-white/10 px-5 py-2 text-sm font-semibold text-white transition-all hover:border-white hover:bg-white/20">
                       Book a Call
                     </button>
                   </div>
@@ -188,28 +188,28 @@ export default function Five() {
 
               {/* Direct Contact */}
               <motion.div
-                initial={{ opacity: 0, y: 30 }}
+                initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-100px" }}
-                transition={{ duration: 0.6, delay: 0.2 }}
-                className="rounded-2xl border border-zinc-800 bg-zinc-900/50 p-8 backdrop-blur-sm"
+                transition={{ duration: 0.4, delay: 0.15 }}
+                className="rounded-2xl border border-zinc-800 bg-zinc-900/50 p-8"
               >
                 <h3 className="font-display text-lg font-semibold text-white">Other Ways to Reach Us</h3>
                 <div className="mt-4 space-y-3">
                   <div className="flex items-center gap-3 text-sm">
-                    <Mail className="h-5 w-5 text-cyan-400" />
-                    <a href="mailto:info@graficastudios.com" className="text-zinc-400 hover:text-cyan-400">
+                    <Mail className="h-5 w-5 text-white" />
+                    <a href="mailto:info@graficastudios.com" className="text-zinc-400 hover:text-white">
                       info@graficastudios.com
                     </a>
                   </div>
                   <div className="flex items-center gap-3 text-sm">
-                    <Phone className="h-5 w-5 text-cyan-400" />
-                    <a href="tel:+15551234567" className="text-zinc-400 hover:text-cyan-400">
+                    <Phone className="h-5 w-5 text-white" />
+                    <a href="tel:+15551234567" className="text-zinc-400 hover:text-white">
                       (555) 123-4567
                     </a>
                   </div>
                   <div className="flex items-center gap-3 text-sm">
-                    <MapPin className="h-5 w-5 text-cyan-400" />
+                    <MapPin className="h-5 w-5 text-white" />
                     <span className="text-zinc-400">
                       Available Nationwide
                     </span>
@@ -219,14 +219,14 @@ export default function Five() {
 
               {/* Response Time */}
               <motion.div
-                initial={{ opacity: 0, y: 30 }}
+                initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-100px" }}
-                transition={{ duration: 0.6, delay: 0.3 }}
-                className="rounded-2xl border border-zinc-800 bg-gradient-to-br from-cyan-500/10 to-blue-500/10 p-6 ring-1 ring-inset ring-cyan-500/20"
+                transition={{ duration: 0.4, delay: 0.2 }}
+                className="rounded-2xl border border-zinc-800 bg-white/10 p-6 ring-1 ring-inset ring-white/20"
               >
                 <div className="flex items-center gap-3">
-                  <Zap className="h-6 w-6 text-yellow-400" />
+                  <Zap className="h-6 w-6 text-white" />
                   <div>
                     <div className="font-display font-semibold text-white">Fast Response Time</div>
                     <div className="text-sm text-zinc-400">We typically respond within 24 hours</div>

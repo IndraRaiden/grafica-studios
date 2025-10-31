@@ -1,180 +1,154 @@
 "use client";
 
-import { useState } from "react";
-import { motion } from "framer-motion";
-import { Linkedin, Instagram, Image, Mail, Phone, MapPin } from "lucide-react";
+import { Linkedin, Instagram, Image, Mail, MapPin } from "lucide-react";
 
 export default function Footer() {
-  const [email, setEmail] = useState("");
-
-  const handleNewsletterSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log("Newsletter signup:", email);
-    setEmail("");
-  };
 
   const quickLinks = [
     { name: "Home", href: "#home" },
-    { name: "Services", href: "#services" },
     { name: "Portfolio", href: "#portfolio" },
     { name: "Process", href: "#process" },
+  ];
+
+  const serviceLinks = [
+    { name: "Services", href: "#services" },
+  ];
+
+  const companyLinks = [
     { name: "Contact", href: "#contact" },
-    { name: "About", href: "#about" }
   ];
 
   const socialLinks = [
     { name: "LinkedIn", icon: Linkedin, href: "https://linkedin.com" },
     { name: "Instagram", icon: Instagram, href: "https://instagram.com" },
-    { name: "Pinterest", icon: Image, href: "https://pinterest.com" }
+    { name: "Pinterest", icon: Image, href: "https://pinterest.com" },
   ];
 
   return (
-    <footer className="relative overflow-hidden bg-gradient-to-b from-black via-zinc-950 to-black">
-      {/* Animated top border */}
-      <div className="relative h-1 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-blue-500/50 to-transparent" />
-        <div className="absolute inset-0 animate-pulse bg-gradient-to-r from-transparent via-purple-500/30 to-transparent" />
+    <footer className="bg-black text-white">
+      {/* CTA Section */}
+      <div className="border-b border-white/5">
+        <div className="mx-auto max-w-7xl px-6 py-32 lg:px-8">
+          <div className="flex flex-col items-center text-center space-y-8">
+            <div className="space-y-6">
+              <h2 className="text-4xl font-light tracking-tight text-white md:text-6xl lg:text-7xl">
+                Let's create something
+                <span className="block font-bold mt-2">extraordinary</span>
+              </h2>
+              <p className="mt-6 max-w-xl text-base text-white/60 font-light">
+                Transform your vision into reality with our creative expertise
+              </p>
+            </div>
+            <a
+              href="#contact"
+              className="group relative inline-flex items-center justify-center overflow-hidden border border-white px-12 py-4 text-sm font-medium tracking-wider text-white transition-all duration-300 hover:bg-white hover:text-black"
+            >
+              <span className="relative z-10">GET IN TOUCH</span>
+            </a>
+          </div>
+        </div>
       </div>
-      
-      {/* Background elements */}
-      <div className="absolute bottom-0 left-0 h-64 w-64 rounded-full bg-gradient-to-br from-blue-500/10 to-transparent blur-3xl" />
-      <div className="absolute right-0 top-0 h-64 w-64 rounded-full bg-gradient-to-br from-purple-500/10 to-transparent blur-3xl" />
-      
-      <div className="mx-auto max-w-7xl px-6 py-12 lg:px-8 lg:py-16">
-        <div className="grid gap-12 lg:grid-cols-4">
+
+      {/* Footer Content */}
+      <div className="mx-auto max-w-7xl px-6 py-20 lg:px-8">
+        <div className="grid grid-cols-1 gap-16 lg:grid-cols-12">
           {/* Brand Section */}
-          <motion.div
-            initial={{ opacity: 0, y: 50, scale: 0.9 }}
-            whileInView={{ opacity: 1, y: 0, scale: 1 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.7, type: "spring", bounce: 0.3 }}
-            className="lg:col-span-1"
-          >
-            <div className="relative inline-block">
-              <h3 className="font-display text-3xl font-black text-white">
-                <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">Grafica</span>
-                {" "}Studios
-              </h3>
-              <div className="absolute -bottom-1 left-0 h-1 w-20 bg-gradient-to-r from-blue-500 to-purple-500 blur-sm" />
-            </div>
-            <p className="mt-6 text-sm leading-relaxed text-zinc-400">
-              Transforming retail ideas into impactful environments. Design that sells, spaces that speak.
+          <div className="lg:col-span-5">
+            <a href="#" className="inline-block mb-8">
+              <img src="/studios.svg" alt="Grafica Studios" className="h-10 w-auto brightness-0 invert" />
+            </a>
+            <p className="text-sm text-white/50 font-light leading-relaxed max-w-sm mb-8">
+              A creative studio dedicated to crafting exceptional digital experiences through innovative design and strategic thinking.
             </p>
-            
-            {/* Social Media with custom design */}
-            <div className="mt-8 flex gap-3">
-              {socialLinks.map((social) => (
-                <a
-                  key={social.name}
-                  href={social.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group relative flex h-12 w-12 items-center justify-center overflow-hidden rounded-xl border border-zinc-800/50 bg-gradient-to-br from-zinc-900/80 to-zinc-950/80 backdrop-blur-sm transition-all hover:scale-110 hover:border-blue-500/50 hover:shadow-lg hover:shadow-blue-500/20"
-                  aria-label={social.name}
-                >
-                  <social.icon className="relative z-10 h-5 w-5 text-zinc-400 transition-colors group-hover:text-blue-400" />
-                  <div className="absolute inset-0 bg-gradient-to-br from-blue-500/0 to-purple-500/0 opacity-0 transition-opacity group-hover:opacity-20" />
-                </a>
-              ))}
-            </div>
-          </motion.div>
-
-          {/* Quick Links */}
-          <motion.div
-            initial={{ opacity: 0, y: 50, scale: 0.9 }}
-            whileInView={{ opacity: 1, y: 0, scale: 1 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.7, delay: 0.15, type: "spring", bounce: 0.3 }}
-            className="lg:col-span-1"
-          >
-            <h4 className="text-sm font-semibold uppercase tracking-wider text-white">Quick Links</h4>
-            <ul className="mt-6 space-y-3">
-              {quickLinks.map((link) => (
-                <li key={link.name}>
-                  <a
-                    href={link.href}
-                    className="text-sm text-zinc-400 transition-colors hover:text-white"
-                  >
-                    {link.name}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </motion.div>
-
-          {/* Contact Info */}
-          <motion.div
-            initial={{ opacity: 0, y: 50, scale: 0.9 }}
-            whileInView={{ opacity: 1, y: 0, scale: 1 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.7, delay: 0.3, type: "spring", bounce: 0.3 }}
-            className="lg:col-span-1"
-          >
-            <h4 className="text-sm font-semibold uppercase tracking-wider text-white">Contact</h4>
-            <ul className="mt-6 space-y-3">
-              <li>
-                <a
-                  href="mailto:info@graficastudios.net"
-                  className="flex items-center gap-2 text-sm text-zinc-400 transition-colors hover:text-white"
-                >
-                  <Mail className="h-4 w-4" />
-                  <span>info@graficastudios.net</span>
-                </a>
-              </li>
-              <li>
-                <a
-                  href="tel:+15551234567"
-                  className="flex items-center gap-2 text-sm text-zinc-400 transition-colors hover:text-white"
-                >
-                  <Phone className="h-4 w-4" />
-                  <span>(555) 123-4567</span>
-                </a>
-              </li>
-              <li className="flex items-center gap-2 text-sm text-zinc-400">
-                <MapPin className="h-4 w-4" />
-                <span>Available Nationwide</span>
-              </li>
-            </ul>
-          </motion.div>
-
-          {/* Newsletter */}
-          <motion.div
-            initial={{ opacity: 0, y: 50, scale: 0.9 }}
-            whileInView={{ opacity: 1, y: 0, scale: 1 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.7, delay: 0.45, type: "spring", bounce: 0.3 }}
-            className="lg:col-span-1"
-          >
-            <h4 className="text-sm font-semibold uppercase tracking-wider text-white">Newsletter</h4>
-            <p className="mt-4 text-sm text-zinc-400">
-              Stay updated with our latest projects and insights.
-            </p>
-            <form onSubmit={handleNewsletterSubmit} className="mt-6">
-              <div className="flex gap-2">
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Your email"
-                  required
-                  className="flex-1 rounded-lg border border-zinc-800 bg-zinc-900/50 px-4 py-2 text-sm text-white placeholder-zinc-500 focus:border-zinc-700 focus:outline-none focus:ring-1 focus:ring-zinc-700"
-                />
-                <button
-                  type="submit"
-                  className="rounded-lg bg-white px-4 py-2 text-sm font-semibold text-black transition-all hover:bg-zinc-200"
-                >
-                  Subscribe
-                </button>
+            <div className="space-y-4">
+              <div className="flex items-center gap-3 text-sm text-white/70">
+                <MapPin className="h-4 w-4 flex-shrink-0 text-white/40" />
+                <span className="font-light">Available Nationwide</span>
               </div>
-            </form>
-          </motion.div>
+              <a 
+                href="mailto:info@graficastudios.net" 
+                className="flex items-center gap-3 text-sm text-white/70 transition-colors hover:text-white group"
+              >
+                <Mail className="h-4 w-4 flex-shrink-0 text-white/40 group-hover:text-white transition-colors" />
+                <span className="font-light">info@graficastudios.net</span>
+              </a>
+            </div>
+          </div>
+
+          {/* Navigation Links */}
+          <div className="lg:col-span-7">
+            <div className="grid grid-cols-2 gap-12 sm:grid-cols-3">
+              {/* Quick Links */}
+              <div>
+                <h4 className="text-xs font-medium tracking-widest text-white/40 uppercase mb-6">Navigate</h4>
+                <ul className="space-y-4">
+                  {quickLinks.map((link) => (
+                    <li key={link.name}>
+                      <a 
+                        href={link.href} 
+                        className="text-sm text-white/70 font-light transition-colors hover:text-white inline-block relative after:absolute after:bottom-0 after:left-0 after:h-px after:w-0 after:bg-white after:transition-all hover:after:w-full"
+                      >
+                        {link.name}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* Services */}
+              <div>
+                <h4 className="text-xs font-medium tracking-widest text-white/40 uppercase mb-6">Services</h4>
+                <ul className="space-y-4">
+                  {serviceLinks.map((link) => (
+                    <li key={link.name}>
+                      <a 
+                        href={link.href} 
+                        className="text-sm text-white/70 font-light transition-colors hover:text-white inline-block relative after:absolute after:bottom-0 after:left-0 after:h-px after:w-0 after:bg-white after:transition-all hover:after:w-full"
+                      >
+                        {link.name}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* Company */}
+              <div>
+                <h4 className="text-xs font-medium tracking-widest text-white/40 uppercase mb-6">Company</h4>
+                <ul className="space-y-4">
+                  {companyLinks.map((link) => (
+                    <li key={link.name}>
+                      <a 
+                        href={link.href} 
+                        className="text-sm text-white/70 font-light transition-colors hover:text-white inline-block relative after:absolute after:bottom-0 after:left-0 after:h-px after:w-0 after:bg-white after:transition-all hover:after:w-full"
+                      >
+                        {link.name}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </div>
         </div>
 
-        {/* Bottom Section */}
-        <div className="mt-12 border-t border-zinc-800 pt-8">
-          <p className="text-center text-sm text-zinc-500">
+        {/* Bottom Bar */}
+        <div className="mt-20 pt-8 border-t border-white/5 flex flex-col-reverse items-center justify-between gap-6 sm:flex-row">
+          <p className="text-xs text-white/40 font-light tracking-wide">
             © {new Date().getFullYear()} Grafica Studios. All rights reserved.
           </p>
+          <div className="flex gap-6">
+            {socialLinks.map((social) => (
+              <a
+                key={social.name}
+                href={social.href}
+                aria-label={social.name}
+                className="text-white/40 transition-all hover:text-white hover:scale-110"
+              >
+                <social.icon className="h-5 w-5" strokeWidth={1.5} />
+              </a>
+            ))}
+          </div>
         </div>
       </div>
     </footer>

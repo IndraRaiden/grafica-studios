@@ -9,28 +9,27 @@ export default function HeroScroll() {
   const containerRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: containerRef,
-    offset: ["start start", "end start"]
+    offset: ["start start", "end start"],
   });
-  
-  // Transform values for parallax and fade effects
-  const imageOpacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
-  const imageScale = useTransform(scrollYProgress, [0, 0.5], [1, 1.1]);
-  const contentOpacity = useTransform(scrollYProgress, [0.3, 0.6], [0, 1]);
-  const contentY = useTransform(scrollYProgress, [0.3, 0.6], [100, 0]);
 
+  // Animation for the first image (fades out)
+  const firstImageOpacity = useTransform(scrollYProgress, [0, 0.4], [1, 0]);
+  const firstImageScale = useTransform(scrollYProgress, [0, 0.4], [1, 1.05]);
+
+  // Animation for the second image (fades in)
+  const secondImageOpacity = useTransform(scrollYProgress, [0.4, 0.8], [0, 1]);
+
+  
   return (
-    <>
-      {/* Fixed Hero Image Background */}
-      <motion.div 
-        style={{ opacity: imageOpacity }}
-        className="fixed inset-0 z-0 h-screen w-full"
-      >
-        <motion.div 
-          style={{ scale: imageScale }}
-          className="relative h-full w-full"
+    <div ref={containerRef} className="relative h-[200vh]">
+      <div className="sticky top-0 h-screen overflow-hidden">
+        {/* First Background Image */}
+        <motion.div
+          style={{ opacity: firstImageOpacity, scale: firstImageScale }}
+          className="absolute inset-0 z-0"
         >
           <Image
-            src="/descarga (21).jpeg"
+            src="/guard.jpg"
             alt="Grafica Studios Hero"
             fill
             className="object-cover"
@@ -39,24 +38,10 @@ export default function HeroScroll() {
           />
           <div className="absolute inset-0 bg-black/20" />
         </motion.div>
-      </motion.div>
 
-      {/* Scrollable Content Container */}
-      <div ref={containerRef} className="relative">
-        {/* Spacer to allow scrolling */}
-        <div className="h-screen" />
-
-        {/* Content Section - Appears on scroll */}
-        <motion.div
-          style={{ 
-            opacity: contentOpacity,
-            y: contentY 
-          }}
-          className="relative z-10"
-        >
-          <One />
-        </motion.div>
+        {/* The One component contains the second image and all the text content */}
+        <One secondImageOpacity={secondImageOpacity} />
       </div>
-    </>
+    </div>
   );
 }
