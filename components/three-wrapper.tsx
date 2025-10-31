@@ -27,23 +27,44 @@ export default function ThreeWrapper({ projects }: ThreeWrapperProps) {
   const x = useTransform(scrollYProgress, [0, 1], ["0vw", `-${(projects.length - 1) * 100}vw`]);
 
   return (
-    <section ref={targetRef} className="relative bg-black" style={{ height: `${projects.length * 100}vh` }}>
-      <div className="sticky top-0 flex h-screen items-center overflow-hidden bg-black">
-        <motion.div style={{ x }} className="flex gap-8 px-[5vw]">
+    <>
+      
+      <section className="bg-zinc-950 md:hidden">
+        <div className="mx-auto max-w-3xl space-y-6 px-6 py-8">
           {projects.map((project, index) => (
-            <div key={index} className="min-w-[90vw] max-w-5xl flex-shrink-0">
-              <ProjectCard
-                title={project.title}
-                category={project.category}
-                problem={project.problem}
-                solution={project.solution}
-                result={project.result}
-                index={index}
-              />
-            </div>
+            <ProjectCard
+              key={index}
+              title={project.title}
+              category={project.category}
+              problem={project.problem}
+              solution={project.solution}
+              result={project.result}
+              index={index}
+            />
           ))}
-        </motion.div>
-      </div>
-    </section>
+        </div>
+      </section>
+
+      
+      <section ref={targetRef} className="relative hidden bg-zinc-950 md:block" style={{ height: `${projects.length * 100}vh` }}>
+        <div className="sticky top-0 flex h-screen items-center overflow-hidden bg-zinc-950">
+          <motion.div style={{ x }} className="flex gap-8 px-[5vw]">
+            {projects.map((project, index) => (
+              <div key={index} className="min-w-[90vw] max-w-5xl flex-shrink-0">
+                <ProjectCard
+                  title={project.title}
+                  category={project.category}
+                  problem={project.problem}
+                  solution={project.solution}
+                  result={project.result}
+                  index={index}
+                />
+              </div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+    </>
   );
 }
+

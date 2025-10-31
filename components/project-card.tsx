@@ -52,7 +52,7 @@ export default function ProjectCard({
         )}
         
         {/* Gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-r from-transparent to-black/20" />
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent to-zinc-950/20" />
       </div>
 
       {/* Content Section - Right side on desktop, bottom on mobile */}

@@ -77,7 +77,7 @@ export default function Two() {
               viewport={{ once: true, margin: "-100px" }}
               transition={{ duration: 0.4 }}
             >
-              <span className="relative inline-flex items-center gap-2 rounded-full border border-white/30 bg-black/50 px-6 py-2 text-sm font-semibold text-white">
+              <span className="relative inline-flex items-center gap-2 rounded-full border border-white/30 bg-zinc-900/50 px-6 py-2 text-sm font-semibold text-white">
                 <span className="relative flex h-2 w-2">
                   <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-white opacity-75"></span>
                   <span className="relative inline-flex h-2 w-2 rounded-full bg-white"></span>

@@ -25,7 +25,7 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="bg-black text-white">
+    <footer className="bg-zinc-950 text-white">
       {/* CTA Section */}
       <div className="border-b border-white/5">
         <div className="mx-auto max-w-7xl px-6 py-32 lg:px-8">

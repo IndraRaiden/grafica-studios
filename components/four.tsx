@@ -32,7 +32,7 @@ export default function Four() {
   ];
 
   return (
-    <section id="process" className="relative bg-gradient-to-b from-black via-zinc-950 to-black py-24 sm:py-32">
+    <section id="process" className="relative bg-gradient-to-b from-zinc-950 via-zinc-900 to-zinc-950 py-24 sm:py-32">
       {/* Background decoration */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.05),transparent_50%)]" />
       
@@ -50,7 +50,7 @@ export default function Four() {
           className="mx-auto max-w-2xl text-center"
         >
           <div className="relative">
-            <span className="relative inline-flex items-center gap-2 rounded-full border border-white/30 bg-black/50 px-6 py-2 text-sm font-semibold text-white">
+            <span className="relative inline-flex items-center gap-2 rounded-full border border-white/30 bg-zinc-900/50 px-6 py-2 text-sm font-semibold text-white">
               <span className="relative flex h-2 w-2">
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-white opacity-75"></span>
                 <span className="relative inline-flex h-2 w-2 rounded-full bg-white"></span>

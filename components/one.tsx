@@ -14,7 +14,7 @@ export default function One({ secondImageOpacity }: OneProps) {
         style={{ opacity: secondImageOpacity }}
         className="absolute inset-0 z-0"
       >
-        <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/30 z-10" />
+        <div className="absolute inset-0 bg-gradient-to-b from-zinc-900/30 via-transparent to-zinc-950/40 z-10" />
         <img
           src="/trial.jpg"
           alt="Grafica Studios Background"

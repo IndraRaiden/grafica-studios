@@ -26,7 +26,7 @@ export default function Five() {
   };
 
   return (
-    <section id="contact" className="relative bg-gradient-to-b from-black via-zinc-900 to-black py-24 sm:py-32">
+    <section id="contact" className="relative bg-gradient-to-b from-zinc-950 via-zinc-900 to-zinc-950 py-24 sm:py-32">
       {/* Background decoration */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_80%,rgba(255,255,255,0.05),transparent_50%)]" />
       

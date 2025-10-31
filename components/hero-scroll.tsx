@@ -36,7 +36,7 @@ export default function HeroScroll() {
             priority
             quality={100}
           />
-          <div className="absolute inset-0 bg-black/20" />
+          <div className="absolute inset-0 bg-zinc-950/30" />
         </motion.div>
 
         {/* The One component contains the second image and all the text content */}

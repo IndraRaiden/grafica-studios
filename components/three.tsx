@@ -80,7 +80,7 @@ export default function Three() {
     : allProjects;
 
   return (
-    <div className="bg-black">
+    <div className="bg-zinc-950">
       <section id="portfolio" className="relative z-10 mx-auto max-w-7xl px-6 py-24 sm:py-32 lg:px-8">
         {/* Section header */}
         <div className="mx-auto max-w-2xl text-center">
