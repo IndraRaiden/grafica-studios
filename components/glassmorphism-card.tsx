@@ -17,10 +17,10 @@ export default function GlassmorphismCard({ children, className = "" }: Glassmor
       {/* Main glassmorphism container */}
       <div className="relative overflow-hidden rounded-3xl">
         {/* Glass effect layers */}
-        <div className="absolute inset-0 bg-gradient-to-br from-white/[0.06] to-white/[0.02]" />
+        <div className="absolute inset-0 bg-gradient-to-br from-black/[0.06] to-black/[0.02]" />
         
         {/* Border effect */}
-        <div className="absolute inset-0 rounded-3xl border border-white/[0.18] shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.2)]" />
+        <div className="absolute inset-0 rounded-3xl border border-black/[0.18] shadow-[inset_0_1px_1px_0_rgba(0,0,0,0.2)]" />
         
         {/* Noise texture for realism */}
         <div 

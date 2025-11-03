@@ -80,23 +80,23 @@ export default function Three() {
     : allProjects;
 
   return (
-    <div className="bg-zinc-950">
+    <div className="bg-zinc-50">
       <section id="portfolio" className="relative z-10 mx-auto max-w-7xl px-6 py-24 sm:py-32 lg:px-8">
         {/* Section header */}
         <div className="mx-auto max-w-2xl text-center">
-          <div className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/10 px-4 py-1.5">
-            <div className="h-2 w-2 rounded-full bg-white" />
-            <h2 className="text-sm font-bold uppercase tracking-wider text-white">Client Showcase</h2>
+          <div className="inline-flex items-center gap-2 rounded-full border border-black/30 bg-black/10 px-4 py-1.5">
+            <div className="h-2 w-2 rounded-full bg-black" />
+            <h2 className="text-sm font-bold uppercase tracking-wider text-black">Client Showcase</h2>
           </div>
-          <p className="font-display mt-6 text-4xl font-black tracking-tight text-white sm:text-5xl lg:text-6xl">
+          <p className="font-display mt-6 text-4xl font-black tracking-tight text-black sm:text-5xl lg:text-6xl">
             Trusted by{" "}
-            <span className="text-white">
+            <span className="text-black">
               Leading Brands
             </span>
             .<br />
             Proven Results Across the Country.
           </p>
-          <p className="mt-6 text-lg leading-8 text-zinc-400">
+          <p className="mt-6 text-lg leading-8 text-zinc-600">
             We've worked with national franchises and emerging startups to deliver impactful retail designs. Our clients rely on us for quality, speed, and creative excellence.
           </p>
         </div>
@@ -108,8 +108,8 @@ export default function Three() {
               onClick={() => setSelectedClient(null)}
               className={`rounded-2xl border px-6 py-4 text-base font-semibold transition-all ${
                 selectedClient === null
-                  ? "border-white/50 bg-white/20 text-white shadow-lg shadow-white/20"
-                  : "border-zinc-800 bg-zinc-900/30 text-zinc-400 hover:border-zinc-700 hover:bg-zinc-900/50 hover:text-white"
+                  ? "border-black/50 bg-black/20 text-black shadow-lg shadow-black/20"
+                  : "border-zinc-200 bg-zinc-100/30 text-zinc-600 hover:border-zinc-300 hover:bg-zinc-100/50 hover:text-black"
               }`}
             >
               All Projects
@@ -120,15 +120,15 @@ export default function Three() {
                 onClick={() => setSelectedClient(client)}
                 className={`rounded-2xl border px-6 py-4 text-base font-semibold transition-all ${
                   selectedClient === client
-                    ? "border-white/50 bg-white/20 text-white shadow-lg shadow-white/20"
-                    : "border-zinc-800 bg-zinc-900/30 text-zinc-400 hover:border-zinc-700 hover:bg-zinc-900/50 hover:text-white"
+                    ? "border-black/50 bg-black/20 text-black shadow-lg shadow-black/20"
+                    : "border-zinc-200 bg-zinc-100/30 text-zinc-600 hover:border-zinc-300 hover:bg-zinc-100/50 hover:text-black"
                 }`}
               >
                 {client}
               </button>
             ))}
             <button
-              className="rounded-2xl border border-zinc-800 bg-zinc-900/30 px-6 py-4 text-base font-semibold text-zinc-500"
+              className="rounded-2xl border border-zinc-200 bg-zinc-100/30 px-6 py-4 text-base font-semibold text-zinc-500"
             >
               + Many More
             </button>

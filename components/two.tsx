@@ -77,10 +77,10 @@ export default function Two() {
               viewport={{ once: true, margin: "-100px" }}
               transition={{ duration: 0.4 }}
             >
-              <span className="relative inline-flex items-center gap-2 rounded-full border border-white/30 bg-zinc-900/50 px-6 py-2 text-sm font-semibold text-white">
+              <span className="relative inline-flex items-center gap-2 rounded-full border border-black/30 bg-zinc-100/50 px-6 py-2 text-sm font-semibold text-black">
                 <span className="relative flex h-2 w-2">
-                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-white opacity-75"></span>
-                  <span className="relative inline-flex h-2 w-2 rounded-full bg-white"></span>
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-black opacity-75"></span>
+                  <span className="relative inline-flex h-2 w-2 rounded-full bg-black"></span>
                 </span>
                 What We Do
               </span>
@@ -94,9 +94,9 @@ export default function Two() {
               transition={{ duration: 0.4, delay: 0.1 }}
               className="relative max-w-4xl text-center"
             >
-              <h1 className="font-display text-5xl font-black tracking-tight text-white sm:text-6xl lg:text-7xl">
-                We Handle It <span className="text-white">All</span>. <br />
-                You Focus on <span className="text-white">Growing Your Brand</span>.
+              <h1 className="font-display text-5xl font-black tracking-tight text-black sm:text-6xl lg:text-7xl">
+                We Handle It <span className="text-black">All</span>. <br />
+                You Focus on <span className="text-black">Growing Your Brand</span>.
               </h1>
             </motion.div>
 
@@ -122,13 +122,13 @@ export default function Two() {
                       ease: "easeOut"
                     }}
                     onClick={() => setSelectedService(service)}
-                    className={`relative rounded-lg px-4 py-3 text-left text-base font-semibold transition-all duration-300 ${selectedService.title === service.title ? 'bg-white/10 text-white' : 'text-zinc-400 hover:bg-white/5'}`}
+                    className={`relative rounded-lg px-4 py-3 text-left text-base font-semibold transition-all duration-300 ${selectedService.title === service.title ? 'bg-black/10 text-black' : 'text-zinc-400 hover:bg-black/5 hover:text-black'}`}
                   >
                     {service.title}
                     {selectedService.title === service.title && (
                       <motion.div
                         layoutId="underline"
-                        className="absolute bottom-0 left-0 right-0 h-0.5 bg-white"
+                        className="absolute bottom-0 left-0 right-0 h-0.5 bg-black"
                       />
                     )}
                   </motion.button>
@@ -146,14 +146,14 @@ export default function Two() {
                     transition={{ duration: 0.3, ease: 'easeInOut' }}
                     className="flex flex-col gap-6"
                   >
-                    <div className="relative flex h-16 w-16 items-center justify-center rounded-xl border border-white/30 bg-white/10">
-                      <selectedService.icon className="h-8 w-8 text-white" />
+                    <div className="relative flex h-16 w-16 items-center justify-center rounded-xl border border-black/30 bg-black/10">
+                      <selectedService.icon className="h-8 w-8 text-black" />
                     </div>
                     <div>
-                      <h3 className="font-display text-2xl font-bold text-white">
+                      <h3 className="font-display text-2xl font-bold text-black">
                         {selectedService.title}
                       </h3>
-                      <p className="mt-3 text-base leading-7 text-zinc-300">
+                      <p className="mt-3 text-base leading-7 text-zinc-700">
                         {selectedService.description}
                       </p>
                     </div>
@@ -170,7 +170,7 @@ export default function Two() {
               transition={{ duration: 0.4, delay: 0.3 }}
               className="mt-8"
             >
-              <button className="group relative overflow-hidden rounded-full bg-white px-8 py-4 text-base font-bold text-black shadow-2xl shadow-white/50 transition-all hover:scale-105 hover:shadow-white/70">
+              <button className="group relative overflow-hidden rounded-full bg-black px-8 py-4 text-base font-bold text-white shadow-2xl shadow-black/50 transition-all hover:scale-105 hover:shadow-black/70">
                 <span className="relative z-10">Start Your Project</span>
               </button>
             </motion.div>
