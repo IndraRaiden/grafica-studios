@@ -81,7 +81,7 @@ export default function Three() {
 
   return (
     <div className="bg-zinc-50">
-      <section id="portfolio" className="relative z-10 mx-auto max-w-7xl px-6 py-24 sm:py-32 lg:px-8">
+      <section id="portfolio" className="relative z-10 mx-auto max-w-7xl px-6 pt-24 pb-0 sm:pt-32 sm:pb-0 lg:px-8">
         {/* Section header */}
         <div className="mx-auto max-w-2xl text-center">
           <div className="inline-flex items-center gap-2 rounded-full border border-black/30 bg-black/10 px-4 py-1.5">

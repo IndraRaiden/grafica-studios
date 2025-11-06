@@ -30,7 +30,7 @@ export default function ThreeWrapper({ projects }: ThreeWrapperProps) {
     <>
       
       <section className="bg-zinc-50 md:hidden">
-        <div className="mx-auto max-w-3xl space-y-6 px-6 py-8">
+        <div className="mx-auto max-w-3xl space-y-6 px-6 pt-2 pb-8">
           {projects.map((project, index) => (
             <ProjectCard
               key={index}
@@ -47,7 +47,7 @@ export default function ThreeWrapper({ projects }: ThreeWrapperProps) {
 
       
       <section ref={targetRef} className="relative hidden bg-zinc-50 md:block" style={{ height: `${projects.length * 100}vh` }}>
-        <div className="sticky top-0 flex h-screen items-center overflow-hidden bg-zinc-50">
+        <div className="sticky top-0 flex h-screen items-start pt-2 overflow-hidden bg-zinc-50">
           <motion.div style={{ x }} className="flex gap-8 px-[5vw]">
             {projects.map((project, index) => (
               <div key={index} className="min-w-[90vw] max-w-5xl flex-shrink-0">
