@@ -86,21 +86,21 @@ export default function Three() {
     : allProjects;
 
   return (
-    <div className="bg-zinc-50">
+    <div style={{ backgroundColor: "#000000" }}>
       <section id="portfolio" className="relative z-10 mx-auto max-w-7xl px-6 pt-24 pb-0 sm:pt-32 sm:pb-0 lg:px-8">
         {/* Section header */}
         <div className="mx-auto max-w-2xl text-center">
-          <div className="inline-flex items-center gap-2 rounded-full border border-black/30 bg-black/10 px-4 py-1.5">
-            <div className="h-2 w-2 rounded-full bg-black" />
-            <h2 className="text-sm font-bold uppercase tracking-wider text-black">Product Showcase</h2>
+          <div className="inline-flex items-center gap-2 rounded-full border px-4 py-1.5" style={{ borderColor: "rgba(139,146,201,0.3)", backgroundColor: "rgba(139,146,201,0.08)" }}>
+            <div className="h-2 w-2 rounded-full" style={{ backgroundColor: "#8B5CF6" }} />
+            <span className="text-sm font-bold uppercase tracking-wider" style={{ color: "#8B92C9" }}>Product Showcase</span>
           </div>
-          <p className="font-display mt-6 text-4xl font-black tracking-tight text-black sm:text-5xl lg:text-6xl">
+          <p className="font-display mt-6 text-4xl font-black tracking-tight sm:text-5xl lg:text-6xl" style={{ color: "#EEF0FF" }}>
             Real Products.{" "}
-            <span className="text-black">Real Results</span>
+            <span style={{ color: "#8B5CF6" }}>Real Results</span>
             .<br />
             Powered by AI.
           </p>
-          <p className="mt-6 text-lg leading-8 text-zinc-600">
+          <p className="mt-6 text-lg leading-8" style={{ color: "#8B92C9" }}>
             Every product we ship solves a real operational problem. Here's a look at what we've built and the impact it's had.
           </p>
         </div>
@@ -110,11 +110,12 @@ export default function Three() {
           <div className="flex flex-wrap items-center justify-center gap-3">
             <button
               onClick={() => setSelectedCategory(null)}
-              className={`rounded-full border px-5 py-2.5 text-sm font-semibold transition-all ${
+              className="rounded-full border px-5 py-2.5 text-sm font-semibold transition-all"
+              style={
                 selectedCategory === null
-                  ? "border-black/50 bg-black text-white"
-                  : "border-zinc-300 bg-transparent text-zinc-500 hover:border-zinc-400 hover:text-black"
-              }`}
+                  ? { borderColor: "#8B5CF6", backgroundColor: "#8B5CF6", color: "#0A0E27" }
+                  : { borderColor: "rgba(139,146,201,0.25)", backgroundColor: "transparent", color: "#8B92C9" }
+              }
             >
               All
             </button>
@@ -122,11 +123,12 @@ export default function Three() {
               <button
                 key={cat}
                 onClick={() => setSelectedCategory(cat)}
-                className={`rounded-full border px-5 py-2.5 text-sm font-semibold transition-all ${
+                className="rounded-full border px-5 py-2.5 text-sm font-semibold transition-all"
+                style={
                   selectedCategory === cat
-                    ? "border-black/50 bg-black text-white"
-                    : "border-zinc-300 bg-transparent text-zinc-500 hover:border-zinc-400 hover:text-black"
-                }`}
+                    ? { borderColor: "#8B5CF6", backgroundColor: "#8B5CF6", color: "#0A0E27" }
+                    : { borderColor: "rgba(139,146,201,0.25)", backgroundColor: "transparent", color: "#8B92C9" }
+                }
               >
                 {cat}
               </button>

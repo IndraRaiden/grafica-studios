@@ -27,15 +27,15 @@ interface ThreeWrapperProps {
 /* Palette tokens                                                      */
 /* ------------------------------------------------------------------ */
 
-const INK = "#0A0E27"; // section background
+const INK = "#000000"; // section background
 const CARD = "#0E1335"; // card surface
 const PAPER = "#EEF0FF"; // primary text
 const BODY = "#C7CBEA"; // body text
 const MUTED = "#8B92C9"; // labels / secondary
-const BLUE = "#3A9AFF"; // primary accent
-const VIOLET = "#5A55E0"; // mid current
-const ROYAL = "#261CC1"; // deep undercurrent
-const SPARK = "#FFF15E"; // reserved: results, packets, progress
+const BLUE = "#8B5CF6"; // primary accent
+const VIOLET = "#6D28D9"; // mid current
+const ROYAL = "#4C1D95"; // deep undercurrent
+const SPARK = "#34D399"; // reserved: results, packets, progress
 
 /* ------------------------------------------------------------------ */
 /* Flow field — layered seamless currents + a dashed "packet" stream   */
