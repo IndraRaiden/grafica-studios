@@ -1,69 +1,41 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { MapPin, Store, RefreshCw, Sparkles, Hammer } from "lucide-react";
+import { Users, Ticket, MapPin, Cpu, Plug } from "lucide-react";
 import GlassmorphismCard from "./glassmorphism-card";
 
 export default function Two() {
   const services = [
     {
-      title: "Consultation & Site Guidance",
-      description: "Finding the right location is key to success. We consult with you from the start and connect you directly with mall leasing managers. Whether you're new to retail or ready to expand, our insights help you choose the best possible placement for traffic, visibility, and budget.",
+      title: "Leads Manager & CRM",
+      description: "Capture, score, and nurture leads automatically. Our AI-driven CRM surfaces your hottest prospects, auto-assigns follow-ups, and gives your sales team a single source of truth — so no lead ever falls through the cracks.",
+      icon: Users
+    },
+    {
+      title: "Ticket Triage AI",
+      description: "Stop drowning in support queues. Our AI reads, categorizes, prioritizes, and routes incoming tickets in real time — cutting resolution time and letting your team focus on issues that actually need a human.",
+      icon: Ticket
+    },
+    {
+      title: "Tracking AI System",
+      description: "Live tracking for vehicles, orders, or field assets. Get real-time location data, predictive ETAs, anomaly alerts, and a full audit trail — all surfaced through a clean dashboard and API your team can plug into anything.",
       icon: MapPin
     },
     {
-      title: "Retail Design",
-      description: "Every space we design is created to reflect your brand and maximize usability. From kiosks and inline stores to complex custom builds, we blend aesthetics and functionality to craft retail environments that attract and convert customers.",
-      icon: Store
+      title: "Custom AI App Development",
+      description: "Have a workflow that doesn't fit a template? We build bespoke AI-powered applications from the ground up — scoped to your data, your processes, and your stack. From prototype to production-ready in weeks.",
+      icon: Cpu
     },
     {
-      title: "Store Refurbishment",
-      description: "Already have a store or kiosk? We can help you update it with a modern touch. Whether it's a full makeover or simple upgrades, we specialize in transforming existing spaces into fresh, engaging, and efficient experiences.",
-      icon: RefreshCw
-    },
-    {
-      title: "Branding & Identity",
-      description: "Your logo is just the start. We build full branding systems—from signage and menus to packaging and interior graphics—that connect with your customers and elevate your presence. Whether you're building a new brand or refreshing an old one, we deliver cohesive, recognizable visuals.",
-      icon: Sparkles
-    },
-    {
-      title: "Build Execution",
-      description: "We've partnered with experienced, vetted builders who know how to bring retail designs to life. With detailed plans and mall-compliant execution, we coordinate construction timelines and quality control to make sure your space is completed on schedule and to spec.",
-      icon: Hammer
+      title: "AI Integration & Consulting",
+      description: "Already have tools in place? We audit your current stack, identify where AI creates the most leverage, and integrate models directly into your existing software — without a rip-and-replace.",
+      icon: Plug
     }
   ];
 
   const [selectedService, setSelectedService] = useState(services[0]);
-  const [currentIndex, setCurrentIndex] = useState(0);
   const sectionRef = useRef<HTMLElement>(null);
-
-  useEffect(() => {
-    const handleWheel = (e: WheelEvent) => {
-      if (!sectionRef.current) return;
-      
-      const rect = sectionRef.current.getBoundingClientRect();
-      const isInView = rect.top <= window.innerHeight / 2 && rect.bottom >= window.innerHeight / 2;
-      
-      if (isInView) {
-        // Check if we haven't gone through all services yet
-        if (e.deltaY > 0 && currentIndex < services.length - 1) {
-          e.preventDefault();
-          setCurrentIndex(prev => prev + 1);
-          setSelectedService(services[currentIndex + 1]);
-        } else if (e.deltaY < 0 && currentIndex > 0) {
-          e.preventDefault();
-          setCurrentIndex(prev => prev - 1);
-          setSelectedService(services[currentIndex - 1]);
-        }
-        // If at the last service and scrolling down, allow normal scroll
-        // If at the first service and scrolling up, allow normal scroll
-      }
-    };
-
-    window.addEventListener('wheel', handleWheel, { passive: false });
-    return () => window.removeEventListener('wheel', handleWheel);
-  }, [currentIndex, services]);
 
   return (
     <section ref={sectionRef} id="services" className="relative flex min-h-screen items-center justify-center overflow-hidden py-24 sm:py-32">
@@ -82,7 +54,7 @@ export default function Two() {
                   <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-black opacity-75"></span>
                   <span className="relative inline-flex h-2 w-2 rounded-full bg-black"></span>
                 </span>
-                What We Do
+                Our Products
               </span>
             </motion.div>
 
@@ -95,8 +67,8 @@ export default function Two() {
               className="relative max-w-4xl text-center"
             >
               <h1 className="font-display text-5xl font-black tracking-tight text-black sm:text-6xl lg:text-7xl">
-                We Handle It <span className="text-black">All</span>. <br />
-                You Focus on <span className="text-black">Growing Your Brand</span>.
+                AI Does the Work. <br />
+                You Focus on <span className="text-black">Growing Your Business</span>.
               </h1>
             </motion.div>
 
@@ -171,7 +143,7 @@ export default function Two() {
               className="mt-8"
             >
               <button className="group relative overflow-hidden rounded-full bg-black px-8 py-4 text-base font-bold text-white shadow-2xl shadow-black/50 transition-all hover:scale-105 hover:shadow-black/70">
-                <span className="relative z-10">Start Your Project</span>
+                <span className="relative z-10">Get Early Access</span>
               </button>
             </motion.div>
           </div>

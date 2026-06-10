@@ -17,7 +17,7 @@ export default function One({ secondImageOpacity }: OneProps) {
         <div className="absolute inset-0 bg-gradient-to-b from-zinc-100/40 via-transparent to-zinc-50/60 z-10" />
         <img
           src="/trial.jpg"
-          alt="Grafica Studios Background"
+          alt="BlackStronghold Background"
           className="h-full w-full object-cover"
         />
       </motion.div>
@@ -29,19 +29,19 @@ export default function One({ secondImageOpacity }: OneProps) {
           {/* Main heading */}
           <div className="relative max-w-5xl">
             <h1 className="text-6xl font-bold tracking-tight text-black sm:text-7xl lg:text-8xl">
-              Design That Sells. Spaces That Speak.
+              AI Software. Built to Scale Your Business.
             </h1>
           </div>
-          
+
           {/* Subheading */}
           <p className="max-w-3xl text-lg leading-8 text-black/90 sm:text-xl">
-            From the first sketch to final build, Grafica Studios transforms your retail ideas into impactful environments. With expert design, hands-on collaboration, and strong relationships with major malls, we help brands stand out—and succeed—in competitive retail spaces.
+            BlackStronghold engineers AI-powered SaaS products that automate the work slowing you down — from lead capture and ticket triage to real-time tracking. Ready-to-deploy apps, built for results.
           </p>
-          
+
           {/* CTA buttons */}
           <div className="mt-4 flex justify-center">
             <button className="group relative overflow-hidden rounded-full bg-black px-8 py-3.5 text-sm font-semibold text-white transition-all hover:scale-105 hover:bg-black/90">
-              Start Your Project
+              See Our Products
             </button>
           </div>
         </div>

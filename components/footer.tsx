@@ -36,7 +36,7 @@ export default function Footer() {
                 <span className="block font-bold mt-2">extraordinary</span>
               </h2>
               <p className="mt-6 max-w-xl text-base text-white/60 font-light">
-                Transform your vision into reality with our creative expertise
+                Let AI handle the work. You handle the growth.
               </p>
             </div>
             <a
@@ -55,10 +55,10 @@ export default function Footer() {
           {/* Brand Section */}
           <div className="lg:col-span-5">
             <a href="#" className="inline-block mb-8">
-              <img src="/studios.svg" alt="Grafica Studios" className="h-10 w-auto brightness-0 invert" />
+              <img src="/studios.svg" alt="BlackStronghold" className="h-10 w-auto brightness-0 invert" />
             </a>
             <p className="text-sm text-white/50 font-light leading-relaxed max-w-sm mb-8">
-              A creative studio dedicated to crafting exceptional digital experiences through innovative design and strategic thinking.
+              AI-powered SaaS products built to automate operations, accelerate sales, and scale businesses — from leads to logistics.
             </p>
             <div className="space-y-4">
               <div className="flex items-center gap-3 text-sm text-white/70">
@@ -66,11 +66,11 @@ export default function Footer() {
                 <span className="font-light">Available Nationwide</span>
               </div>
               <a 
-                href="mailto:info@graficastudios.net" 
+                href="mailto:sales@blackstronghold.com"
                 className="flex items-center gap-3 text-sm text-white/70 transition-colors hover:text-white group"
               >
                 <Mail className="h-4 w-4 flex-shrink-0 text-white/40 group-hover:text-white transition-colors" />
-                <span className="font-light">info@graficastudios.net</span>
+                <span className="font-light">sales@blackstronghold.com</span>
               </a>
             </div>
           </div>
@@ -135,7 +135,7 @@ export default function Footer() {
         {/* Bottom Bar */}
         <div className="mt-20 pt-8 border-t border-white/5 flex flex-col-reverse items-center justify-between gap-6 sm:flex-row">
           <p className="text-xs text-white/40 font-light tracking-wide">
-            © {new Date().getFullYear()} Grafica Studios. All rights reserved.
+            © {new Date().getFullYear()} BlackStronghold. All rights reserved.
           </p>
           <div className="flex gap-6">
             {socialLinks.map((social) => (

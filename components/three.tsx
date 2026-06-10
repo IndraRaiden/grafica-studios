@@ -4,79 +4,63 @@ import { useState } from "react";
 import ThreeWrapper from "./three-wrapper";
 
 export default function Three() {
-  const [selectedClient, setSelectedClient] = useState<string | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
-  const clients = [
-    "Häagen-Dazs",
-    "Wetzel's Pretzels",
-    "Gong Cha",
-    "Jamba Juice",
-    "Ándale Tacos",
-    "ChocoBerry",
-    "Cilantro Taco Grill"
-  ];
+  const categories = ["Lead Management", "Support & Triage", "Tracking & Logistics", "Custom AI"];
 
   const allProjects = [
     {
-      client: "Häagen-Dazs",
-      title: "Häagen-Dazs Flagship Store",
-      category: "Premium Ice Cream Retail",
-      problem: "Needed a modern, inviting space that reflected the premium brand while maximizing customer flow in a compact mall location.",
-      solution: "Created an open-concept design with elegant display cases, strategic lighting, and a color palette that emphasized the brand's luxury positioning.",
-      result: "30% increase in foot traffic within the first quarter"
+      client: "Lead Management",
+      title: "LeadFlow — AI Leads Manager",
+      category: "Lead Management",
+      problem: "Sales teams were manually sorting through hundreds of unqualified leads, wasting hours each week on cold contacts while hot prospects went stale.",
+      solution: "We built LeadFlow — an AI CRM that scores every incoming lead, auto-assigns follow-up tasks, and surfaces the top 10% most likely to convert in a dedicated priority queue.",
+      result: "3x increase in qualified conversions within the first 60 days of deployment"
     },
     {
-      client: "Gong Cha",
-      title: "Gong Cha Expansion",
-      category: "Beverage Kiosk",
-      problem: "Rapid expansion required consistent branding across multiple mall locations with varying space constraints.",
-      solution: "Developed a modular design system that maintained brand identity while adapting to different footprints and mall requirements.",
-      result: "Successfully launched 5 locations in 6 months"
+      client: "Support & Triage",
+      title: "TriageAI — Ticket Triage System",
+      category: "Support & Triage",
+      problem: "A high-volume support team was spending 40% of their time just reading and routing tickets — leaving complex issues stuck behind a wall of simple requests.",
+      solution: "TriageAI reads every incoming ticket, classifies it by type and urgency, auto-responds to common issues, and routes edge cases to the right specialist — all in under 2 seconds.",
+      result: "68% reduction in average ticket resolution time"
     },
     {
-      client: "Ándale Tacos",
-      title: "Ándale Tacos First Mall Location",
-      category: "Fast-Casual Restaurant",
-      problem: "Transitioning from a popular food truck to a permanent mall location required a design that captured their authentic, street-food vibe while meeting strict mall regulations.",
-      solution: "We designed a vibrant, energetic space using rustic woods, colorful tiles, and neon signage. The layout was optimized for high-volume lunch rushes, ensuring quick service without losing the brand's lively character.",
-      result: "Achieved profitability in the first six months, exceeding projections by 20%"
+      client: "Tracking & Logistics",
+      title: "TrackSense — Vehicle & Order Tracking",
+      category: "Tracking & Logistics",
+      problem: "A logistics company had no real-time visibility into fleet position or order status, resulting in customer complaints and costly delays that couldn't be diagnosed until after delivery.",
+      solution: "TrackSense provides live GPS tracking, AI-predicted ETAs, geofence alerts, and a customer-facing status portal — all connected through a single API.",
+      result: "91% on-time delivery rate, up from 74%"
     },
     {
-      client: "ChocoBerry",
-      title: "ChocoBerry Dessert Kiosk",
-      category: "Dessert & Specialty Foods",
-      problem: "Needed a visually stunning kiosk that would stand out in a crowded food court and effectively showcase their artisanal chocolate-covered strawberries.",
-      solution: "A sleek, modern kiosk was designed with high-end finishes, illuminated displays, and a 'selfie-wall' feature, turning the small space into a social media magnet.",
-      result: "50% increase in user-generated content on social media"
+      client: "Custom AI",
+      title: "ContractLens — AI Document Analyzer",
+      category: "Custom AI",
+      problem: "A legal-services firm was spending days manually reviewing vendor contracts for liability clauses, missing critical terms under time pressure.",
+      solution: "ContractLens uses an LLM fine-tuned on contract language to extract, flag, and summarize risk clauses in seconds — with a confidence score and plain-English explanation for each finding.",
+      result: "Contract review time cut from 4 hours to under 8 minutes"
     },
     {
-      client: "Cilantro Taco Grill",
-      title: "Cilantro Taco Grill Rebrand",
-      category: "Restaurant Refurbishment",
-      problem: "Existing location felt dated and didn't reflect the fresh, modern direction of the brand.",
-      solution: "Complete interior refresh with new signage, updated materials, vibrant graphics, and improved customer flow without closing for business.",
-      result: "Completed in 3 weeks with zero downtime"
+      client: "Lead Management",
+      title: "OutboundAI — Automated Outreach",
+      category: "Lead Management",
+      problem: "A B2B sales team was burning rep bandwidth on cold outreach sequences that were generic, poorly timed, and getting ignored.",
+      solution: "OutboundAI personalizes each outreach message using company data and LinkedIn signals, schedules sends at optimal times, and pauses sequences the moment a lead engages.",
+      result: "44% open rate and 18% reply rate — up from 9% and 3%"
     },
     {
-      client: "Wetzel's Pretzels",
-      title: "Wetzel's Pretzels Mall Kiosk",
-      category: "Quick Service Kiosk",
-      problem: "Limited space required creative solutions to maximize efficiency while maintaining brand warmth and approachability.",
-      solution: "Designed a compact yet welcoming kiosk with optimized workflow, eye-catching signage, and strategic product display.",
-      result: "25% improvement in service speed and customer satisfaction"
-    },
-    {
-      client: "Jamba Juice",
-      title: "Jamba Juice Refresh",
-      category: "Health & Wellness Retail",
-      problem: "Store needed modernization to appeal to health-conscious millennials while maintaining family-friendly atmosphere.",
-      solution: "Vibrant color scheme, natural materials, digital menu boards, and Instagram-worthy design elements throughout.",
-      result: "40% increase in social media engagement and foot traffic"
+      client: "Support & Triage",
+      title: "ReplyDraft — AI Support Copilot",
+      category: "Support & Triage",
+      problem: "Junior support agents were slow to respond and inconsistent in tone, requiring senior review on most tickets before sending.",
+      solution: "ReplyDraft sits inside the support inbox and generates a ready-to-send draft response for every ticket — pulling from the knowledge base and past resolved cases. Agents review and send in one click.",
+      result: "First-response time dropped from 6 hours to 22 minutes"
     }
   ];
 
-  const filteredProjects = selectedClient
-    ? allProjects.filter(project => project.client === selectedClient)
+  const filteredProjects = selectedCategory
+    ? allProjects.filter(project => project.client === selectedCategory)
     : allProjects;
 
   return (
@@ -86,52 +70,47 @@ export default function Three() {
         <div className="mx-auto max-w-2xl text-center">
           <div className="inline-flex items-center gap-2 rounded-full border border-black/30 bg-black/10 px-4 py-1.5">
             <div className="h-2 w-2 rounded-full bg-black" />
-            <h2 className="text-sm font-bold uppercase tracking-wider text-black">Client Showcase</h2>
+            <h2 className="text-sm font-bold uppercase tracking-wider text-black">Product Showcase</h2>
           </div>
           <p className="font-display mt-6 text-4xl font-black tracking-tight text-black sm:text-5xl lg:text-6xl">
-            Trusted by{" "}
+            Real Products.{" "}
             <span className="text-black">
-              Leading Brands
+              Real Results
             </span>
             .<br />
-            Proven Results Across the Country.
+            Powered by AI.
           </p>
           <p className="mt-6 text-lg leading-8 text-zinc-600">
-            We've worked with national franchises and emerging startups to deliver impactful retail designs. Our clients rely on us for quality, speed, and creative excellence.
+            Every product we ship solves a real operational problem. Here's a look at what we've built and the impact it's had.
           </p>
         </div>
 
-        {/* Client selector buttons */}
+        {/* Category filter buttons */}
         <div className="mx-auto mt-16 max-w-6xl">
           <div className="flex flex-wrap items-center justify-center gap-4">
             <button
-              onClick={() => setSelectedClient(null)}
+              onClick={() => setSelectedCategory(null)}
               className={`rounded-2xl border px-6 py-4 text-base font-semibold transition-all ${
-                selectedClient === null
+                selectedCategory === null
                   ? "border-black/50 bg-black/20 text-black shadow-lg shadow-black/20"
                   : "border-zinc-200 bg-zinc-100/30 text-zinc-600 hover:border-zinc-300 hover:bg-zinc-100/50 hover:text-black"
               }`}
             >
-              All Projects
+              All Products
             </button>
-            {clients.map((client) => (
+            {categories.map((cat) => (
               <button
-                key={client}
-                onClick={() => setSelectedClient(client)}
+                key={cat}
+                onClick={() => setSelectedCategory(cat)}
                 className={`rounded-2xl border px-6 py-4 text-base font-semibold transition-all ${
-                  selectedClient === client
+                  selectedCategory === cat
                     ? "border-black/50 bg-black/20 text-black shadow-lg shadow-black/20"
                     : "border-zinc-200 bg-zinc-100/30 text-zinc-600 hover:border-zinc-300 hover:bg-zinc-100/50 hover:text-black"
                 }`}
               >
-                {client}
+                {cat}
               </button>
             ))}
-            <button
-              className="rounded-2xl border border-zinc-200 bg-zinc-100/30 px-6 py-4 text-base font-semibold text-zinc-500"
-            >
-              + Many More
-            </button>
           </div>
         </div>
       </section>

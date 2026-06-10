@@ -30,7 +30,7 @@ export default function HeroScroll() {
         >
           <Image
             src="/guard.jpg"
-            alt="Grafica Studios Hero"
+            alt="BlackStronghold Hero"
             fill
             className="object-cover"
             priority

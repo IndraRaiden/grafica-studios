@@ -13,7 +13,7 @@ export default function Navbar() {
       <div className="mx-auto max-w-7xl flex items-center justify-between">
         {/* Logo */}
         <div className="flex items-center gap-2">
-          <img src="/studios.svg" alt="Grafica Studios" className="h-12 w-auto invert" />
+          <img src="/studios.svg" alt="BlackStronghold" className="h-12 w-auto invert" />
         </div>
         <ul className="hidden md:flex items-center gap-6">
           {links.map((link) => (

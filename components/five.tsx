@@ -40,10 +40,10 @@ export default function Five() {
           className="mx-auto max-w-2xl text-center"
         >
           <h2 className="font-display text-4xl font-bold tracking-tight text-black sm:text-5xl lg:text-6xl">
-            Let's Create Something Remarkable Together
+            Let's Build Your AI Advantage
           </h2>
           <p className="mt-6 text-lg leading-8 text-zinc-600 sm:text-xl">
-            Have a retail vision or project in mind? Whether you need a kiosk, inline store, full brand package, or just expert advice, we're here to help. Reach out today for a free consultation or custom proposal.
+            Have a workflow you want to automate, a product idea, or just want to explore what AI can do for your business? Reach out — we'll map out the opportunity and tell you exactly what's possible.
           </p>
         </motion.div>
 
@@ -59,7 +59,7 @@ export default function Five() {
               className="rounded-2xl border border-zinc-200 bg-zinc-100/50 p-8"
             >
               <h3 className="font-display text-xl font-semibold text-black">Send Us a Message</h3>
-              <p className="mt-2 text-sm text-zinc-600">Fill out the form and we'll get back to you within 24 hours.</p>
+              <p className="mt-2 text-sm text-zinc-600">Tell us about your project and we'll get back to you within 24 hours.</p>
               
               <form onSubmit={handleSubmit} className="mt-6 space-y-5">
                 {/* Name */}
@@ -121,7 +121,7 @@ export default function Five() {
                     value={formData.projectDetails}
                     onChange={(e) => setFormData({ ...formData, projectDetails: e.target.value })}
                     className="mt-2 block w-full rounded-lg border border-zinc-300 bg-zinc-100/50 px-4 py-2.5 text-black placeholder-zinc-500 focus:border-black focus:outline-none focus:ring-1 focus:ring-black"
-                    placeholder="Tell us about your project..."
+                    placeholder="Describe the problem you want AI to solve..."
                   />
                 </div>
 
@@ -177,7 +177,7 @@ export default function Five() {
                   <div className="flex-1">
                     <h3 className="font-display text-lg font-semibold text-black">Schedule a Discovery Call</h3>
                     <p className="mt-2 text-sm text-zinc-600">
-                      Book a 30-minute consultation to discuss your project in detail.
+                      Book a 30-minute call — we'll map your workflow and identify where AI creates the most leverage.
                     </p>
                     <button className="mt-4 rounded-full border border-black/50 bg-black/10 px-5 py-2 text-sm font-semibold text-black transition-all hover:border-black hover:bg-black/20">
                       Book a Call
@@ -198,8 +198,8 @@ export default function Five() {
                 <div className="mt-4 space-y-3">
                   <div className="flex items-center gap-3 text-sm">
                     <Mail className="h-5 w-5 text-black" />
-                    <a href="mailto:info@graficastudios.com" className="text-zinc-600 hover:text-black">
-                      info@graficastudios.com
+                    <a href="mailto:sales@blackstronghold.com" className="text-zinc-600 hover:text-black">
+                      sales@blackstronghold.com
                     </a>
                   </div>
                   <div className="flex items-center gap-3 text-sm">

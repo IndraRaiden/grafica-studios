@@ -16,8 +16,8 @@ const spaceGrotesk = Outfit({
 });
 
 export const metadata: Metadata = {
-  title: "Grafica Studios - Design That Sells, Spaces That Speak",
-  description: "Transforming retail ideas into impactful environments with expert design and hands-on collaboration.",
+  title: "BlackStronghold - AI-Powered SaaS for Modern Business",
+  description: "BlackStronghold builds AI-powered software products — from lead management and ticket triage to vehicle tracking — engineered to automate and scale your operations.",
 };
 
 export default function RootLayout({

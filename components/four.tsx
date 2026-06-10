@@ -1,32 +1,32 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Search, Pencil, Hammer, Rocket } from "lucide-react";
+import { Search, Code, FlaskConical, Rocket } from "lucide-react";
 
 export default function Four() {
   const steps = [
     {
       number: "01",
       title: "Discovery",
-      description: "We learn everything we can about your business goals, brand identity, and operational needs. We also offer insight into site selection and market alignment.",
+      description: "We map your workflow, your data sources, and where the real bottlenecks live. No fluff — just a sharp understanding of the problem we're solving and the outcome you need.",
       icon: Search
     },
     {
       number: "02",
-      title: "Design",
-      description: "Through mood boards, conceptual sketches, and detailed 3D renderings, we translate your vision into visuals. We finalize layouts, materials, and specs to meet mall requirements and brand guidelines.",
-      icon: Pencil
+      title: "Build",
+      description: "Our engineers develop the AI models, backend logic, and user-facing interfaces. We work in tight sprints with demos at every milestone so you always know exactly what you're getting.",
+      icon: Code
     },
     {
       number: "03",
-      title: "Build",
-      description: "We coordinate with our build partners, managing production and installation timelines. Our experience with mall processes helps streamline approvals and avoid unnecessary delays.",
-      icon: Hammer
+      title: "Test & Tune",
+      description: "Before anything touches production, we run the system against real data, stress-test edge cases, and fine-tune model performance. Accuracy and reliability are non-negotiable.",
+      icon: FlaskConical
     },
     {
       number: "04",
-      title: "Launch",
-      description: "We support your final walkthrough, installation, and opening, ensuring every detail is right and your space is ready to impress. Ongoing support is available for future locations or updates.",
+      title: "Deploy & Scale",
+      description: "We ship to your environment — cloud, on-prem, or hybrid — and stay hands-on through launch. As usage grows, the system scales with it. Ongoing support and model retraining included.",
       icon: Rocket
     }
   ];
@@ -55,31 +55,31 @@ export default function Four() {
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-black opacity-75"></span>
                 <span className="relative inline-flex h-2 w-2 rounded-full bg-black"></span>
               </span>
-              Process Overview
+              How We Work
             </span>
           </div>
           <div className="relative max-w-4xl">
             <div className="absolute -left-8 top-0 h-full w-1 bg-black opacity-50" />
             <h1 className="font-display text-5xl font-black tracking-tight text-black sm:text-6xl lg:text-7xl">
-              A Seamless{" "}
+              From Problem{" "}
               <span className="relative inline-block">
                 <span className="relative z-10 text-black">
-                  Journey
+                  Statement
                 </span>
               </span>
               .{" "}
               <br />
               <span className="relative">
-                From Idea to{" "}
+                To{" "}
                 <span className="text-black">
-                  Grand Opening
+                  Production AI
                 </span>
                 .
               </span>
             </h1>
           </div>
           <p className="mt-6 text-lg leading-8 text-zinc-600">
-            Our four-step approach is simple, collaborative, and built to deliver results—whether you're building your first location or scaling across the country.
+            Our four-step process is fast, transparent, and engineered for impact — whether you're deploying your first AI tool or scaling across an entire organization.
           </p>
         </motion.div>
 
@@ -156,7 +156,7 @@ export default function Four() {
           className="mt-16 flex justify-center"
         >
           <button className="group relative overflow-hidden rounded-full bg-black px-8 py-4 text-base font-bold text-white shadow-2xl shadow-black/50 transition-all hover:scale-105 hover:shadow-black/70">
-            <span className="relative z-10">Start the Process</span>
+            <span className="relative z-10">Start Building</span>
             <div className="absolute inset-0 -z-0 bg-gray-800 opacity-0 transition-opacity group-hover:opacity-100" />
           </button>
         </motion.div>
