@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Calendar, Mail, Phone, MapPin, Zap, Paperclip } from "lucide-react";
+import { Calendar, Mail, Phone, MapPin, Zap, Paperclip, MessageCircle } from "lucide-react";
 
 /* Palette tokens — mirrors three-wrapper.tsx */
 const INK = "#000000";
@@ -55,19 +55,44 @@ function PulseLine({ className, delay }: { className: string; delay: number }) {
   );
 }
 
+type Status = "idle" | "loading" | "success" | "error";
+
 export default function Five() {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     phone: "",
     projectDetails: "",
-    file: null as File | null
+    file: null as File | null,
   });
+  const [status, setStatus] = useState<Status>("idle");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle form submission
-    console.log("Form submitted:", formData);
+    setStatus("loading");
+
+    const data = new FormData();
+    data.append("name", formData.name);
+    data.append("email", formData.email);
+    data.append("phone", formData.phone);
+    data.append("projectDetails", formData.projectDetails);
+    if (formData.file) data.append("file", formData.file);
+
+    try {
+      const res = await fetch("https://formspree.io/f/mlgklbpn", {
+        method: "POST",
+        body: data,
+        headers: { Accept: "application/json" },
+      });
+      if (res.ok) {
+        setStatus("success");
+        setFormData({ name: "", email: "", phone: "", projectDetails: "", file: null });
+      } else {
+        setStatus("error");
+      }
+    } catch {
+      setStatus("error");
+    }
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -220,14 +245,39 @@ export default function Five() {
                   </div>
                 </motion.div>
 
+                {/* Success / Error feedback */}
+                {status === "success" && (
+                  <motion.p
+                    initial={{ opacity: 0, y: 6 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="rounded-lg px-4 py-3 text-sm font-medium"
+                    style={{ backgroundColor: `${SPARK}1A`, color: SPARK, border: `1px solid ${SPARK}33` }}
+                  >
+                    Message sent! We'll get back to you within 24 hours.
+                  </motion.p>
+                )}
+                {status === "error" && (
+                  <motion.p
+                    initial={{ opacity: 0, y: 6 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="rounded-lg px-4 py-3 text-sm font-medium"
+                    style={{ backgroundColor: "#FF4D4D1A", color: "#FF6B6B", border: "1px solid #FF4D4D33" }}
+                  >
+                    Something went wrong. Please try again or email us directly.
+                  </motion.p>
+                )}
+
                 {/* Submit Button */}
                 <motion.div {...fieldReveal(5)}>
                   <button
                     type="submit"
-                    className="group relative w-full overflow-hidden rounded-full px-6 py-3 text-sm font-bold transition-all hover:scale-[1.02] hover:brightness-110"
+                    disabled={status === "loading" || status === "success"}
+                    className="group relative w-full overflow-hidden rounded-full px-6 py-3 text-sm font-bold transition-all hover:scale-[1.02] hover:brightness-110 disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:scale-100"
                     style={{ backgroundColor: BLUE, color: "#0A0E27" }}
                   >
-                    <span className="relative z-10">Contact Us</span>
+                    <span className="relative z-10">
+                      {status === "loading" ? "Sending…" : status === "success" ? "Sent!" : "Contact Us"}
+                    </span>
                     {/* shine sweep */}
                     <span className="absolute inset-y-0 -left-1/2 z-0 w-1/3 -skew-x-12 bg-white/30 opacity-0 blur-sm transition-all duration-700 group-hover:left-full group-hover:opacity-100" />
                   </button>
@@ -269,7 +319,8 @@ export default function Five() {
                   {(
                     [
                       [Mail, <a key="mail" href="mailto:sales@blackstronghold.com" className="transition-colors hover:text-[#EEF0FF]" style={{ color: BODY }}>sales@blackstronghold.com</a>],
-                      [Phone, <a key="phone" href="tel:+15551234567" className="transition-colors hover:text-[#EEF0FF]" style={{ color: BODY }}>(555) 123-4567</a>],
+                      [Phone, <a key="phone" href="tel:+5215663954818" className="transition-colors hover:text-[#EEF0FF]" style={{ color: BODY }}>+52 1 56 6395 4818 <span className="text-[10px] opacity-50">(call · iMessage)</span></a>],
+                      [MessageCircle, <a key="wa" href="https://wa.me/5215663954818" target="_blank" rel="noopener noreferrer" className="transition-colors hover:text-[#EEF0FF]" style={{ color: BODY }}>+52 1 56 6395 4818 <span className="text-[10px] opacity-50">(WhatsApp)</span></a>],
                       [MapPin, <span key="map" style={{ color: BODY }}>Available Nationwide</span>],
                     ] as const
                   ).map(([Icon, content], i) => (
