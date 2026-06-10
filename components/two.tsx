@@ -223,7 +223,7 @@ const floatVariants = (delay: number, distance: number = 6) => ({
     transition: {
       duration: 5 + delay,
       repeat: Infinity,
-      ease: "easeInOut",
+      ease: "easeInOut" as const,
       delay,
     },
   },
