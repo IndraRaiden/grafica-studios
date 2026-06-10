@@ -4,6 +4,57 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Calendar, Mail, Phone, MapPin, Zap, Paperclip } from "lucide-react";
 
+/* Palette tokens — mirrors three-wrapper.tsx */
+const INK = "#000000";
+const CARD = "#0E1335";
+const PAPER = "#EEF0FF";
+const BODY = "#C7CBEA";
+const MUTED = "#8B92C9";
+const BLUE = "#8B5CF6";
+const SPARK = "#34D399";
+
+/* Staggered fade-up on scroll — same cadence as the hero's entrance */
+const reveal = (delay: number) => ({
+  initial: { opacity: 0, y: 24 },
+  whileInView: { opacity: 1, y: 0 },
+  viewport: { once: true, margin: "-100px" },
+  transition: { duration: 0.8, delay, ease: "easeOut" as const },
+});
+
+const cardClass =
+  "rounded-2xl border border-white/10 p-7 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-[#8B5CF6]/40 hover:shadow-[0_24px_64px_-24px_rgba(139,92,246,0.35)] sm:p-8";
+const cardSurface = { backgroundColor: `${CARD}D9` };
+
+const inputClass =
+  "mt-2 block w-full rounded-lg border border-white/10 bg-white/5 px-4 py-2.5 text-sm transition-colors focus:border-[#8B5CF6]/60 focus:outline-none focus:ring-1 focus:ring-[#8B5CF6]/40";
+const labelClass = "block font-mono text-[10px] uppercase tracking-[0.25em]";
+
+/* Quick stagger for form fields and contact rows */
+const fieldReveal = (i: number) => ({
+  initial: { opacity: 0, y: 12 },
+  whileInView: { opacity: 1, y: 0 },
+  viewport: { once: true },
+  transition: { duration: 0.5, delay: 0.1 + i * 0.08, ease: "easeOut" as const },
+});
+
+/* Vertical guide line with a traveling pulse, echoing four.tsx's connectors */
+function PulseLine({ className, delay }: { className: string; delay: number }) {
+  return (
+    <div
+      className={`pointer-events-none absolute top-0 hidden h-full w-px overflow-hidden lg:block ${className}`}
+      style={{ background: `linear-gradient(transparent, ${MUTED}26, transparent)` }}
+      aria-hidden="true"
+    >
+      <motion.div
+        animate={{ y: ["-100%", "100%"] }}
+        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay, repeatDelay: 2 }}
+        className="h-full w-full"
+        style={{ background: `linear-gradient(transparent 30%, ${SPARK}99 50%, transparent 70%)` }}
+      />
+    </div>
+  );
+}
+
 export default function Five() {
   const [formData, setFormData] = useState({
     name: "",
@@ -26,45 +77,58 @@ export default function Five() {
   };
 
   return (
-    <section id="contact" className="relative bg-gradient-to-b from-zinc-50 via-zinc-100 to-zinc-50 py-24 sm:py-32">
-      {/* Background decoration */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_80%,rgba(0,0,0,0.05),transparent_50%)]" />
-      
+    <section
+      id="contact"
+      className="relative overflow-hidden py-24 sm:py-32"
+      style={{ backgroundColor: INK }}
+    >
+      {/* Background decoration — faint violet glow rising from below */}
+      <div
+        className="absolute inset-0"
+        style={{ background: `radial-gradient(900px 600px at 50% 90%, ${BLUE}14, transparent 70%)` }}
+      />
+      <PulseLine className="left-1/4" delay={0} />
+      <PulseLine className="right-1/3" delay={2.6} />
+
       <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-8">
         {/* Section header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.4 }}
-          className="mx-auto max-w-2xl text-center"
-        >
-          <h2 className="font-display text-4xl font-bold tracking-tight text-black sm:text-5xl lg:text-6xl">
-            Let's Build Your AI Advantage
-          </h2>
-          <p className="mt-6 text-lg leading-8 text-zinc-600 sm:text-xl">
+        <div className="mx-auto max-w-2xl text-center">
+          <motion.span
+            {...reveal(0)}
+            className="inline-flex items-center gap-2.5 rounded-full border border-white/15 px-4 py-1.5 font-mono text-[11px] uppercase tracking-[0.35em] backdrop-blur-sm"
+            style={{ color: MUTED, backgroundColor: `${INK}66` }}
+          >
+            <span className="h-1.5 w-1.5 animate-pulse rounded-full" style={{ backgroundColor: SPARK }} />
+            Contact
+          </motion.span>
+          <motion.h2
+            {...reveal(0.1)}
+            className="mt-5 text-3xl font-semibold tracking-tight sm:text-4xl lg:text-5xl"
+            style={{ color: PAPER }}
+          >
+            Let's build your <span style={{ color: BLUE }}>AI advantage.</span>
+          </motion.h2>
+          <motion.p {...reveal(0.2)} className="mt-6 text-lg leading-8" style={{ color: BODY }}>
             Have a workflow you want to automate, a product idea, or just want to explore what AI can do for your business? Reach out — we'll map out the opportunity and tell you exactly what's possible.
-          </p>
-        </motion.div>
+          </motion.p>
+        </div>
 
         {/* Contact form and options */}
         <div className="mx-auto mt-16 max-w-4xl sm:mt-20">
           <div className="grid gap-8 lg:grid-cols-2">
             {/* Contact Form */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 0.4 }}
-              className="rounded-2xl border border-zinc-200 bg-zinc-100/50 p-8"
-            >
-              <h3 className="font-display text-xl font-semibold text-black">Send Us a Message</h3>
-              <p className="mt-2 text-sm text-zinc-600">Tell us about your project and we'll get back to you within 24 hours.</p>
-              
+            <motion.div {...reveal(0.1)} className={cardClass} style={cardSurface}>
+              <h3 className="text-xl font-medium tracking-tight" style={{ color: PAPER }}>
+                Send Us a Message
+              </h3>
+              <p className="mt-2 text-sm leading-relaxed" style={{ color: MUTED }}>
+                Tell us about your project and we'll get back to you within 24 hours.
+              </p>
+
               <form onSubmit={handleSubmit} className="mt-6 space-y-5">
                 {/* Name */}
-                <div>
-                  <label htmlFor="name" className="block text-sm font-medium text-zinc-700">
+                <motion.div {...fieldReveal(0)}>
+                  <label htmlFor="name" className={labelClass} style={{ color: MUTED }}>
                     Name *
                   </label>
                   <input
@@ -73,14 +137,15 @@ export default function Five() {
                     required
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    className="mt-2 block w-full rounded-lg border border-zinc-300 bg-zinc-100/50 px-4 py-2.5 text-black placeholder-zinc-500 focus:border-black focus:outline-none focus:ring-1 focus:ring-black"
+                    className={inputClass}
+                    style={{ color: PAPER }}
                     placeholder="Your name"
                   />
-                </div>
+                </motion.div>
 
                 {/* Email */}
-                <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-zinc-700">
+                <motion.div {...fieldReveal(1)}>
+                  <label htmlFor="email" className={labelClass} style={{ color: MUTED }}>
                     Email *
                   </label>
                   <input
@@ -89,14 +154,15 @@ export default function Five() {
                     required
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    className="mt-2 block w-full rounded-lg border border-zinc-300 bg-zinc-100/50 px-4 py-2.5 text-black placeholder-zinc-500 focus:border-black focus:outline-none focus:ring-1 focus:ring-black"
+                    className={inputClass}
+                    style={{ color: PAPER }}
                     placeholder="your@email.com"
                   />
-                </div>
+                </motion.div>
 
                 {/* Phone */}
-                <div>
-                  <label htmlFor="phone" className="block text-sm font-medium text-zinc-700">
+                <motion.div {...fieldReveal(2)}>
+                  <label htmlFor="phone" className={labelClass} style={{ color: MUTED }}>
                     Phone
                   </label>
                   <input
@@ -104,14 +170,15 @@ export default function Five() {
                     id="phone"
                     value={formData.phone}
                     onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                    className="mt-2 block w-full rounded-lg border border-zinc-300 bg-zinc-100/50 px-4 py-2.5 text-black placeholder-zinc-500 focus:border-black focus:outline-none focus:ring-1 focus:ring-black"
+                    className={inputClass}
+                    style={{ color: PAPER }}
                     placeholder="(555) 123-4567"
                   />
-                </div>
+                </motion.div>
 
                 {/* Project Details */}
-                <div>
-                  <label htmlFor="projectDetails" className="block text-sm font-medium text-zinc-700">
+                <motion.div {...fieldReveal(3)}>
+                  <label htmlFor="projectDetails" className={labelClass} style={{ color: MUTED }}>
                     Project Details *
                   </label>
                   <textarea
@@ -120,24 +187,27 @@ export default function Five() {
                     rows={4}
                     value={formData.projectDetails}
                     onChange={(e) => setFormData({ ...formData, projectDetails: e.target.value })}
-                    className="mt-2 block w-full rounded-lg border border-zinc-300 bg-zinc-100/50 px-4 py-2.5 text-black placeholder-zinc-500 focus:border-black focus:outline-none focus:ring-1 focus:ring-black"
+                    className={inputClass}
+                    style={{ color: PAPER }}
                     placeholder="Describe the problem you want AI to solve..."
                   />
-                </div>
+                </motion.div>
 
                 {/* File Upload */}
-                <div>
-                  <label htmlFor="file" className="block text-sm font-medium text-zinc-700">
+                <motion.div {...fieldReveal(4)}>
+                  <label htmlFor="file" className={labelClass} style={{ color: MUTED }}>
                     Upload File (Optional)
                   </label>
                   <div className="mt-2">
-                    <label className="flex cursor-pointer items-center justify-center rounded-lg border border-dashed border-zinc-300 bg-zinc-100/30 px-4 py-6 transition-colors hover:border-cyan-600 hover:bg-zinc-100/50">
+                    <label className="flex cursor-pointer items-center justify-center rounded-lg border border-dashed border-white/15 bg-white/[0.03] px-4 py-6 transition-colors hover:border-[#8B5CF6]/60 hover:bg-white/5">
                       <div className="text-center">
-                        <Paperclip className="mx-auto h-8 w-8 text-zinc-500" />
-                        <div className="mt-2 text-sm text-zinc-600">
+                        <Paperclip className="mx-auto h-7 w-7" style={{ color: MUTED }} />
+                        <div className="mt-2 text-sm" style={{ color: formData.file ? SPARK : BODY }}>
                           {formData.file ? formData.file.name : "Click to upload or drag and drop"}
                         </div>
-                        <div className="mt-1 text-xs text-zinc-500">PDF, PNG, JPG up to 10MB</div>
+                        <div className="mt-1 font-mono text-[10px] uppercase tracking-[0.15em]" style={{ color: `${MUTED}99` }}>
+                          PDF, PNG, JPG up to 10MB
+                        </div>
                       </div>
                       <input
                         type="file"
@@ -148,38 +218,42 @@ export default function Five() {
                       />
                     </label>
                   </div>
-                </div>
+                </motion.div>
 
                 {/* Submit Button */}
-                <button
-                  type="submit"
-                  className="w-full rounded-full bg-black px-6 py-3 text-base font-semibold text-white shadow-lg transition-all hover:scale-105 hover:shadow-xl"
-                >
-                  Contact Us
-                </button>
+                <motion.div {...fieldReveal(5)}>
+                  <button
+                    type="submit"
+                    className="group relative w-full overflow-hidden rounded-full px-6 py-3 text-sm font-bold transition-all hover:scale-[1.02] hover:brightness-110"
+                    style={{ backgroundColor: BLUE, color: "#0A0E27" }}
+                  >
+                    <span className="relative z-10">Contact Us</span>
+                    {/* shine sweep */}
+                    <span className="absolute inset-y-0 -left-1/2 z-0 w-1/3 -skew-x-12 bg-white/30 opacity-0 blur-sm transition-all duration-700 group-hover:left-full group-hover:opacity-100" />
+                  </button>
+                </motion.div>
               </form>
             </motion.div>
 
             {/* Alternative Options */}
             <div className="space-y-6">
               {/* Schedule a Call */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-100px" }}
-                transition={{ duration: 0.4, delay: 0.1 }}
-                className="rounded-2xl border border-zinc-200 bg-zinc-100/50 p-8 transition-all hover:border-black/50"
-              >
+              <motion.div {...reveal(0.2)} className={cardClass} style={cardSurface}>
                 <div className="flex items-start gap-4">
-                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-black/20 ring-1 ring-inset ring-black/30">
-                    <Calendar className="h-6 w-6 text-black" />
+                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-white/5">
+                    <Calendar className="h-6 w-6" style={{ color: MUTED }} />
                   </div>
                   <div className="flex-1">
-                    <h3 className="font-display text-lg font-semibold text-black">Schedule a Discovery Call</h3>
-                    <p className="mt-2 text-sm text-zinc-600">
+                    <h3 className="text-lg font-medium tracking-tight" style={{ color: PAPER }}>
+                      Schedule a Discovery Call
+                    </h3>
+                    <p className="mt-2 text-sm leading-relaxed" style={{ color: BODY }}>
                       Book a 30-minute call — we'll map your workflow and identify where AI creates the most leverage.
                     </p>
-                    <button className="mt-4 rounded-full border border-black/50 bg-black/10 px-5 py-2 text-sm font-semibold text-black transition-all hover:border-black hover:bg-black/20">
+                    <button
+                      className="mt-4 rounded-full border border-white/15 px-5 py-2 text-sm font-semibold transition-all hover:border-[#8B5CF6]/60 hover:text-[#8B5CF6]"
+                      style={{ color: BODY }}
+                    >
                       Book a Call
                     </button>
                   </div>
@@ -187,49 +261,56 @@ export default function Five() {
               </motion.div>
 
               {/* Direct Contact */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-100px" }}
-                transition={{ duration: 0.4, delay: 0.15 }}
-                className="rounded-2xl border border-zinc-200 bg-zinc-100/50 p-8"
-              >
-                <h3 className="font-display text-lg font-semibold text-black">Other Ways to Reach Us</h3>
+              <motion.div {...reveal(0.3)} className={cardClass} style={cardSurface}>
+                <h3 className="text-lg font-medium tracking-tight" style={{ color: PAPER }}>
+                  Other Ways to Reach Us
+                </h3>
                 <div className="mt-4 space-y-3">
-                  <div className="flex items-center gap-3 text-sm">
-                    <Mail className="h-5 w-5 text-black" />
-                    <a href="mailto:sales@blackstronghold.com" className="text-zinc-600 hover:text-black">
-                      sales@blackstronghold.com
-                    </a>
-                  </div>
-                  <div className="flex items-center gap-3 text-sm">
-                    <Phone className="h-5 w-5 text-black" />
-                    <a href="tel:+15551234567" className="text-zinc-600 hover:text-black">
-                      (555) 123-4567
-                    </a>
-                  </div>
-                  <div className="flex items-center gap-3 text-sm">
-                    <MapPin className="h-5 w-5 text-black" />
-                    <span className="text-zinc-600">
-                      Available Nationwide
-                    </span>
-                  </div>
+                  {(
+                    [
+                      [Mail, <a key="mail" href="mailto:sales@blackstronghold.com" className="transition-colors hover:text-[#EEF0FF]" style={{ color: BODY }}>sales@blackstronghold.com</a>],
+                      [Phone, <a key="phone" href="tel:+15551234567" className="transition-colors hover:text-[#EEF0FF]" style={{ color: BODY }}>(555) 123-4567</a>],
+                      [MapPin, <span key="map" style={{ color: BODY }}>Available Nationwide</span>],
+                    ] as const
+                  ).map(([Icon, content], i) => (
+                    <motion.div
+                      key={i}
+                      initial={{ opacity: 0, x: -10 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.5, delay: 0.4 + i * 0.12, ease: "easeOut" }}
+                      className="flex items-center gap-3 text-sm"
+                    >
+                      <Icon className="h-4 w-4" style={{ color: MUTED }} />
+                      {content}
+                    </motion.div>
+                  ))}
                 </div>
               </motion.div>
 
               {/* Response Time */}
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-100px" }}
-                transition={{ duration: 0.4, delay: 0.2 }}
-                className="rounded-2xl border border-zinc-200 bg-black/10 p-6 ring-1 ring-inset ring-black/20"
+                {...reveal(0.4)}
+                className="rounded-2xl border p-6 backdrop-blur-sm"
+                style={{ backgroundColor: `${SPARK}0D`, borderColor: `${SPARK}33` }}
               >
                 <div className="flex items-center gap-3">
-                  <Zap className="h-6 w-6 text-black" />
+                  <div className="relative flex h-10 w-10 shrink-0 items-center justify-center rounded-full" style={{ backgroundColor: `${SPARK}1A` }}>
+                    <motion.span
+                      animate={{ scale: [1, 1.6], opacity: [0.5, 0] }}
+                      transition={{ duration: 2, repeat: Infinity, ease: "easeOut" }}
+                      className="absolute inset-0 rounded-full"
+                      style={{ border: `1px solid ${SPARK}` }}
+                    />
+                    <Zap className="h-5 w-5" style={{ color: SPARK }} />
+                  </div>
                   <div>
-                    <div className="font-display font-semibold text-black">Fast Response Time</div>
-                    <div className="text-sm text-zinc-600">We typically respond within 24 hours</div>
+                    <div className="font-medium" style={{ color: PAPER }}>
+                      Fast Response Time
+                    </div>
+                    <div className="text-sm" style={{ color: BODY }}>
+                      We typically respond within <span style={{ color: SPARK }}>24 hours</span>
+                    </div>
                   </div>
                 </div>
               </motion.div>

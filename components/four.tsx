@@ -3,6 +3,23 @@
 import { motion } from "framer-motion";
 import { Search, Code, FlaskConical, Rocket } from "lucide-react";
 
+/* Palette tokens — mirrors three-wrapper.tsx */
+const INK = "#000000";
+const CARD = "#0E1335";
+const PAPER = "#EEF0FF";
+const BODY = "#C7CBEA";
+const MUTED = "#8B92C9";
+const BLUE = "#8B5CF6";
+const SPARK = "#34D399";
+
+/* Staggered fade-up on scroll — same cadence as the hero's entrance */
+const reveal = (delay: number) => ({
+  initial: { opacity: 0, y: 24 },
+  whileInView: { opacity: 1, y: 0 },
+  viewport: { once: true, margin: "-100px" },
+  transition: { duration: 0.8, delay, ease: "easeOut" as const },
+});
+
 export default function Four() {
   const steps = [
     {
@@ -32,56 +49,49 @@ export default function Four() {
   ];
 
   return (
-    <section id="process" className="relative bg-gradient-to-b from-zinc-50 via-zinc-100 to-zinc-50 py-24 sm:py-32">
-      {/* Background decoration */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(0,0,0,0.05),transparent_50%)]" />
-      
-      {/* Diagonal lines */}
-      <div className="absolute left-1/4 top-0 h-full w-px bg-gradient-to-b from-transparent via-black/20 to-transparent" />
-      <div className="absolute right-1/3 top-0 h-full w-px bg-gradient-to-b from-transparent via-black/20 to-transparent" />
-      
+    <section
+      id="process"
+      className="relative overflow-hidden py-24 sm:py-32"
+      style={{ backgroundColor: INK }}
+    >
+      {/* Background decoration — faint indigo glow + vertical guide lines */}
+      <div
+        className="absolute inset-0"
+        style={{ background: `radial-gradient(900px 600px at 50% 30%, ${BLUE}14, transparent 70%)` }}
+      />
+      <div
+        className="absolute left-1/4 top-0 h-full w-px"
+        style={{ background: `linear-gradient(transparent, ${MUTED}33, transparent)` }}
+      />
+      <div
+        className="absolute right-1/3 top-0 h-full w-px"
+        style={{ background: `linear-gradient(transparent, ${MUTED}33, transparent)` }}
+      />
+
       <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-8">
-        {/* Section header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.4 }}
-          className="mx-auto max-w-2xl text-center"
-        >
-          <div className="relative">
-            <span className="relative inline-flex items-center gap-2 rounded-full border border-black/30 bg-zinc-100/50 px-6 py-2 text-sm font-semibold text-black">
-              <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-black opacity-75"></span>
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-black"></span>
-              </span>
-              How We Work
-            </span>
-          </div>
-          <div className="relative max-w-4xl">
-            <div className="absolute -left-8 top-0 h-full w-1 bg-black opacity-50" />
-            <h1 className="font-display text-5xl font-black tracking-tight text-black sm:text-6xl lg:text-7xl">
-              From Problem{" "}
-              <span className="relative inline-block">
-                <span className="relative z-10 text-black">
-                  Statement
-                </span>
-              </span>
-              .{" "}
-              <br />
-              <span className="relative">
-                To{" "}
-                <span className="text-black">
-                  Production AI
-                </span>
-                .
-              </span>
-            </h1>
-          </div>
-          <p className="mt-6 text-lg leading-8 text-zinc-600">
+        {/* Section header — staggered reveal, hero-style */}
+        <div className="mx-auto max-w-2xl text-center">
+          <motion.span
+            {...reveal(0)}
+            className="inline-flex items-center gap-2.5 rounded-full border border-white/15 px-4 py-1.5 font-mono text-[11px] uppercase tracking-[0.35em] backdrop-blur-sm"
+            style={{ color: MUTED, backgroundColor: `${INK}66` }}
+          >
+            <span className="h-1.5 w-1.5 animate-pulse rounded-full" style={{ backgroundColor: SPARK }} />
+            How we work
+          </motion.span>
+          <motion.h2
+            {...reveal(0.1)}
+            className="mt-5 text-3xl font-semibold tracking-tight sm:text-4xl lg:text-5xl"
+            style={{ color: PAPER }}
+          >
+            From problem statement.{" "}
+            <br className="hidden sm:block" />
+            <span style={{ color: BLUE }}>To production AI.</span>
+          </motion.h2>
+          <motion.p {...reveal(0.2)} className="mt-6 text-lg leading-8" style={{ color: BODY }}>
             Our four-step process is fast, transparent, and engineered for impact — whether you're deploying your first AI tool or scaling across an entire organization.
-          </p>
-        </motion.div>
+          </motion.p>
+        </div>
 
         {/* Process steps */}
         <div className="mx-auto mt-16 max-w-5xl sm:mt-20">
@@ -95,52 +105,71 @@ export default function Four() {
                 transition={{ duration: 0.4, delay: index * 0.1 }}
                 className="group relative"
               >
-                {/* Animated connector line */}
+                {/* Animated connector line with a traveling pulse, echoing the hero's scroll cue */}
                 {index < steps.length - 1 && (
                   <motion.div
                     initial={{ height: 0 }}
                     whileInView={{ height: "100%" }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.4, delay: index * 0.1 + 0.2 }}
-                    className="absolute left-8 top-24 hidden w-1 overflow-hidden rounded-full bg-black/30 lg:block"
-                  />
+                    className="absolute left-8 top-24 hidden w-px overflow-hidden lg:block"
+                    style={{ background: `linear-gradient(${BLUE}80, ${BLUE}1A)` }}
+                  >
+                    <motion.div
+                      animate={{ y: ["-100%", "100%"] }}
+                      transition={{
+                        duration: 2.4,
+                        repeat: Infinity,
+                        ease: "easeInOut",
+                        delay: index * 0.8,
+                        repeatDelay: 1.2,
+                      }}
+                      className="h-full w-full"
+                      style={{ background: `linear-gradient(transparent 20%, ${SPARK} 50%, transparent 80%)` }}
+                    />
+                  </motion.div>
                 )}
-                
-                <div className="relative flex flex-col gap-6 overflow-hidden rounded-3xl border border-zinc-200/50 bg-zinc-100/80 p-8 transition-all hover:border-black/50 hover:shadow-2xl hover:shadow-black/10 lg:flex-row lg:items-start lg:gap-8">
-                  {/* Diagonal accent */}
-                  <div className="absolute -right-20 -top-20 h-40 w-40 rotate-45 bg-black/10" />
-                  
+
+                <div
+                  className="relative flex flex-col gap-6 overflow-hidden rounded-2xl border border-white/10 p-7 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-[#8B5CF6]/40 hover:shadow-[0_24px_64px_-24px_rgba(139,92,246,0.35)] sm:p-8 lg:flex-row lg:items-start lg:gap-8"
+                  style={{ backgroundColor: `${CARD}D9` }}
+                >
+                  {/* Corner glow accent */}
+                  <div
+                    className="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full opacity-60 blur-3xl transition-opacity duration-500 group-hover:opacity-100"
+                    style={{ background: `radial-gradient(circle, ${BLUE}26, transparent 70%)` }}
+                  />
+
                   {/* Step number and icon */}
                   <div className="relative flex shrink-0 flex-col items-center gap-4 lg:items-start">
-                    {/* Icon with glow */}
-                    <div className="relative">
-                      <div className="relative flex h-20 w-20 items-center justify-center rounded-2xl border-2 border-black/50 bg-black/20">
-                        <step.icon className="h-10 w-10 text-black" />
-                      </div>
+                    <div className="flex h-16 w-16 items-center justify-center rounded-2xl border border-white/10 bg-white/5">
+                      <step.icon className="h-7 w-7" style={{ color: MUTED }} />
                     </div>
-                    {/* Large number */}
-                    <div className="relative">
-                      <div className="text-7xl font-black text-black/20 lg:text-8xl">
-                        {step.number}
-                      </div>
-                      <div className="absolute inset-0 bg-gradient-to-b from-black/40 to-transparent bg-clip-text text-7xl font-black text-transparent lg:text-8xl">
-                        {step.number}
-                      </div>
+                    {/* Large mono number */}
+                    <div
+                      className="font-mono text-6xl font-semibold tabular-nums tracking-tight lg:text-7xl"
+                      style={{ color: `${BLUE}40` }}
+                    >
+                      {step.number}
                     </div>
                   </div>
 
                   {/* Content */}
                   <div className="flex-1 text-center lg:text-left">
-                    <h3 className="font-display text-2xl font-bold text-black sm:text-3xl">
+                    <div className="hidden items-center justify-center gap-2 font-mono text-[10px] uppercase tracking-[0.25em] lg:flex lg:justify-start" style={{ color: `${MUTED}B3` }}>
+                      <span className="h-1 w-1 animate-pulse rounded-full" style={{ backgroundColor: SPARK }} />
+                      Step {step.number}
+                    </div>
+                    <h3
+                      className="mt-1 text-xl font-medium leading-snug tracking-tight sm:text-2xl"
+                      style={{ color: PAPER }}
+                    >
                       {step.title}
                     </h3>
-                    <p className="mt-4 text-base leading-7 text-zinc-600 sm:text-lg">
+                    <p className="mt-4 text-base leading-7" style={{ color: BODY }}>
                       {step.description}
                     </p>
                   </div>
-
-                  {/* Animated hover effect */}
-                  <div className="absolute inset-0 -z-10 rounded-3xl bg-black/0 opacity-0 transition-opacity group-hover:opacity-20" />
                 </div>
               </motion.div>
             ))}
@@ -155,10 +184,13 @@ export default function Four() {
           transition={{ duration: 0.4, delay: 0.3 }}
           className="mt-16 flex justify-center"
         >
-          <button className="group relative overflow-hidden rounded-full bg-black px-8 py-4 text-base font-bold text-white shadow-2xl shadow-black/50 transition-all hover:scale-105 hover:shadow-black/70">
-            <span className="relative z-10">Start Building</span>
-            <div className="absolute inset-0 -z-0 bg-gray-800 opacity-0 transition-opacity group-hover:opacity-100" />
-          </button>
+          <a
+            href="#contact"
+            className="rounded-full px-8 py-4 text-sm font-bold transition-all hover:scale-105 hover:brightness-110"
+            style={{ backgroundColor: BLUE, color: "#0A0E27" }}
+          >
+            Start Building
+          </a>
         </motion.div>
       </div>
     </section>
