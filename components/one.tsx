@@ -35,7 +35,7 @@ export default function One({ secondImageOpacity }: OneProps) {
 
           {/* Subheading */}
           <p className="max-w-3xl text-lg leading-8 text-black/90 sm:text-xl">
-            BlackStronghold engineers AI-powered SaaS products that automate the work slowing you down — from lead capture and ticket triage to real-time tracking. Ready-to-deploy apps, built for results.
+            BlackStronghold builds AI-powered web apps that automate the work slowing you down — from lead capture and ticket triage to real-time tracking. Ready-to-deploy, built for results.
           </p>
 
           {/* CTA buttons */}

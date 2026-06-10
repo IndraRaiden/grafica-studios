@@ -58,7 +58,7 @@ export default function Footer() {
               <img src="/studios.svg" alt="BlackStronghold" className="h-10 w-auto brightness-0 invert" />
             </a>
             <p className="text-sm text-white/50 font-light leading-relaxed max-w-sm mb-8">
-              AI-powered SaaS products built to automate operations, accelerate sales, and scale businesses — from leads to logistics.
+              AI-powered web apps built to automate operations, accelerate sales, and scale businesses — from leads to logistics.
             </p>
             <div className="space-y-4">
               <div className="flex items-center gap-3 text-sm text-white/70">

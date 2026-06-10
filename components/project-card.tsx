@@ -1,7 +1,6 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { LucideIcon } from "lucide-react";
 
 interface ProjectCardProps {
   title: string;
@@ -9,7 +8,8 @@ interface ProjectCardProps {
   problem: string;
   solution: string;
   result: string;
-  image?: string;
+  stat: string;
+  statLabel: string;
   index: number;
 }
 
@@ -19,102 +19,83 @@ export default function ProjectCard({
   problem,
   solution,
   result,
-  image,
-  index
+  stat,
+  statLabel,
+  index,
 }: ProjectCardProps) {
   return (
     <motion.div
-      initial={{ opacity: 0, x: -30 }}
-      whileInView={{ opacity: 1, x: 0 }}
-      viewport={{ once: true, margin: "-100px" }}
-      transition={{ duration: 0.4, delay: index * 0.08 }}
-      className="group relative flex flex-col overflow-hidden rounded-3xl border border-black/10 bg-black/[0.02] transition-all hover:border-black/30 hover:shadow-xl hover:shadow-black/10 md:flex-row"
+      initial={{ opacity: 0, y: 24 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-60px" }}
+      transition={{ duration: 0.6, delay: index * 0.06, ease: "easeOut" }}
+      className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-white/10 bg-zinc-950"
     >
-      {/* Image/Visual Section - Left side on desktop, top on mobile */}
-      <div className="relative h-64 w-full overflow-hidden bg-black/10 md:h-auto md:w-80">
-        {image ? (
-          <img 
-            src={image} 
-            alt={title}
-            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
-          />
-        ) : (
-          <div className="flex h-full w-full items-center justify-center">
-            <div className="text-center">
-              <div className="text-6xl font-black text-black/10">
-                {String(index + 1).padStart(2, '0')}
-              </div>
-              <div className="mt-2 text-sm font-semibold text-black/50">
-                {category}
-              </div>
-            </div>
-          </div>
-        )}
-        
-        {/* Gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-r from-transparent to-zinc-50/20" />
+      {/* Subtle grid texture */}
+      <div
+        className="pointer-events-none absolute inset-0 opacity-[0.03]"
+        style={{
+          backgroundImage:
+            "linear-gradient(rgba(255,255,255,1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,1) 1px, transparent 1px)",
+          backgroundSize: "32px 32px",
+        }}
+      />
+
+      {/* Top section */}
+      <div className="relative flex items-start justify-between gap-4 p-6 pb-0">
+        {/* Category badge */}
+        <span className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-white/50">
+          <span className="h-1.5 w-1.5 rounded-full bg-white/40" />
+          {category}
+        </span>
+
+        {/* Big stat */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.7, delay: 0.2 + index * 0.06, ease: "easeOut" }}
+          className="text-right"
+        >
+          <div className="text-4xl font-black leading-none text-white">{stat}</div>
+          <div className="mt-1 text-[11px] text-white/30">{statLabel}</div>
+        </motion.div>
       </div>
 
-      {/* Content Section - Right side on desktop, bottom on mobile */}
-      <div className="flex flex-1 flex-col p-8 md:p-10">
-        {/* Header */}
-        <div className="mb-6">
-          <div className="inline-flex items-center gap-2 rounded-full border border-black/30 bg-black/10 px-3 py-1">
-            <div className="h-1.5 w-1.5 rounded-full bg-black" />
-            <span className="text-xs font-semibold uppercase tracking-wider text-black">
-              {category}
-            </span>
-          </div>
-          <h3 className="font-display mt-4 text-2xl font-bold text-black md:text-3xl">
-            {title}
-          </h3>
-        </div>
+      {/* Title */}
+      <div className="relative px-6 pt-5">
+        <h3 className="text-xl font-bold leading-tight text-white sm:text-2xl">{title}</h3>
+      </div>
 
-        {/* Details Grid */}
-        <div className="flex flex-1 flex-col gap-6">
-          <div className="space-y-2">
-            <div className="flex items-center gap-2">
-              <div className="h-1 w-1 rounded-full bg-black" />
-              <span className="text-sm font-semibold text-black">Challenge</span>
-            </div>
-            <p className="text-sm leading-relaxed text-zinc-600 md:text-base">
-              {problem}
-            </p>
-          </div>
-          
-          <div className="space-y-2">
-            <div className="flex items-center gap-2">
-              <div className="h-1 w-1 rounded-full bg-black" />
-              <span className="text-sm font-semibold text-black">Solution</span>
-            </div>
-            <p className="text-sm leading-relaxed text-zinc-600 md:text-base">
-              {solution}
-            </p>
-          </div>
-          
-          {/* Result Badge */}
-          <div className="mt-auto">
-            <div className="relative overflow-hidden rounded-xl border border-black/30 bg-black/10 p-4">
-              <div className="absolute inset-0 bg-black/5" />
-              <div className="relative">
-                <div className="flex items-center gap-2">
-                  <div className="h-1 w-1 rounded-full bg-black" />
-                  <span className="text-xs font-semibold uppercase tracking-wider text-black">
-                    Result
-                  </span>
-                </div>
-                <p className="mt-2 text-base font-semibold text-black md:text-lg">
-                  {result}
-                </p>
-              </div>
-            </div>
-          </div>
+      {/* Divider */}
+      <div className="mx-6 mt-5 border-t border-white/[0.08]" />
+
+      {/* Problem / Solution */}
+      <div className="relative grid flex-1 grid-cols-2 gap-px p-6 pt-5">
+        <div className="flex flex-col gap-2 pr-4">
+          <span className="text-[10px] font-bold uppercase tracking-widest text-white/25">Problem</span>
+          <p className="text-sm leading-relaxed text-white/50">{problem}</p>
+        </div>
+        <div className="flex flex-col gap-2 border-l border-white/[0.08] pl-4">
+          <span className="text-[10px] font-bold uppercase tracking-widest text-white/25">Solution</span>
+          <p className="text-sm leading-relaxed text-white/50">{solution}</p>
         </div>
       </div>
 
-      {/* Decorative elements */}
-      <div className="absolute right-0 top-0 h-32 w-32 bg-black/5" />
-      <div className="absolute bottom-0 left-0 h-24 w-24 bg-black/5" />
+      {/* Result strip */}
+      <div className="relative mx-4 mb-4 overflow-hidden rounded-xl border border-white/10 bg-white/[0.04] px-4 py-3">
+        <motion.div
+          initial={{ width: 0 }}
+          whileInView={{ width: "100%" }}
+          viewport={{ once: true }}
+          transition={{ duration: 1.4, delay: 0.4 + index * 0.06, ease: "easeOut" }}
+          className="absolute inset-y-0 left-0 bg-white/[0.04]"
+        />
+        <div className="relative flex items-start gap-2.5">
+          <span className="mt-0.5 text-green-400 text-xs">✓</span>
+          <p className="text-sm font-medium text-white/70">{result}</p>
+        </div>
+      </div>
     </motion.div>
   );
 }
