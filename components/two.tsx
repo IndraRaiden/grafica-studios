@@ -18,95 +18,93 @@ const ROYAL = "#4C1D95"; // deep undercurrent
 const SPARK = "#34D399"; // reserved: results, packets, progress
 
 /* ------------------------------------------------------------------ */
-/* Flow field — same layered seamless currents as three-wrapper        */
+/* Circuit field — board traces with light pulses routing through them */
 /* ------------------------------------------------------------------ */
 
-const FIELD_W = 4800;
-const FIELD_H = 600;
-
-/** Seamless periodic wave: repeats every `p` units, so a translateX(-p)
- *  loop is invisible. Cubic tangents match at every joint. */
-function wavePath(y: number, amp: number, p: number): string {
-  const reps = Math.ceil(FIELD_W / p) + 1;
-  const c1 = Math.round(p / 3);
-  const c2 = Math.round((2 * p) / 3);
-  let d = `M0 ${y}`;
-  for (let i = 0; i < reps; i++) d += ` c${c1} ${-amp} ${c2} ${amp} ${p} 0`;
-  return d;
-}
-
-interface Wave {
-  y: number;
-  amp: number;
-  p: number; // period (== loop distance)
-  w: number; // stroke width
+interface Trace {
+  d: string; // pulse travels in path direction — write right-to-left to reverse
   color: string;
-  o: number; // opacity
-  dur: number; // drift duration (s)
-  floatDur?: number; // optional vertical breathing (s)
-  dash?: { array: string; loop: number; dur: number };
+  dur: number; // seconds per pulse lap
+  delay: number; // negative phase offset so pulses are mid-route on load
 }
 
-const WAVES: Wave[] = [
-  { y: 300, amp: 70, p: 520, w: 90, color: ROYAL, o: 0.14, dur: 38 }, // undercurrent
-  { y: 120, amp: 30, p: 420, w: 1, color: MUTED, o: 0.16, dur: 30 },
-  { y: 210, amp: 52, p: 360, w: 1.5, color: BLUE, o: 0.32, dur: 22, floatDur: 11 },
-  { y: 262, amp: 60, p: 320, w: 2, color: BLUE, o: 0.6, dur: 16, floatDur: 9 }, // hero line
-  { y: 380, amp: 46, p: 460, w: 1.25, color: VIOLET, o: 0.3, dur: 26 },
-  { y: 470, amp: 34, p: 400, w: 1, color: MUTED, o: 0.14, dur: 34, floatDur: 13 },
-  {
-    y: 252,
-    amp: 58,
-    p: 320,
-    w: 3,
-    color: SPARK,
-    o: 0.9,
-    dur: 18,
-    dash: { array: "0 26", loop: 520, dur: 7 }, // 26 × 20 → seamless offset loop
-  },
+const TRACES: Trace[] = [
+  { d: "M0,80 H520 L580,140 H1440", color: BLUE, dur: 11, delay: 0 },
+  { d: "M1440,210 H980 L920,270 H360 L300,210 H0", color: VIOLET, dur: 14, delay: 4 },
+  { d: "M0,420 H240 L300,480 H1100 L1160,420 H1440", color: SPARK, dur: 13, delay: 7 },
+  { d: "M1440,560 H900 L840,620 H0", color: BLUE, dur: 16, delay: 2 },
+  { d: "M0,700 H660 L720,760 H1440", color: VIOLET, dur: 12, delay: 9 },
+  { d: "M1440,860 H1080 L1020,800 H420 L360,860 H0", color: SPARK, dur: 18, delay: 5 },
+  { d: "M180,0 V300 L240,360 V900", color: MUTED, dur: 20, delay: 3 },
+  { d: "M1260,900 V520 L1200,460 V0", color: BLUE, dur: 22, delay: 11 },
 ];
 
-function FlowField() {
+/* Junction nodes sit on trace corners and blink as pulses pass */
+const NODES = [
+  { x: 580, y: 140, color: BLUE, dur: 4, delay: 0 },
+  { x: 300, y: 210, color: VIOLET, dur: 5, delay: 1.2 },
+  { x: 1160, y: 420, color: SPARK, dur: 4.5, delay: 2.1 },
+  { x: 840, y: 620, color: BLUE, dur: 5.5, delay: 0.7 },
+  { x: 720, y: 760, color: VIOLET, dur: 4, delay: 2.8 },
+  { x: 240, y: 360, color: MUTED, dur: 6, delay: 1.6 },
+  { x: 1020, y: 800, color: SPARK, dur: 5, delay: 3.4 },
+  { x: 1200, y: 460, color: BLUE, dur: 4.8, delay: 0.4 },
+];
+
+function CircuitField() {
   return (
     <svg
-      data-flow-svc
+      data-circuit
       aria-hidden="true"
-      className="absolute left-0 top-0 h-full"
-      style={{ width: FIELD_W }}
-      viewBox={`0 0 ${FIELD_W} ${FIELD_H}`}
+      className="absolute inset-0 h-full w-full"
+      viewBox="0 0 1440 900"
       preserveAspectRatio="none"
       fill="none"
     >
-      {WAVES.map((wv, i) => (
-        <g
-          key={i}
-          style={
-            {
-              "--p": wv.p,
-              animation: `svc-flow-x ${wv.dur}s linear infinite`,
-            } as React.CSSProperties
-          }
-        >
+      {TRACES.map((t, i) => (
+        <g key={i}>
+          {/* dormant trace */}
           <path
-            d={wavePath(wv.y, wv.amp, wv.p)}
-            stroke={wv.color}
-            strokeWidth={wv.w}
-            strokeLinecap={wv.dash ? "round" : "butt"}
-            strokeDasharray={wv.dash?.array}
-            opacity={wv.o}
-            style={
-              {
-                "--d": wv.dash?.loop ?? 0,
-                animation: [
-                  wv.floatDur ? `svc-flow-y ${wv.floatDur}s ease-in-out infinite alternate` : "",
-                  wv.dash ? `svc-dash-x ${wv.dash.dur}s linear infinite` : "",
-                ]
-                  .filter(Boolean)
-                  .join(", ") || undefined,
-              } as React.CSSProperties
-            }
+            d={t.d}
+            stroke="rgba(238,240,255,0.06)"
+            strokeWidth="1"
+            vectorEffect="non-scaling-stroke"
+          />
+          {/* glow under the pulse */}
+          <path
+            d={t.d}
+            stroke={t.color}
+            strokeWidth="5"
+            opacity="0.22"
+            pathLength={100}
+            strokeDasharray="6 94"
+            strokeLinecap="round"
+            vectorEffect="non-scaling-stroke"
+            style={{ animation: `svc-trace ${t.dur}s linear infinite`, animationDelay: `-${t.delay}s` }}
+          />
+          {/* the pulse itself */}
+          <path
+            d={t.d}
+            stroke={t.color}
+            strokeWidth="1.5"
+            opacity="0.9"
+            pathLength={100}
+            strokeDasharray="6 94"
+            strokeLinecap="round"
+            vectorEffect="non-scaling-stroke"
+            style={{ animation: `svc-trace ${t.dur}s linear infinite`, animationDelay: `-${t.delay}s` }}
           />
         </g>
+      ))}
+      {NODES.map((n, i) => (
+        <circle
+          key={i}
+          cx={n.x}
+          cy={n.y}
+          r="2.5"
+          fill={n.color}
+          style={{ animation: `svc-node ${n.dur}s ease-in-out infinite`, animationDelay: `${n.delay}s` }}
+        />
       ))}
     </svg>
   );
@@ -393,22 +391,26 @@ export default function Two() {
       style={{ backgroundColor: INK }}
     >
       <style>{`
-        @keyframes svc-flow-x { to { transform: translateX(calc(var(--p) * -1px)); } }
-        @keyframes svc-flow-y { from { transform: translateY(-9px); } to { transform: translateY(9px); } }
-        @keyframes svc-dash-x { to { stroke-dashoffset: calc(var(--d) * -1px); } }
+        @keyframes svc-trace { from { stroke-dashoffset: 100; } to { stroke-dashoffset: 0; } }
+        @keyframes svc-node { 0%, 100% { opacity: 0.12; } 50% { opacity: 0.75; } }
         @media (prefers-reduced-motion: reduce) {
-          [data-flow-svc] g, [data-flow-svc] path { animation: none !important; }
+          [data-circuit] path, [data-circuit] circle { animation: none !important; }
         }
       `}</style>
 
-      {/* Flowing current field */}
+      {/* Circuit board — dormant traces, traveling light pulses, blinking junctions */}
       <div className="pointer-events-none absolute inset-0" aria-hidden="true">
-        <FlowField />
-        {/* keeps text legible where the field is densest */}
+        {/* single calm light dome anchoring the section */}
+        <div
+          className="absolute inset-x-0 top-0 h-[60%]"
+          style={{ background: `radial-gradient(ellipse 55% 45% at 50% 0%, ${VIOLET}21, transparent 70%)` }}
+        />
+        <CircuitField />
+        {/* keeps text legible where traces run behind copy */}
         <div
           className="absolute inset-0"
           style={{
-            background: `radial-gradient(1200px 500px at 18% 0%, ${INK}00 0%, ${INK}66 70%), linear-gradient(${INK}B3 0%, ${INK}00 30%, ${INK}00 70%, ${INK}B3 100%)`,
+            background: `linear-gradient(${INK}99 0%, ${INK}00 25%, ${INK}00 75%, ${INK}B3 100%)`,
           }}
         />
       </div>

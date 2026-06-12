@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { animate, motion, useInView, useMotionTemplate, useSpring } from "framer-motion";
 
 /* ------------------------------------------------------------------ */
 /* Types — same public contract as before, plus optional copy props    */
@@ -133,15 +134,81 @@ function FlowField() {
 }
 
 /* ------------------------------------------------------------------ */
-/* Card                                                                */
+/* Stat — counts up from zero when it scrolls into view                */
+/* ------------------------------------------------------------------ */
+
+function StatValue({ value }: { value: string }) {
+  const wrapRef = useRef<HTMLSpanElement>(null);
+  const numRef = useRef<HTMLSpanElement>(null);
+  const inView = useInView(wrapRef, { once: true, margin: "-15% 0px" });
+
+  const m = value.match(/-?\d[\d,]*(\.\d+)?/);
+  const num = m ? parseFloat(m[0].replace(/,/g, "")) : null;
+  const prefix = m ? value.slice(0, m.index) : value;
+  const suffix = m ? value.slice((m.index ?? 0) + m[0].length) : "";
+  const decimals = m?.[1] ? m[1].length - 1 : 0;
+
+  useEffect(() => {
+    if (!inView || num === null || !numRef.current) return;
+    const node = numRef.current;
+    const controls = animate(0, num, {
+      duration: 1.6,
+      ease: [0.22, 1, 0.36, 1],
+      onUpdate: (v) => {
+        node.textContent = v.toFixed(decimals);
+      },
+    });
+    return () => controls.stop();
+  }, [inView, num, decimals]);
+
+  return (
+    <span ref={wrapRef}>
+      {prefix}
+      {num !== null && <span ref={numRef}>{(0).toFixed(decimals)}</span>}
+      {suffix}
+    </span>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/* Card — 3D pointer tilt with a glare sweep                           */
 /* ------------------------------------------------------------------ */
 
 function CaseCard({ project }: { project: Project }) {
+  const rotateX = useSpring(0, { stiffness: 150, damping: 20 });
+  const rotateY = useSpring(0, { stiffness: 150, damping: 20 });
+  const glareX = useSpring(50, { stiffness: 120, damping: 22 });
+  const glareY = useSpring(50, { stiffness: 120, damping: 22 });
+  const glare = useMotionTemplate`radial-gradient(460px circle at ${glareX}% ${glareY}%, rgba(238,240,255,0.08), transparent 65%)`;
+
+  const onMouseMove = (e: React.MouseEvent<HTMLElement>) => {
+    const r = e.currentTarget.getBoundingClientRect();
+    const px = (e.clientX - r.left) / r.width;
+    const py = (e.clientY - r.top) / r.height;
+    rotateY.set((px - 0.5) * 5);
+    rotateX.set(-(py - 0.5) * 5);
+    glareX.set(px * 100);
+    glareY.set(py * 100);
+  };
+  const onMouseLeave = () => {
+    rotateX.set(0);
+    rotateY.set(0);
+  };
+
   return (
-    <article
-      className="group flex h-full flex-col rounded-2xl border border-white/10 p-7 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-[#3A9AFF]/40 hover:shadow-[0_24px_64px_-24px_rgba(58,154,255,0.35)] sm:p-8"
-      style={{ backgroundColor: `${CARD}D9` }}
+    <motion.article
+      onMouseMove={onMouseMove}
+      onMouseLeave={onMouseLeave}
+      style={{ rotateX, rotateY, transformStyle: "preserve-3d", backgroundColor: `${CARD}D9` }}
+      className="group relative flex h-full flex-col rounded-2xl border border-white/10 p-7 backdrop-blur-sm transition-[border-color,box-shadow] duration-300 hover:border-[#8B5CF6]/40 hover:shadow-[0_24px_64px_-24px_rgba(139,92,246,0.45)] sm:p-8"
     >
+      {/* glare sweep — follows the pointer across the card surface */}
+      <motion.div
+        aria-hidden="true"
+        style={{ background: glare }}
+        className="pointer-events-none absolute inset-0 rounded-2xl opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+      />
+
       <div className="flex items-center justify-between gap-4">
         <span className="font-mono text-xs tracking-wide" style={{ color: PAPER }}>
           {project.client}
@@ -166,7 +233,7 @@ function CaseCard({ project }: { project: Project }) {
           className="font-mono text-5xl font-semibold tabular-nums tracking-tight sm:text-6xl"
           style={{ color: BLUE }}
         >
-          {project.stat}
+          <StatValue value={project.stat} />
         </div>
         <div className="mt-1.5 text-xs" style={{ color: MUTED }}>
           {project.statLabel}
@@ -194,7 +261,7 @@ function CaseCard({ project }: { project: Project }) {
           </div>
         ))}
       </dl>
-    </article>
+    </motion.article>
   );
 }
 
@@ -229,6 +296,14 @@ export default function ThreeWrapper({
     if (fieldRef.current)
       fieldRef.current.style.transform = `translateX(${-el.scrollLeft * 0.1}px)`;
 
+    /* Cover-flow depth: cards recede as they leave the track's center */
+    const mid = el.scrollLeft + el.clientWidth / 2;
+    el.querySelectorAll<HTMLElement>("[data-card]").forEach((c) => {
+      const n = Math.max(-1, Math.min(1, (c.offsetLeft + c.offsetWidth / 2 - mid) / el.clientWidth));
+      c.style.transform = `scale(${(1 - Math.abs(n) * 0.07).toFixed(3)}) rotateY(${(-n * 5).toFixed(2)}deg)`;
+      c.style.opacity = (1 - Math.abs(n) * 0.38).toFixed(3);
+    });
+
     const idx = Math.min(projects.length - 1, Math.max(0, Math.round(p * (projects.length - 1))));
     setActive((prev) => (prev === idx ? prev : idx));
 
@@ -239,6 +314,8 @@ export default function ThreeWrapper({
 
   useEffect(() => {
     syncScroll();
+    window.addEventListener("resize", syncScroll);
+    return () => window.removeEventListener("resize", syncScroll);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [projects.length]);
 
@@ -302,6 +379,19 @@ export default function ThreeWrapper({
         <div ref={fieldRef} className="h-full will-change-transform">
           <FlowField />
         </div>
+        {/* breathing ambient glows — slow depth behind the currents */}
+        <motion.div
+          animate={{ opacity: [0.25, 0.55, 0.25], scale: [1, 1.18, 1] }}
+          transition={{ duration: 16, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute -left-40 top-1/4 h-[480px] w-[480px] rounded-full"
+          style={{ background: `radial-gradient(circle, ${VIOLET}40, transparent 70%)` }}
+        />
+        <motion.div
+          animate={{ opacity: [0.45, 0.2, 0.45], scale: [1.1, 1, 1.1] }}
+          transition={{ duration: 13, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute -right-32 bottom-0 h-[420px] w-[420px] rounded-full"
+          style={{ background: `radial-gradient(circle, ${BLUE}30, transparent 70%)` }}
+        />
         {/* keeps text legible where the field is densest */}
         <div
           className="absolute inset-0"
@@ -312,7 +402,13 @@ export default function ThreeWrapper({
       </div>
 
       {/* Header */}
-      <div className="relative z-10 flex items-end justify-between gap-6 px-6 pt-16 sm:px-8 sm:pt-20 lg:px-12">
+      <motion.div
+        initial={{ opacity: 0, y: 28, filter: "blur(8px)" }}
+        whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+        viewport={{ once: true, margin: "-10% 0px" }}
+        transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+        className="relative z-10 flex items-end justify-between gap-6 px-6 pt-16 sm:px-8 sm:pt-20 lg:px-12"
+      >
         <div>
           <p
             className="font-mono text-[11px] uppercase tracking-[0.35em]"
@@ -336,14 +432,14 @@ export default function ThreeWrapper({
               aria-label={dir === 1 ? "Next case study" : "Previous case study"}
               onClick={() => page(dir)}
               disabled={dir === 1 ? edges.end : edges.start}
-              className="flex size-10 items-center justify-center rounded-full border border-white/15 transition-colors hover:border-[#FFF15E]/70 hover:text-[#FFF15E] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FFF15E]/60 disabled:pointer-events-none disabled:opacity-30"
+              className="flex size-10 items-center justify-center rounded-full border border-white/15 transition-colors hover:border-[#34D399]/70 hover:text-[#34D399] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#34D399]/60 disabled:pointer-events-none disabled:opacity-30"
               style={{ color: BODY }}
             >
               {arrow(dir)}
             </button>
           ))}
         </div>
-      </div>
+      </motion.div>
 
       {/* Track */}
       <div
@@ -359,15 +455,25 @@ export default function ThreeWrapper({
         }}
         tabIndex={0}
         aria-label="Case studies carousel"
+        style={{ perspective: "1400px" }}
         className="cs-track relative z-10 flex cursor-grab select-none gap-5 overflow-x-auto px-6 py-12 active:cursor-grabbing focus-visible:outline-none sm:px-8 lg:px-12"
       >
         {projects.map((project, index) => (
           <div
             key={`${project.client}-${index}`}
             data-card
-            className="w-[88vw] flex-shrink-0 sm:w-[70vw] lg:w-[42vw] xl:w-[36vw]"
+            style={{ perspective: "1000px" }}
+            className="w-[88vw] flex-shrink-0 will-change-transform sm:w-[70vw] lg:w-[42vw] xl:w-[36vw]"
           >
-            <CaseCard project={project} />
+            <motion.div
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-8% 0px" }}
+              transition={{ duration: 0.7, delay: Math.min(index, 3) * 0.1, ease: [0.22, 1, 0.36, 1] }}
+              className="h-full"
+            >
+              <CaseCard project={project} />
+            </motion.div>
           </div>
         ))}
       </div>
