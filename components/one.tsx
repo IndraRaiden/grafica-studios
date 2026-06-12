@@ -1,6 +1,12 @@
 "use client";
 
-import { motion, MotionValue, useTransform } from "framer-motion";
+import {
+  motion,
+  MotionValue,
+  useMotionTemplate,
+  useSpring,
+  useTransform,
+} from "framer-motion";
 
 /* Palette tokens — mirrors three-wrapper.tsx */
 const INK = "#000000";
@@ -15,7 +21,7 @@ interface OneProps {
   progress: MotionValue<number>;
 }
 
-/* Entrance: blur-in rise with an easeOutQuint-style curve */
+/* Entrance: blur-in rise — delays wait for the curtains to part */
 const reveal = (delay: number) => ({
   initial: { opacity: 0, y: 28, filter: "blur(10px)" },
   animate: { opacity: 1, y: 0, filter: "blur(0px)" },
@@ -23,13 +29,15 @@ const reveal = (delay: number) => ({
 });
 
 export default function One({ progress }: OneProps) {
-  /* Act II — trial.jpg arrives settling: fades in while easing from 1.18× and drifting up */
-  const secondImageOpacity = useTransform(progress, [0.3, 0.62], [0, 1]);
-  const secondImageScale = useTransform(progress, [0.3, 0.95], [1.18, 1]);
-  const secondImageY = useTransform(progress, [0.3, 0.95], [60, 0]);
-
-  /* Vignette dips like a cinema cut at the heart of the dissolve */
-  const vignetteOpacity = useTransform(progress, [0.3, 0.46, 0.62], [0, 0.45, 0]);
+  /* ---- THE DEVELOP — scroll pulls the camera back while color burns in ---- */
+  const imageScale = useTransform(progress, [0, 0.85], [1.4, 1]);
+  const imageY = useTransform(progress, [0, 0.85], [80, 0]);
+  const imageRotate = useTransform(progress, [0, 0.85], [2, 0]);
+  const saturation = useTransform(progress, [0.05, 0.5], [0, 1.08]);
+  const brightness = useTransform(progress, [0.05, 0.5], [0.78, 1]);
+  const imageFilter = useMotionTemplate`saturate(${saturation}) brightness(${brightness})`;
+  /* violet duotone wash — burns away as the scene develops */
+  const duotoneOpacity = useTransform(progress, [0.05, 0.5], [0.85, 0]);
 
   /* Depth-staggered parallax — top layers detach first, CTAs linger */
   const eyebrowY = useTransform(progress, [0, 1], [0, -90]);
@@ -38,23 +46,65 @@ export default function One({ progress }: OneProps) {
   const ctaY = useTransform(progress, [0, 1], [0, -18]);
 
   /* Content bows out just before the sticky frame releases */
-  const contentOpacity = useTransform(progress, [0.8, 1], [1, 0]);
+  const contentOpacity = useTransform(progress, [0.78, 0.97], [1, 0]);
+
+  /* Letterbox bars close the scene as the frame releases */
+  const barTopY = useTransform(progress, [0.86, 1], ["-100%", "0%"]);
+  const barBottomY = useTransform(progress, [0.86, 1], ["100%", "0%"]);
 
   /* Scroll cue dies the moment scrolling starts */
   const cueOpacity = useTransform(progress, [0, 0.06], [1, 0]);
 
-  /* Progress rail + live counter */
+  /* Progress rail — live counter + phase readout */
   const pct = useTransform(progress, (v) =>
     String(Math.min(100, Math.max(0, Math.round(v * 100)))).padStart(2, "0")
   );
+  const phase = useTransform(progress, (v): string => (v < 0.5 ? "developing" : "in focus"));
+
+  /* ---- Pointer choreography — the scene leans with the cursor ---- */
+  const mouseX = useSpring(0, { stiffness: 50, damping: 20 });
+  const spotX = useSpring(50, { stiffness: 50, damping: 20 });
+  const spotY = useSpring(38, { stiffness: 50, damping: 20 });
+  const imageX = useTransform(mouseX, [-0.5, 0.5], [18, -18]);
+  const contentX = useTransform(mouseX, [-0.5, 0.5], [-10, 10]);
+  const spotlight = useMotionTemplate`radial-gradient(640px circle at ${spotX}% ${spotY}%, ${BLUE}26, transparent 70%)`;
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLElement>) => {
+    const nx = e.clientX / window.innerWidth;
+    mouseX.set(nx - 0.5);
+    spotX.set(nx * 100);
+    spotY.set((e.clientY / window.innerHeight) * 100);
+  };
 
   return (
-    <section id="home" className="relative flex min-h-screen items-center justify-center overflow-hidden">
-      {/* Second Background Image — settles into frame as the first dissolves */}
+    <section
+      id="home"
+      onMouseMove={handleMouseMove}
+      className="relative flex min-h-screen items-center justify-center overflow-hidden"
+    >
+      {/* Backdrop — single scene that develops from violet monochrome to full color */}
       <motion.div
-        style={{ opacity: secondImageOpacity, scale: secondImageScale, y: secondImageY }}
-        className="absolute inset-0 z-0 will-change-transform"
+        initial={{ opacity: 0, scale: 1.12, filter: "blur(18px)" }}
+        animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+        transition={{ duration: 1.6, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+        className="absolute inset-0 z-0"
       >
+        <motion.div
+          style={{ scale: imageScale, y: imageY, x: imageX, rotate: imageRotate, filter: imageFilter }}
+          className="absolute inset-0 will-change-transform"
+        >
+          <img
+            src="/trial.jpg"
+            alt="BlackStronghold Background"
+            className="h-full w-full object-cover"
+          />
+          {/* duotone wash — paints the grayscale frame in brand violet until it develops */}
+          <motion.div
+            aria-hidden="true"
+            style={{ opacity: duotoneOpacity, backgroundColor: BLUE, mixBlendMode: "color" }}
+            className="absolute inset-0"
+          />
+        </motion.div>
         {/* ink wash keeps PAPER text legible and blends into the next section */}
         <div
           className="absolute inset-0 z-10"
@@ -62,33 +112,25 @@ export default function One({ progress }: OneProps) {
             background: `linear-gradient(${INK}B3 0%, ${INK}99 45%, ${INK} 100%)`,
           }}
         />
-        <img
-          src="/trial.jpg"
-          alt="BlackStronghold Background"
-          className="h-full w-full object-cover"
-        />
       </motion.div>
 
-      {/* Cinematic vignette — pulses during the crossfade */}
+      {/* Cursor spotlight — a soft violet light that follows the pointer */}
       <motion.div
         aria-hidden="true"
-        style={{
-          opacity: vignetteOpacity,
-          background: `radial-gradient(ellipse at center, transparent 38%, ${INK} 100%)`,
-        }}
-        className="pointer-events-none absolute inset-0 z-[5]"
+        style={{ background: spotlight }}
+        className="pointer-events-none absolute inset-0 z-[6]"
       />
 
       {/* Content — entrance blur-in, then depth-staggered scroll parallax */}
       <motion.div
-        style={{ opacity: contentOpacity }}
+        style={{ opacity: contentOpacity, x: contentX }}
         className="relative z-10 mx-auto max-w-7xl px-6 py-32 text-center sm:px-8 lg:px-12"
       >
         <div className="flex flex-col items-center gap-6">
           {/* Eyebrow */}
           <motion.div style={{ y: eyebrowY }}>
             <motion.span
-              {...reveal(0)}
+              {...reveal(0.5)}
               className="inline-flex items-center gap-2.5 rounded-full border border-white/15 px-4 py-1.5 font-mono text-[11px] uppercase tracking-[0.35em] backdrop-blur-sm"
               style={{ color: MUTED, backgroundColor: `${INK}66` }}
             >
@@ -100,7 +142,7 @@ export default function One({ progress }: OneProps) {
           {/* Main heading */}
           <motion.div style={{ y: headingY }}>
             <motion.h1
-              {...reveal(0.1)}
+              {...reveal(0.6)}
               className="max-w-5xl text-5xl font-semibold tracking-tight sm:text-7xl lg:text-8xl"
               style={{ color: PAPER }}
             >
@@ -125,7 +167,7 @@ export default function One({ progress }: OneProps) {
           {/* Subheading */}
           <motion.div style={{ y: subY }}>
             <motion.p
-              {...reveal(0.2)}
+              {...reveal(0.7)}
               className="max-w-3xl text-lg leading-8 sm:text-xl"
               style={{ color: BODY }}
             >
@@ -135,7 +177,7 @@ export default function One({ progress }: OneProps) {
 
           {/* CTA buttons */}
           <motion.div style={{ y: ctaY }}>
-            <motion.div {...reveal(0.3)} className="mt-4 flex flex-wrap items-center justify-center gap-4">
+            <motion.div {...reveal(0.8)} className="mt-4 flex flex-wrap items-center justify-center gap-4">
               <a
                 href="#services"
                 className="rounded-full px-8 py-3.5 text-sm font-bold transition-all hover:scale-105 hover:brightness-110"
@@ -169,6 +211,12 @@ export default function One({ progress }: OneProps) {
             className="h-full w-full"
           />
         </div>
+        <motion.span
+          className="font-mono text-[9px] uppercase tracking-[0.25em] [writing-mode:vertical-rl]"
+          style={{ color: `${MUTED}66` }}
+        >
+          {phase}
+        </motion.span>
       </div>
 
       {/* Scroll cue — fades out as soon as scrolling starts */}
@@ -176,7 +224,7 @@ export default function One({ progress }: OneProps) {
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 1, delay: 0.9 }}
+          transition={{ duration: 1, delay: 1.8 }}
           className="flex flex-col items-center gap-3"
           aria-hidden="true"
         >
@@ -193,6 +241,36 @@ export default function One({ progress }: OneProps) {
           </div>
         </motion.div>
       </motion.div>
+
+      {/* Exit letterbox — black bars close the scene as the frame releases */}
+      <motion.div
+        aria-hidden="true"
+        style={{ y: barTopY, backgroundColor: INK }}
+        className="pointer-events-none absolute left-0 top-0 z-20 h-[11vh] w-full"
+      />
+      <motion.div
+        aria-hidden="true"
+        style={{ y: barBottomY, backgroundColor: INK }}
+        className="pointer-events-none absolute bottom-0 left-0 z-20 h-[11vh] w-full"
+      />
+
+      {/* Opening curtains — full-black panels that part once on load */}
+      <motion.div
+        aria-hidden="true"
+        initial={{ y: "0%" }}
+        animate={{ y: "-101%" }}
+        transition={{ duration: 1.3, delay: 0.15, ease: [0.83, 0, 0.17, 1] }}
+        style={{ backgroundColor: INK }}
+        className="pointer-events-none absolute left-0 top-0 z-30 h-[51vh] w-full"
+      />
+      <motion.div
+        aria-hidden="true"
+        initial={{ y: "0%" }}
+        animate={{ y: "101%" }}
+        transition={{ duration: 1.3, delay: 0.15, ease: [0.83, 0, 0.17, 1] }}
+        style={{ backgroundColor: INK }}
+        className="pointer-events-none absolute bottom-0 left-0 z-30 h-[51vh] w-full"
+      />
     </section>
   );
 }
