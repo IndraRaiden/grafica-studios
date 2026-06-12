@@ -21,7 +21,7 @@ export default function HeroScroll() {
 
   
   return (
-    <div ref={containerRef} className="relative h-[200vh]">
+    <div ref={containerRef} className="relative h-[400vh]">
       <div className="sticky top-0 h-screen overflow-hidden">
         {/* First Background Image */}
         <motion.div
