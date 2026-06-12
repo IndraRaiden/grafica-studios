@@ -84,9 +84,9 @@ export default function Navbar() {
           {/* Logo */}
           <a href="#home" className="shrink-0">
             <img
-              src="/studios.svg"
-              alt="BlackStronghold"
-              className={`w-auto transition-all duration-300 ${scrolled ? "h-9" : "h-12"}`}
+              src="/logostrong.jpg"
+              alt="Grafica Studios"
+              className={`w-auto object-contain transition-all duration-300 ${scrolled ? "h-9" : "h-12"}`}
             />
           </a>
 
@@ -126,7 +126,7 @@ export default function Navbar() {
           {/* Desktop actions */}
           <div className="hidden items-center gap-3 md:flex">
             <a
-              href="tel:+15612215458"
+              href="tel:+5215663954818"
               aria-label="Call us"
               className="flex size-9 items-center justify-center rounded-full border border-white/15 transition-colors hover:border-[#8B5CF6]/60 hover:text-[#8B5CF6]"
               style={{ color: BODY }}
@@ -235,7 +235,7 @@ export default function Navbar() {
                   Get in Touch
                 </a>
                 <a
-                  href="tel:+15612215458"
+                  href="tel:+5215663954818"
                   className="rounded-full border border-white/15 px-7 py-3 font-mono text-xs uppercase tracking-[0.2em]"
                   style={{ color: MUTED }}
                 >

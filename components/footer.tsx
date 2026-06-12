@@ -254,7 +254,7 @@ export default function Footer() {
           {/* Brand */}
           <motion.div {...reveal(0)} className="lg:col-span-5">
             <a href="#home" className="mb-8 inline-block">
-              <img src="/studios.svg" alt="BlackStronghold" className="h-10 w-auto" />
+              <img src="/logostrong.jpg" alt="Grafica Studios" className="h-10 w-auto object-contain" />
             </a>
             <p className="mb-8 max-w-sm text-sm leading-relaxed" style={{ color: BODY }}>
               AI-powered web apps built to automate operations, accelerate sales, and scale businesses — from leads to logistics.

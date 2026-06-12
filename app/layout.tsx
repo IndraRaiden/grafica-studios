@@ -18,6 +18,9 @@ const spaceGrotesk = Outfit({
 export const metadata: Metadata = {
   title: "BlackStronghold - AI-Powered Web Apps for Modern Business",
   description: "BlackStronghold builds AI-powered web applications — from lead management and ticket triage to vehicle tracking — engineered to automate and scale your operations.",
+  icons: {
+    icon: "/logostrong.ico",
+  },
 };
 
 export default function RootLayout({
