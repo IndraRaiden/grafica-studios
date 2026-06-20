@@ -193,7 +193,7 @@ export default function Footer() {
               className="max-w-4xl text-4xl font-semibold tracking-tight sm:text-6xl lg:text-7xl"
               style={{ color: PAPER }}
             >
-              Let's create something{" "}
+              Let&apos;s create something{" "}
               <span
                 className="ftr-shimmer"
                 style={{
@@ -355,7 +355,13 @@ export default function Footer() {
           </p>
           <button
             type="button"
-            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+            onClick={() => {
+              try {
+                window.scrollTo({ top: 0, behavior: "smooth" });
+              } catch {
+                window.scrollTo(0, 0);
+              }
+            }}
             className="group flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.2em] transition-colors hover:text-[#EEF0FF]"
             style={{ color: MUTED }}
           >

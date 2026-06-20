@@ -101,7 +101,7 @@ export default function Three() {
             Powered by AI.
           </p>
           <p className="mt-6 text-lg leading-8" style={{ color: "#8B92C9" }}>
-            Every product we ship solves a real operational problem. Here's a look at what we've built and the impact it's had.
+            Every product we ship solves a real operational problem. Here&apos;s a look at what we&apos;ve built and the impact it&apos;s had.
           </p>
         </div>
 

@@ -14,7 +14,6 @@ const BODY = "#C7CBEA"; // body text
 const MUTED = "#8B92C9"; // labels / secondary
 const BLUE = "#8B5CF6"; // primary accent
 const VIOLET = "#6D28D9"; // mid current
-const ROYAL = "#4C1D95"; // deep undercurrent
 const SPARK = "#34D399"; // reserved: results, packets, progress
 
 /* ------------------------------------------------------------------ */
@@ -291,11 +290,11 @@ function TrackingMockup() {
 
 function CustomAIMockup() {
   const lines = [
-    <><span style={{ color: MUTED }}>def</span> <span style={{ color: BLUE }}>classify</span><span style={{ color: `${MUTED}99` }}>(input):</span></>,
-    <div className="pl-4"><span style={{ color: MUTED }}>embed</span> <span style={{ color: `${MUTED}66` }}>=</span> <span style={{ color: BODY }}>encode(input)</span></div>,
-    <div className="pl-4"><span style={{ color: MUTED }}>score</span> <span style={{ color: `${MUTED}66` }}>=</span> <span style={{ color: BODY }}>model(embed)</span></div>,
-    <div className="pl-4"><span style={{ color: MUTED }}>return</span> <span style={{ color: PAPER }}>top_k(score, k=3)</span></div>,
-    <div className="mt-1" style={{ color: SPARK }}>✓ 98.2% accuracy on test set</div>,
+    <span key="def"><span style={{ color: MUTED }}>def</span> <span style={{ color: BLUE }}>classify</span><span style={{ color: `${MUTED}99` }}>(input):</span></span>,
+    <div key="embed" className="pl-4"><span style={{ color: MUTED }}>embed</span> <span style={{ color: `${MUTED}66` }}>=</span> <span style={{ color: BODY }}>encode(input)</span></div>,
+    <div key="score" className="pl-4"><span style={{ color: MUTED }}>score</span> <span style={{ color: `${MUTED}66` }}>=</span> <span style={{ color: BODY }}>model(embed)</span></div>,
+    <div key="return" className="pl-4"><span style={{ color: MUTED }}>return</span> <span style={{ color: PAPER }}>top_k(score, k=3)</span></div>,
+    <div key="accuracy" className="mt-1" style={{ color: SPARK }}>✓ 98.2% accuracy on test set</div>,
   ];
   return (
     <div className="w-full overflow-hidden rounded-xl border border-white/10 bg-black/30 font-mono text-xs">

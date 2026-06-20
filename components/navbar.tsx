@@ -29,6 +29,8 @@ export default function Navbar() {
 
   /* Track which section is in view — drives the sliding indicator */
   useEffect(() => {
+    if (!("IntersectionObserver" in window)) return;
+
     const sections = LINKS
       .map((l) => document.getElementById(l.href.slice(1)))
       .filter((el): el is HTMLElement => el !== null);

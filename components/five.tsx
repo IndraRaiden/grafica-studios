@@ -131,10 +131,10 @@ export default function Five() {
             className="mt-5 text-3xl font-semibold tracking-tight sm:text-4xl lg:text-5xl"
             style={{ color: PAPER }}
           >
-            Let's build your <span style={{ color: BLUE }}>AI advantage.</span>
+            Let&apos;s build your <span style={{ color: BLUE }}>AI advantage.</span>
           </motion.h2>
           <motion.p {...reveal(0.2)} className="mt-6 text-lg leading-8" style={{ color: BODY }}>
-            Have a workflow you want to automate, a product idea, or just want to explore what AI can do for your business? Reach out — we'll map out the opportunity and tell you exactly what's possible.
+            Have a workflow you want to automate, a product idea, or just want to explore what AI can do for your business? Reach out — we&apos;ll map out the opportunity and tell you exactly what&apos;s possible.
           </motion.p>
         </div>
 
@@ -147,7 +147,7 @@ export default function Five() {
                 Send Us a Message
               </h3>
               <p className="mt-2 text-sm leading-relaxed" style={{ color: MUTED }}>
-                Tell us about your project and we'll get back to you within 24 hours.
+                Tell us about your project and we&apos;ll get back to you within 24 hours.
               </p>
 
               <form onSubmit={handleSubmit} className="mt-6 space-y-5">
@@ -253,7 +253,7 @@ export default function Five() {
                     className="rounded-lg px-4 py-3 text-sm font-medium"
                     style={{ backgroundColor: `${SPARK}1A`, color: SPARK, border: `1px solid ${SPARK}33` }}
                   >
-                    Message sent! We'll get back to you within 24 hours.
+                    Message sent! We&apos;ll get back to you within 24 hours.
                   </motion.p>
                 )}
                 {status === "error" && (
@@ -298,7 +298,7 @@ export default function Five() {
                       Schedule a Discovery Call
                     </h3>
                     <p className="mt-2 text-sm leading-relaxed" style={{ color: BODY }}>
-                      Book a 30-minute call — we'll map your workflow and identify where AI creates the most leverage.
+                      Book a 30-minute call — we&apos;ll map your workflow and identify where AI creates the most leverage.
                     </p>
                     <button
                       className="mt-4 rounded-full border border-white/15 px-5 py-2 text-sm font-semibold transition-all hover:border-[#8B5CF6]/60 hover:text-[#8B5CF6]"

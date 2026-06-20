@@ -89,7 +89,7 @@ export default function Four() {
             <span style={{ color: BLUE }}>To production AI.</span>
           </motion.h2>
           <motion.p {...reveal(0.2)} className="mt-6 text-lg leading-8" style={{ color: BODY }}>
-            Our four-step process is fast, transparent, and engineered for impact — whether you're deploying your first AI tool or scaling across an entire organization.
+            Our four-step process is fast, transparent, and engineered for impact — whether you&apos;re deploying your first AI tool or scaling across an entire organization.
           </motion.p>
         </div>
 

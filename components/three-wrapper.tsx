@@ -324,7 +324,11 @@ export default function ThreeWrapper({
     if (!el) return;
     const card = el.querySelector<HTMLElement>("[data-card]");
     const step = card ? card.offsetWidth + 20 : el.clientWidth * 0.8;
-    el.scrollBy({ left: dir * step, behavior: "smooth" });
+    try {
+      el.scrollBy({ left: dir * step, behavior: "smooth" });
+    } catch {
+      el.scrollLeft += dir * step;
+    }
   };
 
   /* Mouse drag-to-scroll (touch keeps native momentum) */
