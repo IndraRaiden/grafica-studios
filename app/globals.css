@@ -1,23 +1,51 @@
 @import "tailwindcss";
 
+/* Brand palette — re-declared per brand by the <style> block in app/layout.tsx.
+   These are the fallbacks if that block ever goes missing. */
+:root {
+  --brand-ink: #000000;
+  --brand-card: #0e1335;
+  --brand-paper: #eef0ff;
+  --brand-body: #c7cbea;
+  --brand-muted: #8b92c9;
+  --brand-accent: #8b5cf6;
+  --brand-violet: #6d28d9;
+  --brand-royal: #4c1d95;
+  --brand-spark: #34d399;
+  --brand-on-accent: #0a0e27;
+  --brand-glow: rgba(139, 92, 246, 0.35);
+}
+
+/* `inline` keeps the var() reference inside the generated utility, so swapping
+   the palette at :root re-colors every hover/focus state with no class churn. */
+@theme inline {
+  --color-brand-ink: var(--brand-ink);
+  --color-brand-card: var(--brand-card);
+  --color-brand-paper: var(--brand-paper);
+  --color-brand-body: var(--brand-body);
+  --color-brand-muted: var(--brand-muted);
+  --color-brand-accent: var(--brand-accent);
+  --color-brand-spark: var(--brand-spark);
+  --color-brand-on-accent: var(--brand-on-accent);
+}
+
 @layer utilities {
   .no-scrollbar::-webkit-scrollbar {
     display: none;
   }
   .no-scrollbar {
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+  /* Accent-tinted lift shared by every card surface. */
+  .brand-lift:hover {
+    box-shadow: 0 24px 64px -24px var(--brand-glow);
   }
 }
 
-:root {
-  --background: #ededed;
-  --foreground: #0a0a0a;
-}
-
 body {
-  background: var(--background);
-  color: var(--foreground);
+  background: var(--brand-ink);
+  color: var(--brand-paper);
   font-family: var(--font-inter), system-ui, -apple-system, sans-serif;
 }
 

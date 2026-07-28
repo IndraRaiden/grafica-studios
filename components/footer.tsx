@@ -3,16 +3,11 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Linkedin, Instagram, Image, Mail, MapPin, ArrowUp } from "lucide-react";
+import BrandMark from "./brand-mark";
+import { useCopy, useLocale } from "./locale-provider";
+import { brand, theme } from "@/lib/brand";
 
-/* Palette tokens — mirrors three-wrapper.tsx */
-const INK = "#000000";
-const PAPER = "#EEF0FF";
-const BODY = "#C7CBEA";
-const MUTED = "#8B92C9";
-const BLUE = "#8B5CF6";
-const VIOLET = "#6D28D9";
-const ROYAL = "#4C1D95";
-const SPARK = "#34D399";
+const { INK, PAPER, BODY, MUTED, BLUE, VIOLET, ROYAL, SPARK } = theme;
 
 /* Staggered fade-up on scroll — same cadence as the hero's entrance */
 const reveal = (delay: number) => ({
@@ -93,21 +88,21 @@ function FlowField() {
 /* ------------------------------------------------------------------ */
 
 function StatusClock() {
+  const { locale, copy } = useLocale();
   const [time, setTime] = useState<string | null>(null);
   useEffect(() => {
-    const tick = () =>
-      setTime(new Date().toLocaleTimeString("en-US", { hour12: false }));
+    const tick = () => setTime(new Date().toLocaleTimeString(locale, { hour12: false }));
     tick();
     const id = setInterval(tick, 1000);
     return () => clearInterval(id);
-  }, []);
+  }, [locale]);
   return (
     <span className="inline-flex items-center gap-2.5 font-mono text-[11px] uppercase tracking-[0.2em]" style={{ color: MUTED }}>
       <span className="relative flex h-1.5 w-1.5">
         <span className="absolute inline-flex h-full w-full animate-ping rounded-full opacity-60" style={{ backgroundColor: SPARK }} />
         <span className="relative inline-flex h-1.5 w-1.5 rounded-full" style={{ backgroundColor: SPARK }} />
       </span>
-      Systems operational
+      {copy.footer.status}
       <span className="tabular-nums" style={{ color: `${MUTED}99` }}>{time ?? "--:--:--"}</span>
     </span>
   );
@@ -117,33 +112,26 @@ function StatusClock() {
 /* Footer                                                              */
 /* ------------------------------------------------------------------ */
 
-const MARQUEE_ITEMS = [
-  "Leads Manager & CRM",
-  "Ticket Triage AI",
-  "Tracking Systems",
-  "Custom AI Apps",
-  "AI Chatbots",
-  "AI Integration",
-];
+const SECTIONS = ["home", "services", "portfolio", "process", "contact"] as const;
 
 export default function Footer() {
-  const navigateLinks = [
-    { name: "Home", href: "#home" },
-    { name: "Services", href: "#services" },
-    { name: "Portfolio", href: "#portfolio" },
-    { name: "Process", href: "#process" },
-    { name: "Contact", href: "#contact" },
-  ];
+  const copy = useCopy();
+  const marqueeItems = copy.footer.products;
+
+  const navigateLinks = SECTIONS.map((id) => ({
+    name: copy.nav.links[id],
+    href: `#${id}`,
+  }));
 
   const socialLinks = [
-    { name: "LinkedIn", icon: Linkedin, href: "https://linkedin.com" },
-    { name: "Instagram", icon: Instagram, href: "https://instagram.com" },
-    { name: "Pinterest", icon: Image, href: "https://pinterest.com" },
+    { name: "LinkedIn", icon: Linkedin, href: brand.social.linkedin },
+    { name: "Instagram", icon: Instagram, href: brand.social.instagram },
+    { name: "Pinterest", icon: Image, href: brand.social.pinterest },
   ];
 
   const marqueeRow = (
     <>
-      {MARQUEE_ITEMS.map((item) => (
+      {marqueeItems.map((item) => (
         <span key={item} className="flex shrink-0 items-center gap-8 pr-8">
           <span style={{ color: MUTED }}>{item}</span>
           <span style={{ color: `${BLUE}99` }}>✦</span>
@@ -185,7 +173,7 @@ export default function Footer() {
               style={{ color: MUTED, backgroundColor: `${INK}66` }}
             >
               <span className="h-1.5 w-1.5 animate-pulse rounded-full" style={{ backgroundColor: SPARK }} />
-              Ready when you are
+              {copy.footer.eyebrow}
             </motion.span>
 
             <motion.h2
@@ -193,7 +181,7 @@ export default function Footer() {
               className="max-w-4xl text-4xl font-semibold tracking-tight sm:text-6xl lg:text-7xl"
               style={{ color: PAPER }}
             >
-              Let&apos;s create something{" "}
+              {copy.footer.headingLead}{" "}
               <span
                 className="ftr-shimmer"
                 style={{
@@ -205,21 +193,21 @@ export default function Footer() {
                   animation: "ftr-shimmer 6s linear infinite",
                 }}
               >
-                extraordinary.
+                {copy.footer.headingAccent}
               </span>
             </motion.h2>
 
             <motion.p {...reveal(0.2)} className="max-w-xl text-lg leading-8" style={{ color: BODY }}>
-              Let AI handle the work. You handle the growth.
+              {copy.footer.sub}
             </motion.p>
 
             <motion.div {...reveal(0.3)} className="flex flex-wrap items-center justify-center gap-4">
               <a
                 href="#contact"
                 className="group relative overflow-hidden rounded-full px-10 py-4 text-sm font-bold transition-all hover:scale-105 hover:brightness-110"
-                style={{ backgroundColor: BLUE, color: "#0A0E27" }}
+                style={{ backgroundColor: BLUE, color: theme.ON_ACCENT }}
               >
-                <span className="relative z-10">Get in Touch</span>
+                <span className="relative z-10">{copy.footer.ctaPrimary}</span>
                 <span className="absolute inset-y-0 -left-1/2 z-0 w-1/3 -skew-x-12 bg-white/30 opacity-0 blur-sm transition-all duration-700 group-hover:left-full group-hover:opacity-100" />
               </a>
               <a
@@ -227,7 +215,7 @@ export default function Footer() {
                 className="rounded-full border border-white/15 px-10 py-4 text-sm font-semibold backdrop-blur-sm transition-all hover:scale-105 hover:border-white/30"
                 style={{ color: BODY, backgroundColor: `${INK}66` }}
               >
-                See the Work
+                {copy.footer.ctaSecondary}
               </a>
             </motion.div>
           </div>
@@ -254,23 +242,26 @@ export default function Footer() {
           {/* Brand */}
           <motion.div {...reveal(0)} className="lg:col-span-5">
             <a href="#home" className="mb-8 inline-block">
-              <img src="/logostrong.jpg" alt="Grafica Studios" className="h-10 w-auto object-contain" />
+              <BrandMark
+                imgClassName="h-10 w-auto object-contain"
+                textClassName="text-xl font-semibold tracking-tight"
+              />
             </a>
             <p className="mb-8 max-w-sm text-sm leading-relaxed" style={{ color: BODY }}>
-              AI-powered web apps built to automate operations, accelerate sales, and scale businesses — from leads to logistics.
+              {copy.footer.blurb}
             </p>
             <div className="space-y-4">
               <div className="flex items-center gap-3 text-sm" style={{ color: BODY }}>
                 <MapPin className="h-4 w-4 flex-shrink-0" style={{ color: MUTED }} />
-                <span>Available Nationwide</span>
+                <span>{copy.footer.location}</span>
               </div>
               <a
-                href="mailto:sales@blackstronghold.com"
-                className="group flex items-center gap-3 text-sm transition-colors hover:text-[#EEF0FF]"
+                href={`mailto:${brand.email}`}
+                className="group flex items-center gap-3 text-sm transition-colors hover:text-brand-paper"
                 style={{ color: BODY }}
               >
                 <Mail className="h-4 w-4 flex-shrink-0" style={{ color: MUTED }} />
-                <span>sales@blackstronghold.com</span>
+                <span>{brand.email}</span>
               </a>
               <div className="pt-2">
                 <StatusClock />
@@ -283,20 +274,20 @@ export default function Footer() {
             <div className="grid grid-cols-2 gap-12 sm:grid-cols-3">
               <div>
                 <h4 className="mb-6 font-mono text-[10px] uppercase tracking-[0.25em]" style={{ color: MUTED }}>
-                  Navigate
+                  {copy.footer.navigate}
                 </h4>
                 <ul className="space-y-4">
                   {navigateLinks.map((link, i) => (
                     <li key={link.name}>
                       <a
                         href={link.href}
-                        className="group inline-flex items-baseline gap-3 text-sm transition-colors hover:text-[#EEF0FF]"
+                        className="group inline-flex items-baseline gap-3 text-sm transition-colors hover:text-brand-paper"
                         style={{ color: BODY }}
                       >
                         <span className="font-mono text-[10px] tabular-nums" style={{ color: `${BLUE}99` }}>
                           {String(i + 1).padStart(2, "0")}
                         </span>
-                        <span className="relative after:absolute after:bottom-0 after:left-0 after:h-px after:w-0 after:bg-[#8B5CF6] after:transition-all after:duration-300 group-hover:after:w-full">
+                        <span className="relative after:absolute after:bottom-0 after:left-0 after:h-px after:w-0 after:bg-brand-accent after:transition-all after:duration-300 group-hover:after:w-full">
                           {link.name}
                         </span>
                       </a>
@@ -307,14 +298,14 @@ export default function Footer() {
 
               <div>
                 <h4 className="mb-6 font-mono text-[10px] uppercase tracking-[0.25em]" style={{ color: MUTED }}>
-                  Products
+                  {copy.footer.productsTitle}
                 </h4>
                 <ul className="space-y-4">
-                  {MARQUEE_ITEMS.slice(0, 4).map((item) => (
+                  {marqueeItems.slice(0, 4).map((item) => (
                     <li key={item}>
                       <a
                         href="#services"
-                        className="relative inline-block text-sm transition-colors after:absolute after:bottom-0 after:left-0 after:h-px after:w-0 after:bg-[#8B5CF6] after:transition-all after:duration-300 hover:text-[#EEF0FF] hover:after:w-full"
+                        className="relative inline-block text-sm transition-colors after:absolute after:bottom-0 after:left-0 after:h-px after:w-0 after:bg-brand-accent after:transition-all after:duration-300 hover:text-brand-paper hover:after:w-full"
                         style={{ color: BODY }}
                       >
                         {item}
@@ -326,7 +317,7 @@ export default function Footer() {
 
               <div>
                 <h4 className="mb-6 font-mono text-[10px] uppercase tracking-[0.25em]" style={{ color: MUTED }}>
-                  Connect
+                  {copy.footer.connect}
                 </h4>
                 <div className="flex gap-3">
                   {socialLinks.map((social) => (
@@ -336,7 +327,7 @@ export default function Footer() {
                       aria-label={social.name}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex size-10 items-center justify-center rounded-full border border-white/15 transition-all hover:-translate-y-1 hover:border-[#8B5CF6]/60 hover:text-[#8B5CF6]"
+                      className="flex size-10 items-center justify-center rounded-full border border-white/15 transition-all hover:-translate-y-1 hover:border-brand-accent/60 hover:text-brand-accent"
                       style={{ color: BODY }}
                     >
                       <social.icon className="h-4 w-4" strokeWidth={1.5} />
@@ -351,7 +342,7 @@ export default function Footer() {
         {/* Bottom bar */}
         <div className="mt-16 flex flex-col-reverse items-center justify-between gap-6 border-t border-white/5 pt-8 sm:flex-row">
           <p className="font-mono text-[11px] tracking-wide" style={{ color: `${MUTED}99` }}>
-            © {new Date().getFullYear()} BlackStronghold. All rights reserved.
+            {copy.footer.rights(new Date().getFullYear())}
           </p>
           <button
             type="button"
@@ -362,11 +353,11 @@ export default function Footer() {
                 window.scrollTo(0, 0);
               }
             }}
-            className="group flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.2em] transition-colors hover:text-[#EEF0FF]"
+            className="group flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.2em] transition-colors hover:text-brand-paper"
             style={{ color: MUTED }}
           >
-            Back to top
-            <span className="flex size-9 items-center justify-center rounded-full border border-white/15 transition-all group-hover:-translate-y-1 group-hover:border-[#8B5CF6]/60 group-hover:text-[#8B5CF6]">
+            {copy.footer.backToTop}
+            <span className="flex size-9 items-center justify-center rounded-full border border-white/15 transition-all group-hover:-translate-y-1 group-hover:border-brand-accent/60 group-hover:text-brand-accent">
               <ArrowUp className="h-4 w-4" />
             </span>
           </button>
@@ -387,7 +378,7 @@ export default function Footer() {
             animation: "ftr-shimmer 12s linear infinite",
           }}
         >
-          BLACKSTRONGHOLD
+          {brand.wordmark}
         </div>
         {/* fade the wordmark into the page edge */}
         <div

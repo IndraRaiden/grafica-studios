@@ -3,15 +3,10 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Calendar, Mail, Phone, MapPin, Zap, Paperclip, MessageCircle } from "lucide-react";
+import { useCopy } from "./locale-provider";
+import { brand, theme } from "@/lib/brand";
 
-/* Palette tokens — mirrors three-wrapper.tsx */
-const INK = "#000000";
-const CARD = "#0E1335";
-const PAPER = "#EEF0FF";
-const BODY = "#C7CBEA";
-const MUTED = "#8B92C9";
-const BLUE = "#8B5CF6";
-const SPARK = "#34D399";
+const { INK, CARD, PAPER, BODY, MUTED, BLUE, SPARK } = theme;
 
 /* Staggered fade-up on scroll — same cadence as the hero's entrance */
 const reveal = (delay: number) => ({
@@ -22,11 +17,11 @@ const reveal = (delay: number) => ({
 });
 
 const cardClass =
-  "rounded-2xl border border-white/10 p-7 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-[#8B5CF6]/40 hover:shadow-[0_24px_64px_-24px_rgba(139,92,246,0.35)] sm:p-8";
+  "brand-lift rounded-2xl border border-white/10 p-7 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-brand-accent/40 sm:p-8";
 const cardSurface = { backgroundColor: `${CARD}D9` };
 
 const inputClass =
-  "mt-2 block w-full rounded-lg border border-white/10 bg-white/5 px-4 py-2.5 text-sm transition-colors focus:border-[#8B5CF6]/60 focus:outline-none focus:ring-1 focus:ring-[#8B5CF6]/40";
+  "mt-2 block w-full rounded-lg border border-white/10 bg-white/5 px-4 py-2.5 text-sm transition-colors focus:border-brand-accent/60 focus:outline-none focus:ring-1 focus:ring-brand-accent/40";
 const labelClass = "block font-mono text-[10px] uppercase tracking-[0.25em]";
 
 /* Quick stagger for form fields and contact rows */
@@ -58,6 +53,7 @@ function PulseLine({ className, delay }: { className: string; delay: number }) {
 type Status = "idle" | "loading" | "success" | "error";
 
 export default function Five() {
+  const { contact } = useCopy();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -79,7 +75,7 @@ export default function Five() {
     if (formData.file) data.append("file", formData.file);
 
     try {
-      const res = await fetch("https://formspree.io/f/mlgklbpn", {
+      const res = await fetch(brand.formEndpoint, {
         method: "POST",
         body: data,
         headers: { Accept: "application/json" },
@@ -124,17 +120,17 @@ export default function Five() {
             style={{ color: MUTED, backgroundColor: `${INK}66` }}
           >
             <span className="h-1.5 w-1.5 animate-pulse rounded-full" style={{ backgroundColor: SPARK }} />
-            Contact
+            {contact.eyebrow}
           </motion.span>
           <motion.h2
             {...reveal(0.1)}
             className="mt-5 text-3xl font-semibold tracking-tight sm:text-4xl lg:text-5xl"
             style={{ color: PAPER }}
           >
-            Let&apos;s build your <span style={{ color: BLUE }}>AI advantage.</span>
+            {contact.headingLead} <span style={{ color: BLUE }}>{contact.headingAccent}</span>
           </motion.h2>
           <motion.p {...reveal(0.2)} className="mt-6 text-lg leading-8" style={{ color: BODY }}>
-            Have a workflow you want to automate, a product idea, or just want to explore what AI can do for your business? Reach out — we&apos;ll map out the opportunity and tell you exactly what&apos;s possible.
+            {contact.sub}
           </motion.p>
         </div>
 
@@ -144,17 +140,17 @@ export default function Five() {
             {/* Contact Form */}
             <motion.div {...reveal(0.1)} className={cardClass} style={cardSurface}>
               <h3 className="text-xl font-medium tracking-tight" style={{ color: PAPER }}>
-                Send Us a Message
+                {contact.form.title}
               </h3>
               <p className="mt-2 text-sm leading-relaxed" style={{ color: MUTED }}>
-                Tell us about your project and we&apos;ll get back to you within 24 hours.
+                {contact.form.subtitle}
               </p>
 
               <form onSubmit={handleSubmit} className="mt-6 space-y-5">
                 {/* Name */}
                 <motion.div {...fieldReveal(0)}>
                   <label htmlFor="name" className={labelClass} style={{ color: MUTED }}>
-                    Name *
+                    {contact.form.name}
                   </label>
                   <input
                     type="text"
@@ -164,14 +160,14 @@ export default function Five() {
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                     className={inputClass}
                     style={{ color: PAPER }}
-                    placeholder="Your name"
+                    placeholder={contact.form.namePlaceholder}
                   />
                 </motion.div>
 
                 {/* Email */}
                 <motion.div {...fieldReveal(1)}>
                   <label htmlFor="email" className={labelClass} style={{ color: MUTED }}>
-                    Email *
+                    {contact.form.email}
                   </label>
                   <input
                     type="email"
@@ -181,14 +177,14 @@ export default function Five() {
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                     className={inputClass}
                     style={{ color: PAPER }}
-                    placeholder="your@email.com"
+                    placeholder={contact.form.emailPlaceholder}
                   />
                 </motion.div>
 
                 {/* Phone */}
                 <motion.div {...fieldReveal(2)}>
                   <label htmlFor="phone" className={labelClass} style={{ color: MUTED }}>
-                    Phone
+                    {contact.form.phone}
                   </label>
                   <input
                     type="tel"
@@ -197,14 +193,14 @@ export default function Five() {
                     onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                     className={inputClass}
                     style={{ color: PAPER }}
-                    placeholder="(555) 123-4567"
+                    placeholder={contact.form.phonePlaceholder}
                   />
                 </motion.div>
 
                 {/* Project Details */}
                 <motion.div {...fieldReveal(3)}>
                   <label htmlFor="projectDetails" className={labelClass} style={{ color: MUTED }}>
-                    Project Details *
+                    {contact.form.details}
                   </label>
                   <textarea
                     id="projectDetails"
@@ -214,24 +210,24 @@ export default function Five() {
                     onChange={(e) => setFormData({ ...formData, projectDetails: e.target.value })}
                     className={inputClass}
                     style={{ color: PAPER }}
-                    placeholder="Describe the problem you want AI to solve..."
+                    placeholder={contact.form.detailsPlaceholder}
                   />
                 </motion.div>
 
                 {/* File Upload */}
                 <motion.div {...fieldReveal(4)}>
                   <label htmlFor="file" className={labelClass} style={{ color: MUTED }}>
-                    Upload File (Optional)
+                    {contact.form.file}
                   </label>
                   <div className="mt-2">
-                    <label className="flex cursor-pointer items-center justify-center rounded-lg border border-dashed border-white/15 bg-white/[0.03] px-4 py-6 transition-colors hover:border-[#8B5CF6]/60 hover:bg-white/5">
+                    <label className="flex cursor-pointer items-center justify-center rounded-lg border border-dashed border-white/15 bg-white/[0.03] px-4 py-6 transition-colors hover:border-brand-accent/60 hover:bg-white/5">
                       <div className="text-center">
                         <Paperclip className="mx-auto h-7 w-7" style={{ color: MUTED }} />
                         <div className="mt-2 text-sm" style={{ color: formData.file ? SPARK : BODY }}>
-                          {formData.file ? formData.file.name : "Click to upload or drag and drop"}
+                          {formData.file ? formData.file.name : contact.form.fileCta}
                         </div>
                         <div className="mt-1 font-mono text-[10px] uppercase tracking-[0.15em]" style={{ color: `${MUTED}99` }}>
-                          PDF, PNG, JPG up to 10MB
+                          {contact.form.fileHint}
                         </div>
                       </div>
                       <input
@@ -253,7 +249,7 @@ export default function Five() {
                     className="rounded-lg px-4 py-3 text-sm font-medium"
                     style={{ backgroundColor: `${SPARK}1A`, color: SPARK, border: `1px solid ${SPARK}33` }}
                   >
-                    Message sent! We&apos;ll get back to you within 24 hours.
+                    {contact.form.success}
                   </motion.p>
                 )}
                 {status === "error" && (
@@ -263,7 +259,7 @@ export default function Five() {
                     className="rounded-lg px-4 py-3 text-sm font-medium"
                     style={{ backgroundColor: "#FF4D4D1A", color: "#FF6B6B", border: "1px solid #FF4D4D33" }}
                   >
-                    Something went wrong. Please try again or email us directly.
+                    {contact.form.error}
                   </motion.p>
                 )}
 
@@ -273,10 +269,14 @@ export default function Five() {
                     type="submit"
                     disabled={status === "loading" || status === "success"}
                     className="group relative w-full overflow-hidden rounded-full px-6 py-3 text-sm font-bold transition-all hover:scale-[1.02] hover:brightness-110 disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:scale-100"
-                    style={{ backgroundColor: BLUE, color: "#0A0E27" }}
+                    style={{ backgroundColor: BLUE, color: theme.ON_ACCENT }}
                   >
                     <span className="relative z-10">
-                      {status === "loading" ? "Sending…" : status === "success" ? "Sent!" : "Contact Us"}
+                      {status === "loading"
+                        ? contact.form.submitting
+                        : status === "success"
+                        ? contact.form.submitted
+                        : contact.form.submit}
                     </span>
                     {/* shine sweep */}
                     <span className="absolute inset-y-0 -left-1/2 z-0 w-1/3 -skew-x-12 bg-white/30 opacity-0 blur-sm transition-all duration-700 group-hover:left-full group-hover:opacity-100" />
@@ -295,16 +295,16 @@ export default function Five() {
                   </div>
                   <div className="flex-1">
                     <h3 className="text-lg font-medium tracking-tight" style={{ color: PAPER }}>
-                      Schedule a Discovery Call
+                      {contact.call.title}
                     </h3>
                     <p className="mt-2 text-sm leading-relaxed" style={{ color: BODY }}>
-                      Book a 30-minute call — we&apos;ll map your workflow and identify where AI creates the most leverage.
+                      {contact.call.description}
                     </p>
                     <button
-                      className="mt-4 rounded-full border border-white/15 px-5 py-2 text-sm font-semibold transition-all hover:border-[#8B5CF6]/60 hover:text-[#8B5CF6]"
+                      className="mt-4 rounded-full border border-white/15 px-5 py-2 text-sm font-semibold transition-all hover:border-brand-accent/60 hover:text-brand-accent"
                       style={{ color: BODY }}
                     >
-                      Book a Call
+                      {contact.call.cta}
                     </button>
                   </div>
                 </div>
@@ -313,15 +313,15 @@ export default function Five() {
               {/* Direct Contact */}
               <motion.div {...reveal(0.3)} className={cardClass} style={cardSurface}>
                 <h3 className="text-lg font-medium tracking-tight" style={{ color: PAPER }}>
-                  Other Ways to Reach Us
+                  {contact.other.title}
                 </h3>
                 <div className="mt-4 space-y-3">
                   {(
                     [
-                      [Mail, <a key="mail" href="mailto:sales@blackstronghold.com" className="transition-colors hover:text-[#EEF0FF]" style={{ color: BODY }}>sales@blackstronghold.com</a>],
-                      [Phone, <a key="phone" href="tel:+5215663954818" className="transition-colors hover:text-[#EEF0FF]" style={{ color: BODY }}>+52 1 56 6395 4818 <span className="text-[10px] opacity-50">(call · iMessage)</span></a>],
-                      [MessageCircle, <a key="wa" href="https://wa.me/5215663954818" target="_blank" rel="noopener noreferrer" className="transition-colors hover:text-[#EEF0FF]" style={{ color: BODY }}>+52 1 56 6395 4818 <span className="text-[10px] opacity-50">(WhatsApp)</span></a>],
-                      [MapPin, <span key="map" style={{ color: BODY }}>Available Nationwide</span>],
+                      [Mail, <a key="mail" href={`mailto:${brand.email}`} className="transition-colors hover:text-brand-paper" style={{ color: BODY }}>{brand.email}</a>],
+                      [Phone, <a key="phone" href={`tel:${brand.phone.tel}`} className="transition-colors hover:text-brand-paper" style={{ color: BODY }}>{brand.phone.display} <span className="text-[10px] opacity-50">{contact.other.phoneNote}</span></a>],
+                      [MessageCircle, <a key="wa" href={`https://wa.me/${brand.phone.whatsapp}`} target="_blank" rel="noopener noreferrer" className="transition-colors hover:text-brand-paper" style={{ color: BODY }}>{brand.phone.display} <span className="text-[10px] opacity-50">{contact.other.whatsappNote}</span></a>],
+                      [MapPin, <span key="map" style={{ color: BODY }}>{contact.other.location}</span>],
                     ] as const
                   ).map(([Icon, content], i) => (
                     <motion.div
@@ -357,10 +357,10 @@ export default function Five() {
                   </div>
                   <div>
                     <div className="font-medium" style={{ color: PAPER }}>
-                      Fast Response Time
+                      {contact.response.title}
                     </div>
                     <div className="text-sm" style={{ color: BODY }}>
-                      We typically respond within <span style={{ color: SPARK }}>24 hours</span>
+                      {contact.response.body} <span style={{ color: SPARK }}>{contact.response.highlight}</span>
                     </div>
                   </div>
                 </div>

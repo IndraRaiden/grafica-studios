@@ -2,19 +2,10 @@
 
 import { motion } from "framer-motion";
 import { Users, Ticket, MapPin, Cpu, Plug, MessageSquare } from "lucide-react";
+import { useCopy } from "./locale-provider";
+import { theme } from "@/lib/brand";
 
-/* ------------------------------------------------------------------ */
-/* Palette tokens — mirrors three-wrapper.tsx                          */
-/* ------------------------------------------------------------------ */
-
-const INK = "#000000"; // section background
-const CARD = "#0E1335"; // card surface
-const PAPER = "#EEF0FF"; // primary text
-const BODY = "#C7CBEA"; // body text
-const MUTED = "#8B92C9"; // labels / secondary
-const BLUE = "#8B5CF6"; // primary accent
-const VIOLET = "#6D28D9"; // mid current
-const SPARK = "#34D399"; // reserved: results, packets, progress
+const { INK, CARD, PAPER, BODY, MUTED, BLUE, VIOLET, SPARK } = theme;
 
 /* ------------------------------------------------------------------ */
 /* Circuit field — board traces with light pulses routing through them */
@@ -114,17 +105,13 @@ function CircuitField() {
 /* ------------------------------------------------------------------ */
 
 function ChatbotMockup() {
-  const messages = [
-    { role: "user", text: "What's my order status?" },
-    { role: "ai", text: "Order #4821 is out for delivery — estimated arrival today between 2–4 PM." },
-    { role: "user", text: "Can I reschedule?" },
-    { role: "ai", text: "Sure! Pick a new date and I'll update it now." },
-  ];
+  const { services } = useCopy();
+  const messages = services.mockups.chat;
   return (
     <div className="w-full overflow-hidden rounded-xl border border-white/10 bg-black/30 text-xs">
       <div className="flex items-center gap-2 border-b border-white/10 px-3 py-2">
         <div className="h-2 w-2 animate-pulse rounded-full" style={{ backgroundColor: SPARK }} />
-        <span className="font-mono" style={{ color: MUTED }}>assistant • online</span>
+        <span className="font-mono" style={{ color: MUTED }}>{services.mockups.chatStatus}</span>
       </div>
       <div className="flex flex-col gap-2 p-3">
         {messages.map((m, i) => (
@@ -156,23 +143,19 @@ function ChatbotMockup() {
 }
 
 function LeadsMockup() {
-  const leads = [
-    { name: "Acme Corp", score: 94, status: "Hot" },
-    { name: "Dunder Mifflin", score: 81, status: "Warm" },
-    { name: "Initech", score: 73, status: "Warm" },
-    { name: "Globex Inc", score: 58, status: "Cold" },
-  ];
-  const statusStyle = (status: string): React.CSSProperties =>
-    status === "Hot"
+  const { services } = useCopy();
+  const { leads, leadStatus } = services.mockups;
+  const statusStyle = (status: keyof typeof leadStatus): React.CSSProperties =>
+    status === "hot"
       ? { backgroundColor: `${SPARK}26`, color: SPARK }
-      : status === "Warm"
+      : status === "warm"
       ? { backgroundColor: `${BLUE}26`, color: BLUE }
       : { backgroundColor: "rgba(255,255,255,0.05)", color: MUTED };
   return (
     <div className="w-full overflow-hidden rounded-xl border border-white/10 bg-black/30 text-xs">
       <div className="flex items-center gap-2 border-b border-white/10 px-3 py-2">
         <div className="h-2 w-2 animate-pulse rounded-full" style={{ backgroundColor: SPARK }} />
-        <span className="font-mono" style={{ color: MUTED }}>live pipeline</span>
+        <span className="font-mono" style={{ color: MUTED }}>{services.mockups.leadsStatus}</span>
       </div>
       {leads.map((lead, i) => (
         <motion.div
@@ -196,7 +179,7 @@ function LeadsMockup() {
               />
             </div>
             <span className="rounded-full px-1.5 py-0.5 text-[10px] font-bold" style={statusStyle(lead.status)}>
-              {lead.status}
+              {leadStatus[lead.status]}
             </span>
           </div>
         </motion.div>
@@ -206,15 +189,12 @@ function LeadsMockup() {
 }
 
 function TicketMockup() {
-  const tickets = [
-    { id: "#1042", label: "Billing Error", priority: "P1", routed: "Finance" },
-    { id: "#1043", label: "Login Issue", priority: "P2", routed: "Auth" },
-    { id: "#1044", label: "Feature Request", priority: "P3", routed: "Product" },
-  ];
+  const { services } = useCopy();
+  const tickets = services.mockups.tickets;
   return (
     <div className="w-full overflow-hidden rounded-xl border border-white/10 bg-black/30 text-xs">
       <div className="flex items-center gap-2 border-b border-white/10 px-3 py-2">
-        <span className="font-mono" style={{ color: MUTED }}>ai triage — 2s avg</span>
+        <span className="font-mono" style={{ color: MUTED }}>{services.mockups.ticketStatus}</span>
       </div>
       {tickets.map((t, i) => (
         <motion.div
@@ -241,6 +221,7 @@ function TicketMockup() {
 }
 
 function TrackingMockup() {
+  const { services } = useCopy();
   const dots = [
     { left: "20%", top: "30%", pulse: true, delay: 0 },
     { left: "50%", top: "55%", pulse: false, delay: 0.3 },
@@ -283,22 +264,27 @@ function TrackingMockup() {
       >
         <polyline points="20,30 35,70 50,55 75,25" stroke={BLUE} strokeWidth="1" fill="none" strokeDasharray="3,2" />
       </motion.svg>
-      <div className="absolute bottom-2 right-3 font-mono text-[10px]" style={{ color: MUTED }}>4 assets • live</div>
+      <div className="absolute bottom-2 right-3 font-mono text-[10px]" style={{ color: MUTED }}>
+        {services.mockups.trackingStatus}
+      </div>
     </div>
   );
 }
 
 function CustomAIMockup() {
+  const { services } = useCopy();
   const lines = [
     <span key="def"><span style={{ color: MUTED }}>def</span> <span style={{ color: BLUE }}>classify</span><span style={{ color: `${MUTED}99` }}>(input):</span></span>,
     <div key="embed" className="pl-4"><span style={{ color: MUTED }}>embed</span> <span style={{ color: `${MUTED}66` }}>=</span> <span style={{ color: BODY }}>encode(input)</span></div>,
     <div key="score" className="pl-4"><span style={{ color: MUTED }}>score</span> <span style={{ color: `${MUTED}66` }}>=</span> <span style={{ color: BODY }}>model(embed)</span></div>,
     <div key="return" className="pl-4"><span style={{ color: MUTED }}>return</span> <span style={{ color: PAPER }}>top_k(score, k=3)</span></div>,
-    <div key="accuracy" className="mt-1" style={{ color: SPARK }}>✓ 98.2% accuracy on test set</div>,
+    <div key="accuracy" className="mt-1" style={{ color: SPARK }}>{services.mockups.codeAccuracy}</div>,
   ];
   return (
     <div className="w-full overflow-hidden rounded-xl border border-white/10 bg-black/30 font-mono text-xs">
-      <div className="border-b border-white/10 px-3 py-2" style={{ color: `${MUTED}99` }}>model.py</div>
+      <div className="border-b border-white/10 px-3 py-2" style={{ color: `${MUTED}99` }}>
+        {services.mockups.codeFile}
+      </div>
       <div className="space-y-1 px-3 py-3 leading-relaxed">
         {lines.map((line, i) => (
           <motion.div
@@ -317,7 +303,8 @@ function CustomAIMockup() {
 }
 
 function IntegrationMockup() {
-  const tools = ["Salesforce", "HubSpot", "Zendesk", "Custom API"];
+  const { services } = useCopy();
+  const tools = services.mockups.integrations;
   return (
     <div className="flex flex-col gap-2">
       {tools.map((tool, i) => (
@@ -340,7 +327,7 @@ function IntegrationMockup() {
             className="font-mono text-[10px]"
             style={{ color: SPARK }}
           >
-            connected
+            {services.mockups.connected}
           </motion.span>
         </motion.div>
       ))}
@@ -353,7 +340,7 @@ function IntegrationMockup() {
 /* ------------------------------------------------------------------ */
 
 const cardClass =
-  "group relative flex flex-col justify-between gap-6 overflow-hidden rounded-2xl border border-white/10 p-7 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-[#8B5CF6]/40 hover:shadow-[0_24px_64px_-24px_rgba(139,92,246,0.35)] sm:p-8";
+  "group brand-lift relative flex flex-col justify-between gap-6 overflow-hidden rounded-2xl border border-white/10 p-7 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-brand-accent/40 sm:p-8";
 const cardSurface = { backgroundColor: `${CARD}D9` };
 
 function IconTile({ children }: { children: React.ReactNode }) {
@@ -383,6 +370,9 @@ function Stat({ value, label, large = false }: { value: React.ReactNode; label: 
 /* ------------------------------------------------------------------ */
 
 export default function Two() {
+  const { services } = useCopy();
+  const cards = services.cards;
+
   return (
     <section
       id="services"
@@ -425,14 +415,14 @@ export default function Two() {
           className="mb-16"
         >
           <p className="font-mono text-[11px] uppercase tracking-[0.35em]" style={{ color: MUTED }}>
-            Our products
+            {services.eyebrow}
           </p>
           <h2
             className="mt-3 max-w-2xl text-3xl font-semibold tracking-tight sm:text-4xl lg:text-5xl"
             style={{ color: PAPER }}
           >
-            AI does the work.{" "}
-            <span style={{ color: BLUE }}>You focus on growth.</span>
+            {services.headingLead}{" "}
+            <span style={{ color: BLUE }}>{services.headingAccent}</span>
           </h2>
         </motion.div>
 
@@ -452,13 +442,13 @@ export default function Two() {
               <div className="flex flex-col gap-3">
                 <IconTile><Users className="h-5 w-5" style={{ color: MUTED }} /></IconTile>
                 <h3 className="text-xl font-medium leading-snug tracking-tight sm:text-2xl" style={{ color: PAPER }}>
-                  Leads Manager & CRM
+                  {cards.leads.title}
                 </h3>
                 <p className="max-w-sm text-sm leading-relaxed" style={{ color: BODY }}>
-                  Capture, score, and auto-assign leads. Your team only sees the ones that matter.
+                  {cards.leads.description}
                 </p>
               </div>
-              <Stat large value="3×" label="more conversions" />
+              <Stat large value={cards.leads.stat} label={cards.leads.statLabel} />
             </div>
             <LeadsMockup />
           </motion.div>
@@ -475,13 +465,13 @@ export default function Two() {
             <div className="flex flex-col gap-3">
               <div className="flex items-start justify-between gap-4">
                 <IconTile><Ticket className="h-5 w-5" style={{ color: MUTED }} /></IconTile>
-                <Stat value="68%" label="faster resolution" />
+                <Stat value={cards.triage.stat} label={cards.triage.statLabel} />
               </div>
               <h3 className="text-xl font-medium leading-snug tracking-tight sm:text-2xl" style={{ color: PAPER }}>
-                Ticket Triage AI
+                {cards.triage.title}
               </h3>
               <p className="text-sm leading-relaxed" style={{ color: BODY }}>
-                Routes, prioritizes, and auto-responds in under 2 seconds.
+                {cards.triage.description}
               </p>
             </div>
             <TicketMockup />
@@ -499,13 +489,13 @@ export default function Two() {
             <div className="flex flex-col gap-3">
               <div className="flex items-start justify-between gap-4">
                 <IconTile><MapPin className="h-5 w-5" style={{ color: MUTED }} /></IconTile>
-                <Stat value="91%" label="on-time delivery" />
+                <Stat value={cards.tracking.stat} label={cards.tracking.statLabel} />
               </div>
               <h3 className="text-xl font-medium leading-snug tracking-tight sm:text-2xl" style={{ color: PAPER }}>
-                Tracking AI System
+                {cards.tracking.title}
               </h3>
               <p className="text-sm leading-relaxed" style={{ color: BODY }}>
-                Live GPS, predictive ETAs, and anomaly alerts for vehicles or orders.
+                {cards.tracking.description}
               </p>
             </div>
             <TrackingMockup />
@@ -524,14 +514,19 @@ export default function Two() {
               <div className="flex items-start justify-between gap-4">
                 <IconTile><Cpu className="h-5 w-5" style={{ color: MUTED }} /></IconTile>
                 <div className="text-right font-mono text-xs font-semibold uppercase tracking-[0.18em]" style={{ color: BLUE }}>
-                  Weeks,<br />not months
+                  {cards.custom.badgeLines.map((line, i) => (
+                    <span key={line}>
+                      {i > 0 && <br />}
+                      {line}
+                    </span>
+                  ))}
                 </div>
               </div>
               <h3 className="text-xl font-medium leading-snug tracking-tight sm:text-2xl" style={{ color: PAPER }}>
-                Custom AI Apps
+                {cards.custom.title}
               </h3>
               <p className="text-sm leading-relaxed" style={{ color: BODY }}>
-                Bespoke AI built around your data and workflows. Prototype to production fast.
+                {cards.custom.description}
               </p>
             </div>
             <CustomAIMockup />
@@ -550,13 +545,13 @@ export default function Two() {
               <div className="flex flex-col gap-3">
                 <IconTile><MessageSquare className="h-5 w-5" style={{ color: MUTED }} /></IconTile>
                 <h3 className="text-xl font-medium leading-snug tracking-tight sm:text-2xl" style={{ color: PAPER }}>
-                  AI Chatbots
+                  {cards.chatbots.title}
                 </h3>
                 <p className="max-w-sm text-sm leading-relaxed" style={{ color: BODY }}>
-                  Custom-trained chatbots that handle support, sales, and onboarding — embedded in your web app or site. Available 24/7, no handoff needed for common requests.
+                  {cards.chatbots.description}
                 </p>
               </div>
-              <Stat large value="80%" label="queries resolved without human" />
+              <Stat large value={cards.chatbots.stat} label={cards.chatbots.statLabel} />
             </div>
             <ChatbotMockup />
           </motion.div>
@@ -573,10 +568,10 @@ export default function Two() {
             <div className="flex flex-col gap-3">
               <IconTile><Plug className="h-5 w-5" style={{ color: MUTED }} /></IconTile>
               <h3 className="text-xl font-medium leading-snug tracking-tight sm:text-2xl" style={{ color: PAPER }}>
-                AI Integration
+                {cards.integration.title}
               </h3>
               <p className="text-sm leading-relaxed" style={{ color: BODY }}>
-                Plug AI directly into your existing CRM, ERP, or support stack — no rip-and-replace.
+                {cards.integration.description}
               </p>
             </div>
             <IntegrationMockup />
@@ -595,9 +590,9 @@ export default function Two() {
           <a
             href="#contact"
             className="rounded-full px-8 py-4 text-sm font-bold transition-all hover:scale-105 hover:brightness-110"
-            style={{ backgroundColor: BLUE, color: "#0A0E27" }}
+            style={{ backgroundColor: BLUE, color: theme.ON_ACCENT }}
           >
-            Get Early Access
+            {services.cta}
           </a>
         </motion.div>
 

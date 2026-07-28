@@ -4,6 +4,9 @@ import { Manrope, Outfit } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/navbar";
 import ClientRecovery from "@/components/client-recovery";
+import { LocaleProvider } from "@/components/locale-provider";
+import { brand, theme } from "@/lib/brand";
+import { defaultCopy, defaultLocale } from "@/lib/i18n";
 
 const inter = Manrope({
   variable: "--font-inter",
@@ -18,12 +21,28 @@ const spaceGrotesk = Outfit({
 });
 
 export const metadata: Metadata = {
-  title: "BlackStronghold - AI-Powered Web Apps for Modern Business",
-  description: "BlackStronghold builds AI-powered web applications — from lead management and ticket triage to vehicle tracking — engineered to automate and scale your operations.",
-  icons: {
-    icon: "/logostrong.ico",
-  },
+  title: defaultCopy.meta.title,
+  description: defaultCopy.meta.description,
+  // Omitted when the brand ships no favicon — Next then serves app/favicon.ico.
+  ...(brand.logo.favicon ? { icons: { icon: brand.logo.favicon } } : {}),
 };
+
+/* Brand palette as CSS custom properties — read by the brand-* Tailwind utilities. */
+const brandVars = `:root{${Object.entries({
+  "--brand-ink": theme.INK,
+  "--brand-card": theme.CARD,
+  "--brand-paper": theme.PAPER,
+  "--brand-body": theme.BODY,
+  "--brand-muted": theme.MUTED,
+  "--brand-accent": theme.BLUE,
+  "--brand-violet": theme.VIOLET,
+  "--brand-royal": theme.ROYAL,
+  "--brand-spark": theme.SPARK,
+  "--brand-on-accent": theme.ON_ACCENT,
+  "--brand-glow": theme.GLOW,
+})
+  .map(([k, v]) => `${k}:${v}`)
+  .join(";")}}`;
 
 export default function RootLayout({
   children,
@@ -31,7 +50,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang={defaultLocale}>
+      <head>
+        <style dangerouslySetInnerHTML={{ __html: brandVars }} />
+      </head>
       <body
         className={`${inter.variable} ${spaceGrotesk.variable} font-sans antialiased`}
       >
@@ -77,8 +99,10 @@ export default function RootLayout({
           }}
         />
         <ClientRecovery />
-        <Navbar />
-        {children}
+        <LocaleProvider>
+          <Navbar />
+          {children}
+        </LocaleProvider>
       </body>
     </html>
   );

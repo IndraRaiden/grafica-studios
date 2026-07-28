@@ -2,15 +2,13 @@
 
 import { motion } from "framer-motion";
 import { Search, Code, FlaskConical, Rocket } from "lucide-react";
+import { useCopy } from "./locale-provider";
+import { theme } from "@/lib/brand";
 
-/* Palette tokens — mirrors three-wrapper.tsx */
-const INK = "#000000";
-const CARD = "#0E1335";
-const PAPER = "#EEF0FF";
-const BODY = "#C7CBEA";
-const MUTED = "#8B92C9";
-const BLUE = "#8B5CF6";
-const SPARK = "#34D399";
+const { INK, CARD, PAPER, BODY, MUTED, BLUE, SPARK } = theme;
+
+/* Icons stay in code — the dictionary only carries copy. */
+const STEP_ICONS = [Search, Code, FlaskConical, Rocket];
 
 /* Staggered fade-up on scroll — same cadence as the hero's entrance */
 const reveal = (delay: number) => ({
@@ -21,32 +19,8 @@ const reveal = (delay: number) => ({
 });
 
 export default function Four() {
-  const steps = [
-    {
-      number: "01",
-      title: "Discovery",
-      description: "We map your workflow, your data sources, and where the real bottlenecks live. No fluff — just a sharp understanding of the problem we're solving and the outcome you need.",
-      icon: Search
-    },
-    {
-      number: "02",
-      title: "Build",
-      description: "Our engineers develop the AI models, backend logic, and user-facing interfaces. We work in tight sprints with demos at every milestone so you always know exactly what you're getting.",
-      icon: Code
-    },
-    {
-      number: "03",
-      title: "Test & Tune",
-      description: "Before anything touches production, we run the system against real data, stress-test edge cases, and fine-tune model performance. Accuracy and reliability are non-negotiable.",
-      icon: FlaskConical
-    },
-    {
-      number: "04",
-      title: "Deploy & Scale",
-      description: "We ship to your environment — cloud, on-prem, or hybrid — and stay hands-on through launch. As usage grows, the system scales with it. Ongoing support and model retraining included.",
-      icon: Rocket
-    }
-  ];
+  const { process } = useCopy();
+  const steps = process.steps.map((step, i) => ({ ...step, icon: STEP_ICONS[i] }));
 
   return (
     <section
@@ -77,19 +51,19 @@ export default function Four() {
             style={{ color: MUTED, backgroundColor: `${INK}66` }}
           >
             <span className="h-1.5 w-1.5 animate-pulse rounded-full" style={{ backgroundColor: SPARK }} />
-            How we work
+            {process.eyebrow}
           </motion.span>
           <motion.h2
             {...reveal(0.1)}
             className="mt-5 text-3xl font-semibold tracking-tight sm:text-4xl lg:text-5xl"
             style={{ color: PAPER }}
           >
-            From problem statement.{" "}
+            {process.headingLead}{" "}
             <br className="hidden sm:block" />
-            <span style={{ color: BLUE }}>To production AI.</span>
+            <span style={{ color: BLUE }}>{process.headingAccent}</span>
           </motion.h2>
           <motion.p {...reveal(0.2)} className="mt-6 text-lg leading-8" style={{ color: BODY }}>
-            Our four-step process is fast, transparent, and engineered for impact — whether you&apos;re deploying your first AI tool or scaling across an entire organization.
+            {process.sub}
           </motion.p>
         </div>
 
@@ -131,7 +105,7 @@ export default function Four() {
                 )}
 
                 <div
-                  className="relative flex flex-col gap-6 overflow-hidden rounded-2xl border border-white/10 p-7 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-[#8B5CF6]/40 hover:shadow-[0_24px_64px_-24px_rgba(139,92,246,0.35)] sm:p-8 lg:flex-row lg:items-start lg:gap-8"
+                  className="brand-lift relative flex flex-col gap-6 overflow-hidden rounded-2xl border border-white/10 p-7 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-brand-accent/40 sm:p-8 lg:flex-row lg:items-start lg:gap-8"
                   style={{ backgroundColor: `${CARD}D9` }}
                 >
                   {/* Corner glow accent */}
@@ -158,7 +132,7 @@ export default function Four() {
                   <div className="flex-1 text-center lg:text-left">
                     <div className="hidden items-center justify-center gap-2 font-mono text-[10px] uppercase tracking-[0.25em] lg:flex lg:justify-start" style={{ color: `${MUTED}B3` }}>
                       <span className="h-1 w-1 animate-pulse rounded-full" style={{ backgroundColor: SPARK }} />
-                      Step {step.number}
+                      {process.stepLabel} {step.number}
                     </div>
                     <h3
                       className="mt-1 text-xl font-medium leading-snug tracking-tight sm:text-2xl"
@@ -187,9 +161,9 @@ export default function Four() {
           <a
             href="#contact"
             className="rounded-full px-8 py-4 text-sm font-bold transition-all hover:scale-105 hover:brightness-110"
-            style={{ backgroundColor: BLUE, color: "#0A0E27" }}
+            style={{ backgroundColor: BLUE, color: theme.ON_ACCENT }}
           >
-            Start Building
+            {process.cta}
           </a>
         </motion.div>
       </div>

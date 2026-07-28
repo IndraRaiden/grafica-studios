@@ -7,14 +7,10 @@ import {
   useSpring,
   useTransform,
 } from "framer-motion";
+import { useCopy } from "./locale-provider";
+import { brand, theme } from "@/lib/brand";
 
-/* Palette tokens — mirrors three-wrapper.tsx */
-const INK = "#000000";
-const PAPER = "#EEF0FF";
-const BODY = "#C7CBEA";
-const MUTED = "#8B92C9";
-const BLUE = "#8B5CF6";
-const SPARK = "#34D399";
+const { INK, PAPER, BODY, MUTED, BLUE, SPARK } = theme;
 
 interface OneProps {
   /** Spring-smoothed scroll progress of the pinned hero, 0 → 1 */
@@ -29,6 +25,8 @@ const reveal = (delay: number) => ({
 });
 
 export default function One({ progress }: OneProps) {
+  const copy = useCopy();
+
   /* ---- THE DEVELOP — scroll pulls the camera back while color burns in ---- */
   const imageScale = useTransform(progress, [0, 0.85], [1.4, 1]);
   const imageY = useTransform(progress, [0, 0.85], [80, 0]);
@@ -59,7 +57,9 @@ export default function One({ progress }: OneProps) {
   const pct = useTransform(progress, (v) =>
     String(Math.min(100, Math.max(0, Math.round(v * 100)))).padStart(2, "0")
   );
-  const phase = useTransform(progress, (v): string => (v < 0.5 ? "developing" : "in focus"));
+  const phase = useTransform(progress, (v): string =>
+    v < 0.5 ? copy.hero.phaseDeveloping : copy.hero.phaseFocus
+  );
 
   /* ---- Pointer choreography — the scene leans with the cursor ---- */
   const mouseX = useSpring(0, { stiffness: 50, damping: 20 });
@@ -93,9 +93,11 @@ export default function One({ progress }: OneProps) {
           style={{ scale: imageScale, y: imageY, x: imageX, rotate: imageRotate, filter: imageFilter }}
           className="absolute inset-0 will-change-transform"
         >
+          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src="/trial.jpg"
-            alt="BlackStronghold Background"
+            src={brand.heroImage}
+            alt=""
+            aria-hidden="true"
             className="h-full w-full object-cover"
           />
           {/* duotone wash — paints the grayscale frame in brand violet until it develops */}
@@ -135,7 +137,7 @@ export default function One({ progress }: OneProps) {
               style={{ color: MUTED, backgroundColor: `${INK}66` }}
             >
               <span className="h-1.5 w-1.5 animate-pulse rounded-full" style={{ backgroundColor: SPARK }} />
-              AI software studio
+              {copy.hero.eyebrow}
             </motion.span>
           </motion.div>
 
@@ -146,7 +148,7 @@ export default function One({ progress }: OneProps) {
               className="max-w-5xl text-5xl font-semibold tracking-tight sm:text-7xl lg:text-8xl"
               style={{ color: PAPER }}
             >
-              AI software.{" "}
+              {copy.hero.headingLead}{" "}
               <motion.span
                 animate={{ backgroundPosition: ["0% 50%", "200% 50%"] }}
                 transition={{ duration: 7, repeat: Infinity, ease: "linear" }}
@@ -158,9 +160,9 @@ export default function One({ progress }: OneProps) {
                   color: "transparent",
                 }}
               >
-                Built to scale
+                {copy.hero.headingAccent}
               </motion.span>{" "}
-              your business.
+              {copy.hero.headingTail}
             </motion.h1>
           </motion.div>
 
@@ -171,7 +173,7 @@ export default function One({ progress }: OneProps) {
               className="max-w-3xl text-lg leading-8 sm:text-xl"
               style={{ color: BODY }}
             >
-              BlackStronghold builds AI-powered web apps that automate the work slowing you down — from lead capture and ticket triage to real-time tracking. Ready-to-deploy, built for results.
+              {copy.hero.sub}
             </motion.p>
           </motion.div>
 
@@ -181,16 +183,16 @@ export default function One({ progress }: OneProps) {
               <a
                 href="#services"
                 className="rounded-full px-8 py-3.5 text-sm font-bold transition-all hover:scale-105 hover:brightness-110"
-                style={{ backgroundColor: BLUE, color: "#0A0E27" }}
+                style={{ backgroundColor: BLUE, color: theme.ON_ACCENT }}
               >
-                See Our Products
+                {copy.hero.ctaPrimary}
               </a>
               <a
                 href="#contact"
                 className="rounded-full border border-white/15 px-8 py-3.5 text-sm font-semibold backdrop-blur-sm transition-all hover:scale-105 hover:border-white/30"
                 style={{ color: BODY, backgroundColor: `${INK}66` }}
               >
-                Get in Touch
+                {copy.hero.ctaSecondary}
               </a>
             </motion.div>
           </motion.div>
@@ -229,7 +231,7 @@ export default function One({ progress }: OneProps) {
           aria-hidden="true"
         >
           <span className="font-mono text-[10px] uppercase tracking-[0.3em]" style={{ color: `${MUTED}99` }}>
-            Scroll
+            {copy.hero.scroll}
           </span>
           <div className="h-8 w-px overflow-hidden bg-white/10">
             <motion.div

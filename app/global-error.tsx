@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect } from "react";
+import { theme } from "@/lib/brand";
+import { defaultCopy, defaultLocale } from "@/lib/i18n";
 
 export default function GlobalError({
   error,
@@ -14,13 +16,13 @@ export default function GlobalError({
   }, [error]);
 
   return (
-    <html lang="en">
+    <html lang={defaultLocale}>
       <body>
         <main
           style={{
             alignItems: "center",
-            background: "#000000",
-            color: "#EEF0FF",
+            background: theme.INK,
+            color: theme.PAPER,
             display: "flex",
             fontFamily: "system-ui, sans-serif",
             justifyContent: "center",
@@ -32,36 +34,34 @@ export default function GlobalError({
           <div style={{ maxWidth: 420 }}>
             <p
               style={{
-                color: "#8B92C9",
+                color: theme.MUTED,
                 fontFamily: "monospace",
                 fontSize: 12,
                 letterSpacing: "0.2em",
                 textTransform: "uppercase",
               }}
             >
-              Runtime recovered
+              {defaultCopy.error.eyebrow}
             </p>
-            <h1 style={{ fontSize: 32, margin: "16px 0 0" }}>
-              Something went wrong.
-            </h1>
-            <p style={{ color: "#C7CBEA", fontSize: 14, lineHeight: 1.6 }}>
-              Refresh the experience to load the latest version of the site.
+            <h1 style={{ fontSize: 32, margin: "16px 0 0" }}>{defaultCopy.error.title}</h1>
+            <p style={{ color: theme.BODY, fontSize: 14, lineHeight: 1.6 }}>
+              {defaultCopy.error.body}
             </p>
             <button
               type="button"
               onClick={() => unstable_retry()}
               style={{
-                background: "#8B5CF6",
+                background: theme.BLUE,
                 border: 0,
                 borderRadius: 999,
-                color: "#0A0E27",
+                color: theme.ON_ACCENT,
                 cursor: "pointer",
                 fontWeight: 700,
                 marginTop: 24,
                 padding: "12px 24px",
               }}
             >
-              Try again
+              {defaultCopy.error.retry}
             </button>
           </div>
         </main>

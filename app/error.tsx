@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import { defaultCopy } from "@/lib/i18n";
 
 export default function Error({
   error,
@@ -14,21 +15,19 @@ export default function Error({
   }, [error]);
 
   return (
-    <main className="flex min-h-screen items-center justify-center bg-black px-6 text-center text-[#EEF0FF]">
+    <main className="flex min-h-screen items-center justify-center bg-brand-ink px-6 text-center text-brand-paper">
       <div className="max-w-md">
-        <p className="font-mono text-xs uppercase tracking-[0.3em] text-[#8B92C9]">
-          Runtime recovered
+        <p className="font-mono text-xs uppercase tracking-[0.3em] text-brand-muted">
+          {defaultCopy.error.eyebrow}
         </p>
-        <h1 className="mt-4 text-3xl font-semibold">Something went wrong.</h1>
-        <p className="mt-4 text-sm leading-6 text-[#C7CBEA]">
-          Refresh the experience to load the latest version of the site.
-        </p>
+        <h1 className="mt-4 text-3xl font-semibold">{defaultCopy.error.title}</h1>
+        <p className="mt-4 text-sm leading-6 text-brand-body">{defaultCopy.error.body}</p>
         <button
           type="button"
           onClick={() => unstable_retry()}
-          className="mt-8 rounded-full bg-[#8B5CF6] px-6 py-3 text-sm font-bold text-[#0A0E27]"
+          className="mt-8 rounded-full bg-brand-accent px-6 py-3 text-sm font-bold text-brand-on-accent"
         >
-          Try again
+          {defaultCopy.error.retry}
         </button>
       </div>
     </main>

@@ -2,7 +2,9 @@
 
 import { useEffect } from "react";
 
-const RECOVERY_KEY = "blackstronghold:chunk-reload-attempted";
+import { brand } from "@/lib/brand";
+
+const RECOVERY_KEY = `${brand.id}:chunk-reload-attempted`;
 const RECOVERY_COOLDOWN_MS = 60_000;
 
 function isRecoverableChunkError(reason: unknown): boolean {

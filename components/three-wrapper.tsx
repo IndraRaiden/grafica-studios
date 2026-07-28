@@ -2,6 +2,8 @@
 
 import { useEffect, useRef, useState } from "react";
 import { animate, motion, useInView, useMotionTemplate, useSpring } from "framer-motion";
+import { useCopy } from "./locale-provider";
+import { theme } from "@/lib/brand";
 
 /* ------------------------------------------------------------------ */
 /* Types — same public contract as before, plus optional copy props    */
@@ -24,19 +26,7 @@ interface ThreeWrapperProps {
   heading?: React.ReactNode;
 }
 
-/* ------------------------------------------------------------------ */
-/* Palette tokens                                                      */
-/* ------------------------------------------------------------------ */
-
-const INK = "#000000"; // section background
-const CARD = "#0E1335"; // card surface
-const PAPER = "#EEF0FF"; // primary text
-const BODY = "#C7CBEA"; // body text
-const MUTED = "#8B92C9"; // labels / secondary
-const BLUE = "#8B5CF6"; // primary accent
-const VIOLET = "#6D28D9"; // mid current
-const ROYAL = "#4C1D95"; // deep undercurrent
-const SPARK = "#34D399"; // reserved: results, packets, progress
+const { INK, CARD, PAPER, BODY, MUTED, BLUE, VIOLET, ROYAL, SPARK } = theme;
 
 /* ------------------------------------------------------------------ */
 /* Flow field — layered seamless currents + a dashed "packet" stream   */
@@ -175,6 +165,7 @@ function StatValue({ value }: { value: string }) {
 /* ------------------------------------------------------------------ */
 
 function CaseCard({ project }: { project: Project }) {
+  const { carousel } = useCopy().portfolio;
   const rotateX = useSpring(0, { stiffness: 150, damping: 20 });
   const rotateY = useSpring(0, { stiffness: 150, damping: 20 });
   const glareX = useSpring(50, { stiffness: 120, damping: 22 });
@@ -200,7 +191,7 @@ function CaseCard({ project }: { project: Project }) {
       onMouseMove={onMouseMove}
       onMouseLeave={onMouseLeave}
       style={{ rotateX, rotateY, transformStyle: "preserve-3d", backgroundColor: `${CARD}D9` }}
-      className="group relative flex h-full flex-col rounded-2xl border border-white/10 p-7 backdrop-blur-sm transition-[border-color,box-shadow] duration-300 hover:border-[#8B5CF6]/40 hover:shadow-[0_24px_64px_-24px_rgba(139,92,246,0.45)] sm:p-8"
+      className="group brand-lift relative flex h-full flex-col rounded-2xl border border-white/10 p-7 backdrop-blur-sm transition-[border-color,box-shadow] duration-300 hover:border-brand-accent/40 sm:p-8"
     >
       {/* glare sweep — follows the pointer across the card surface */}
       <motion.div
@@ -243,9 +234,9 @@ function CaseCard({ project }: { project: Project }) {
       <dl className="mt-7 grid flex-1 auto-rows-min grid-cols-[84px_1fr] gap-x-4 gap-y-4 border-t border-white/10 pt-6">
         {(
           [
-            ["Problem", project.problem, `${MUTED}B3`, BODY],
-            ["Solution", project.solution, `${MUTED}B3`, BODY],
-            ["Result", project.result, SPARK, PAPER],
+            [carousel.problem, project.problem, `${MUTED}B3`, BODY],
+            [carousel.solution, project.solution, `${MUTED}B3`, BODY],
+            [carousel.result, project.result, SPARK, PAPER],
           ] as const
         ).map(([label, text, labelColor, textColor]) => (
           <div key={label} className="contents">
@@ -269,15 +260,16 @@ function CaseCard({ project }: { project: Project }) {
 /* Section                                                             */
 /* ------------------------------------------------------------------ */
 
-export default function ThreeWrapper({
-  projects,
-  eyebrow = "Case studies",
-  heading = (
+export default function ThreeWrapper({ projects, eyebrow, heading }: ThreeWrapperProps) {
+  const { carousel } = useCopy().portfolio;
+
+  const sectionEyebrow = eyebrow ?? carousel.eyebrow;
+  const sectionHeading = heading ?? (
     <>
-      Work that holds up <span style={{ color: BLUE }}>in production.</span>
+      {carousel.headingLead} <span style={{ color: BLUE }}>{carousel.headingAccent}</span>
     </>
-  ),
-}: ThreeWrapperProps) {
+  );
+
   const trackRef = useRef<HTMLDivElement>(null);
   const fieldRef = useRef<HTMLDivElement>(null);
   const progressRef = useRef<HTMLDivElement>(null);
@@ -362,7 +354,7 @@ export default function ThreeWrapper({
 
   return (
     <section
-      aria-label={eyebrow}
+      aria-label={sectionEyebrow}
       className="relative overflow-hidden"
       style={{ backgroundColor: INK }}
     >
@@ -418,13 +410,13 @@ export default function ThreeWrapper({
             className="font-mono text-[11px] uppercase tracking-[0.35em]"
             style={{ color: MUTED }}
           >
-            {eyebrow}
+            {sectionEyebrow}
           </p>
           <h2
             className="mt-3 max-w-xl text-3xl font-semibold tracking-tight sm:text-4xl lg:text-5xl"
             style={{ color: PAPER }}
           >
-            {heading}
+            {sectionHeading}
           </h2>
         </div>
 
@@ -433,10 +425,10 @@ export default function ThreeWrapper({
             <button
               key={dir}
               type="button"
-              aria-label={dir === 1 ? "Next case study" : "Previous case study"}
+              aria-label={dir === 1 ? carousel.next : carousel.previous}
               onClick={() => page(dir)}
               disabled={dir === 1 ? edges.end : edges.start}
-              className="flex size-10 items-center justify-center rounded-full border border-white/15 transition-colors hover:border-[#34D399]/70 hover:text-[#34D399] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#34D399]/60 disabled:pointer-events-none disabled:opacity-30"
+              className="flex size-10 items-center justify-center rounded-full border border-white/15 transition-colors hover:border-brand-spark/70 hover:text-brand-spark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-spark/60 disabled:pointer-events-none disabled:opacity-30"
               style={{ color: BODY }}
             >
               {arrow(dir)}
@@ -458,7 +450,7 @@ export default function ThreeWrapper({
           if (e.key === "ArrowLeft") page(-1);
         }}
         tabIndex={0}
-        aria-label="Case studies carousel"
+        aria-label={carousel.label}
         style={{ perspective: "1400px" }}
         className="cs-track relative z-10 flex cursor-grab select-none gap-5 overflow-x-auto px-6 py-12 active:cursor-grabbing focus-visible:outline-none sm:px-8 lg:px-12"
       >
@@ -497,7 +489,7 @@ export default function ThreeWrapper({
           />
         </div>
         <span className="hidden font-mono text-[10px] uppercase tracking-[0.3em] sm:block" style={{ color: `${MUTED}99` }}>
-          Drag
+          {carousel.drag}
         </span>
       </div>
     </section>

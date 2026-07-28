@@ -2,27 +2,22 @@
 
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "framer-motion";
+import BrandMark from "./brand-mark";
+import { useLocale } from "./locale-provider";
+import { brand, theme } from "@/lib/brand";
+import { LOCALES, LOCALE_LABELS, localeSwitcherEnabled } from "@/lib/i18n";
 
-/* Palette tokens — mirrors three-wrapper.tsx */
-const INK = "#000000";
-const PAPER = "#EEF0FF";
-const BODY = "#C7CBEA";
-const MUTED = "#8B92C9";
-const BLUE = "#8B5CF6";
-const SPARK = "#34D399";
+const { INK, PAPER, BODY, MUTED, BLUE, SPARK } = theme;
 
-const LINKS = [
-  { name: "Home", href: "#home" },
-  { name: "Services", href: "#services" },
-  { name: "Portfolio", href: "#portfolio" },
-  { name: "Process", href: "#process" },
-  { name: "Contact", href: "#contact" },
-];
+const SECTIONS = ["home", "services", "portfolio", "process", "contact"] as const;
 
 export default function Navbar() {
+  const { copy, locale, setLocale } = useLocale();
   const [scrolled, setScrolled] = useState(false);
   const [active, setActive] = useState("#home");
   const [open, setOpen] = useState(false);
+
+  const LINKS = SECTIONS.map((id) => ({ name: copy.nav.links[id], href: `#${id}` }));
 
   const { scrollY } = useScroll();
   useMotionValueEvent(scrollY, "change", (y) => setScrolled(y > 32));
@@ -31,8 +26,8 @@ export default function Navbar() {
   useEffect(() => {
     if (!("IntersectionObserver" in window)) return;
 
-    const sections = LINKS
-      .map((l) => document.getElementById(l.href.slice(1)))
+    const sections = SECTIONS
+      .map((id) => document.getElementById(id))
       .filter((el): el is HTMLElement => el !== null);
     const observer = new IntersectionObserver(
       (entries) => {
@@ -85,10 +80,9 @@ export default function Navbar() {
         >
           {/* Logo */}
           <a href="#home" className="shrink-0">
-            <img
-              src="/logostrong.jpg"
-              alt="Grafica Studios"
-              className={`w-auto object-contain transition-all duration-300 ${scrolled ? "h-9" : "h-12"}`}
+            <BrandMark
+              imgClassName={`w-auto object-contain transition-all duration-300 ${scrolled ? "h-9" : "h-12"}`}
+              textClassName={`block font-semibold tracking-tight transition-all duration-300 ${scrolled ? "text-base" : "text-lg"}`}
             />
           </a>
 
@@ -127,10 +121,34 @@ export default function Navbar() {
 
           {/* Desktop actions */}
           <div className="hidden items-center gap-3 md:flex">
+            {localeSwitcherEnabled && (
+              <div
+                role="group"
+                aria-label={copy.meta.localeSwitchLabel}
+                className="flex items-center rounded-full border border-white/15 p-0.5"
+              >
+                {LOCALES.map((code) => (
+                  <button
+                    key={code}
+                    type="button"
+                    onClick={() => setLocale(code)}
+                    aria-pressed={locale === code}
+                    className="rounded-full px-2.5 py-1 font-mono text-[10px] tracking-[0.15em] transition-colors"
+                    style={
+                      locale === code
+                        ? { backgroundColor: `${BLUE}33`, color: PAPER }
+                        : { color: MUTED }
+                    }
+                  >
+                    {LOCALE_LABELS[code]}
+                  </button>
+                ))}
+              </div>
+            )}
             <a
-              href="tel:+5215663954818"
-              aria-label="Call us"
-              className="flex size-9 items-center justify-center rounded-full border border-white/15 transition-colors hover:border-[#8B5CF6]/60 hover:text-[#8B5CF6]"
+              href={`tel:${brand.phone.tel}`}
+              aria-label={copy.nav.callAria}
+              className="flex size-9 items-center justify-center rounded-full border border-white/15 transition-colors hover:border-brand-accent/60 hover:text-brand-accent"
               style={{ color: BODY }}
             >
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-4 w-4">
@@ -144,16 +162,16 @@ export default function Navbar() {
             <a
               href="#contact"
               className="rounded-full px-5 py-2 text-xs font-bold transition-all hover:scale-105 hover:brightness-110"
-              style={{ backgroundColor: BLUE, color: "#0A0E27" }}
+              style={{ backgroundColor: BLUE, color: theme.ON_ACCENT }}
             >
-              Get in Touch
+              {copy.nav.cta}
             </a>
           </div>
 
           {/* Mobile menu toggle */}
           <button
             type="button"
-            aria-label={open ? "Close menu" : "Open menu"}
+            aria-label={open ? copy.nav.closeMenu : copy.nav.openMenu}
             aria-expanded={open}
             onClick={() => setOpen((v) => !v)}
             className="relative z-10 flex h-10 w-10 items-center justify-center rounded-full border border-white/15 transition-colors hover:border-white/30 md:hidden"
@@ -232,18 +250,46 @@ export default function Navbar() {
                   href="#contact"
                   onClick={() => setOpen(false)}
                   className="rounded-full px-7 py-3 text-sm font-bold transition-all hover:brightness-110"
-                  style={{ backgroundColor: BLUE, color: "#0A0E27" }}
+                  style={{ backgroundColor: BLUE, color: theme.ON_ACCENT }}
                 >
-                  Get in Touch
+                  {copy.nav.cta}
                 </a>
                 <a
-                  href="tel:+5215663954818"
+                  href={`tel:${brand.phone.tel}`}
                   className="rounded-full border border-white/15 px-7 py-3 font-mono text-xs uppercase tracking-[0.2em]"
                   style={{ color: MUTED }}
                 >
-                  Call us
+                  {copy.nav.callUs}
                 </a>
               </motion.div>
+
+              {localeSwitcherEnabled && (
+                <motion.div
+                  initial={{ opacity: 0, y: 24 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.17 + LINKS.length * 0.07, ease: "easeOut" }}
+                  className="mt-6 flex items-center gap-2"
+                  role="group"
+                  aria-label={copy.meta.localeSwitchLabel}
+                >
+                  {LOCALES.map((code) => (
+                    <button
+                      key={code}
+                      type="button"
+                      onClick={() => setLocale(code)}
+                      aria-pressed={locale === code}
+                      className="rounded-full border px-4 py-1.5 font-mono text-[11px] tracking-[0.2em] transition-colors"
+                      style={
+                        locale === code
+                          ? { borderColor: `${BLUE}80`, backgroundColor: `${BLUE}26`, color: PAPER }
+                          : { borderColor: "rgba(255,255,255,0.15)", color: MUTED }
+                      }
+                    >
+                      {LOCALE_LABELS[code]}
+                    </button>
+                  ))}
+                </motion.div>
+              )}
             </nav>
           </motion.div>
         )}
