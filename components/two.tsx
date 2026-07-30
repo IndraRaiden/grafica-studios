@@ -7,9 +7,6 @@ import { theme } from "@/lib/brand";
 
 const { INK, CARD, PAPER, BODY, MUTED, BLUE, VIOLET, SPARK } = theme;
 
-/* ------------------------------------------------------------------ */
-/* Circuit field — board traces with light pulses routing through them */
-/* ------------------------------------------------------------------ */
 
 interface Trace {
   d: string; // pulse travels in path direction — write right-to-left to reverse
