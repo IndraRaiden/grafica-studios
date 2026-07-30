@@ -244,7 +244,7 @@ export default function Footer() {
             <a href="#home" className="mb-8 inline-block">
               <BrandMark
                 imgClassName="h-10 w-auto object-contain"
-                textClassName="text-xl font-semibold tracking-tight"
+                textClassName="text-xl"
               />
             </a>
             <p className="mb-8 max-w-sm text-sm leading-relaxed" style={{ color: BODY }}>

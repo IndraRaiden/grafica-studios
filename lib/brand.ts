@@ -80,9 +80,12 @@ const computo: Brand = {
     tel: "+5215663954818",
     whatsapp: "5215663954818",
   },
-  // No logo file yet — the site renders the wordmark as text until one lands
-  // in /public and NEXT_PUBLIC_LOGO_SRC (or this field) points at it.
-  logo: { src: null, favicon: null },
+  // Transparent artwork is shared by every <BrandMark> placement; the square
+  // derivative keeps the same mark legible in browser and device icon slots.
+  logo: {
+    src: "/logo-computo-transparent.png",
+    favicon: "/favicon-computo.png",
+  },
   heroImage: "/trial.jpg",
   social: {
     linkedin: "https://linkedin.com",

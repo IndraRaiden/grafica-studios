@@ -82,7 +82,7 @@ export default function Navbar() {
           <a href="#home" className="shrink-0">
             <BrandMark
               imgClassName={`w-auto object-contain transition-all duration-300 ${scrolled ? "h-9" : "h-12"}`}
-              textClassName={`block font-semibold tracking-tight transition-all duration-300 ${scrolled ? "text-base" : "text-lg"}`}
+              textClassName={`block transition-all duration-300 ${scrolled ? "text-base" : "text-lg"}`}
             />
           </a>
 

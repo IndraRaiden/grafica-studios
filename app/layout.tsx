@@ -24,7 +24,15 @@ export const metadata: Metadata = {
   title: defaultCopy.meta.title,
   description: defaultCopy.meta.description,
   // Omitted when the brand ships no favicon — Next then serves app/favicon.ico.
-  ...(brand.logo.favicon ? { icons: { icon: brand.logo.favicon } } : {}),
+  ...(brand.logo.favicon
+    ? {
+        icons: {
+          icon: brand.logo.favicon,
+          shortcut: brand.logo.favicon,
+          apple: brand.logo.favicon,
+        },
+      }
+    : {}),
 };
 
 /* Brand palette as CSS custom properties — read by the brand-* Tailwind utilities. */
